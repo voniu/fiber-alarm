@@ -6,7 +6,11 @@ import './bigData.css'
 import Map from '@/components/map'
 import Charts from '@/components/charts';
 import DigitalFlop from '@/components/digitalFlop';
-
+import FiberList from '@/components/fiberList';
+import AlarmList from '@/components/alarmList';
+import AlarmDetail from '@/components/alarmDetail';
+import SingleRTV from '@/components/singleRTV';
+import GridRTV from '@/components/gridRTV';
 export default function HomePage() {
   return (
     <div className="data_body">
@@ -19,12 +23,7 @@ export default function HomePage() {
               <video muted autoPlay loop src={blueVideo} className="dataAllBorder02 video_cage" />
             </div>
             <div className="dataAllBorder01 cage_cl" style={{ marginTop: '1.5%', height: '38%' }}>
-              <div className="dataAllBorder02 video_cage">
-                <video muted autoPlay loop src={blueVideo} className="video_around" />
-                <video muted autoPlay loop src={blueVideo} className="video_around" />
-                <video muted autoPlay loop src={blueVideo} className="video_around" />
-                <video muted autoPlay loop src={blueVideo} className="video_around" />
-              </div>
+              <GridRTV />
             </div>
             <div className="dataAllBorder01 cage_cl" style={{ marginTop: '1.5%', height: '32%', position: 'relative' }}>
               <Charts />
@@ -45,14 +44,14 @@ export default function HomePage() {
                 </div>
               </div>
             </div>
-
             <div className="dataAllBorder01 cage_cl" style={{ marginTop: '0.6%', height: '32.1%' }}>
               <div className="dataAllBorder02" id="map_title_innerbox1"
-                style={{ position: 'relative' }}>
+                style={{ position: 'relative', overflow: 'auto' }}>
                 <div className="map_title_box">
                   <div className="map_title_innerbox">
                     <div className="map_title" style={{ backgroundImage: `url(${secondTitlePng})` }}>
                       防区数据</div>
+                    <FiberList />
                   </div>
                 </div>
               </div>
@@ -66,17 +65,15 @@ export default function HomePage() {
               </div>
             </div>
             <div className="dataAllBorder01 cage_cl" style={{ marginTop: '1.5%', height: '38%' }}>
-              <div className="dataAllBorder02" >
-              </div>
+              <AlarmList />
             </div>
             <div className="dataAllBorder01 cage_cl" style={{ marginTop: '1.5%', height: '32%' }}>
-              <div className="dataAllBorder02" >
-              </div>
+              <AlarmDetail />
             </div>
           </div>
-
         </div>
       </div>
+      <SingleRTV />
     </div >
   );
 }

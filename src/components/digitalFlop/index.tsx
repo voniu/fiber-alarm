@@ -19,7 +19,7 @@ const config = {
 export default function () {
     return <>
         <div className="analysis">报警统计：</div>
-        <DigitalFlop config={config} style={{ height: '50px' }} />
+        <DigitalFlop config={config} style={{ height: '36px' }} />
         <Decoration2 style={{ height: '5px' }} />
         <div className="depart_number_box">
             <ul className="depart_number_cage">

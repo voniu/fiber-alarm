@@ -5,5 +5,10 @@ export default defineConfig({
     { path: "/", component: "index" },
     { path: "/test", component: "test" },
   ],
+  plugins: ['@umijs/plugins/dist/model', '@umijs/plugins/dist/request'],
+  model: {},
+  request: {
+    dataField: 'data'
+  },
   npmClient: 'pnpm',
 });
