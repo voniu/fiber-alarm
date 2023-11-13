@@ -2,8 +2,6 @@ import { ScrollBoard } from '@jiaminghi/data-view-react';
 import './index.css';
 import { useModel } from 'umi';
 
-
-
 export default function () {
     const { fiberList, centerTo } = useModel('useItems');
     const { selectFeature, getFeaturesByTypeAndId } = useModel('useMap');
@@ -13,7 +11,7 @@ export default function () {
     const config = {
         header: ['名称', '编号', '坐标'],
         data: fiberList.map(i => [i.name, i.id, i.location[0][0]]),
-        rowNum: 18,
+        rowNum: 6,
         index: true,
         columnWidth: [50],
         align: ['center'],
@@ -31,6 +29,6 @@ export default function () {
     }
 
     return <>
-        <ScrollBoard config={config} style={{ height: '90%' }} onClick={onClick} />
+        <ScrollBoard config={config} onClick={onClick} />
     </>
 }
