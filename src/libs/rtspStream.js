@@ -1,10 +1,18 @@
 import ee from './events';
-
+function base64ToUint8Array(base64) {
+    const binaryString = atob(base64);
+    const array = new Uint8Array(binaryString.length);
+    for (let i = 0; i < binaryString.length; i++) {
+        array[i] = binaryString.charCodeAt(i);
+    }
+    return array;
+}
 export class RtspStream {
 
     constructor(wsUrl) {
         this.wsUrl = wsUrl;
         this.channelMap = new Map();
+        this.subscribed = new Set();
     }
 
     send(data) {
@@ -13,46 +21,56 @@ export class RtspStream {
 
     /**
      * 触发订阅
-     * @param number 通道编号
+     * @param channel 通道编号
      * @param videoId video标签Id
      */
-    subscribe(number, videoId) {
-        console.debug(`subscribe channel[${number}]，videoId[${videoId}]`)
+    subscribe(channel, videoId) {
+        // console.debug(`subscribe channel[${channel}]，videoId[${videoId}]`)
         // 构建订阅参数，json的形式交互
-        const params = {};
-        params.type = "SUBSCRIBE";
-        params.number = number;
-        params.content = "";
-        const channelMedia = new ChannelMedia(number, videoId);
-        channelMedia.onReset = (number, videoId) => this.resubscribe(number, videoId);
-        this.channelMap.set(number, channelMedia)
+        const params = {
+            type: "SUBSCRIBE",
+            content: {
+                channel: channel
+            }
+        };
         this.websocket.send(JSON.stringify(params))
     }
 
     /**
      * 重新订阅
-     * @param number 视频通道编号
+     * @param channel 视频通道编号
      * @param videoId video标签Id
      */
-    resubscribe(number, videoId) {
-        console.debug(`resubscribe channel[${number}]，videoId[${videoId}]`)
-        this.unsubscribe(number);
-        this.subscribe(number, videoId);
+    resubscribe(channel, videoId) {
+        console.debug(`resubscribe channel[${channel}]，videoId[${videoId}]`)
+        const params = {
+            type: "RESUBSCRIBE",
+            content: {
+                channel: channel
+            }
+        };
+        if (!this.channelMap.has(channel)) {
+            this.channelMap.set(channel, new ChannelMedia(channel, videoId));
+        }
+        this.channelMap.get(channel).setVideoId(videoId);
+        this.websocket.send(JSON.stringify(params))
     }
 
     /**
      * 取消订阅
-     * @param number 视频通道编号
+     * @param channel 视频通道编号
      */
-    unsubscribe(number) {
-        console.debug(`取消订阅通道[${number}]`)
+    unsubscribe(channel) {
+        console.debug(`取消订阅通道[${channel}]`)
         // 构建订阅参数，json的形式交互
-        const params = {};
-        params.type = "UNSUBSCRIBE";
-        params.number = number;
-        params.content = "";
+        const params = {
+            type: "UNSUBSCRIBE",
+            content: {
+                channel: channel
+            }
+        };
         this.websocket.send(JSON.stringify(params))
-        this.channelMap.delete(number)
+        this.channelMap.delete(channel)
     }
 
     /**
@@ -78,9 +96,28 @@ export class RtspStream {
     onMessage(evt) {
         if (typeof (evt.data) === "string") {
             let data = JSON.parse(evt.data);
-            if (data.type === "SUBSCRIBE") this.channelMap.get(data.number).init(data.content);
-            else if (data.type === "QUERY") console.log(`channel[${data.number}]: ${data.content}`);
-            else if (data.type === "ERROR") console.error(`channel[${data.number}]: ${data.content}`);
+            if (data.type === "SUBSCRIBE") {
+                const channelMedia = new ChannelMedia(data.content.channel, videoId);
+                channelMedia.onReset = (number, videoId) => {
+                    // 不支持
+                    // this.resubscribe(number, videoId);
+                }
+                this.channelMap.set(channel, channelMedia)
+                channelMedia.init(data.content);
+            }
+            else if ("RESUBSCRIBE") {
+                const frame = base64ToUint8Array(data.content.header);
+                this.channelMap.get(data.content.channel).reinit(frame);
+            }
+            else if ("UNSUBSCRIBE") {
+                
+            }
+            else if (data.type === "QUERY") {
+                console.log(`channel[${data.content.channel}]: ${data.content}`);
+            }
+            else if (data.type === "ERROR") {
+                console.error(`channel[${data.content.channel}]: ${data.content}`);
+            }
             else if (data.type === "ALARM") {
                 ee.emit('ALARM', data.content)
             }
@@ -94,7 +131,7 @@ export class RtspStream {
             // 向指定通道编号添加数据
             const videoData = data.slice(4);
             // console.log("通道编号：", number, videoData.length)
-            this.channelMap.get(number).pushData(videoData);
+            if (this.channelMap.has(number)) this.channelMap.get(number).pushData(videoData);
         }
     }
 
@@ -136,6 +173,7 @@ export class ChannelMedia {
         this.queue = [];
         this.canFeed = false;
         this.onReset = null;
+        this.codec = '';
     }
 
     /**
@@ -156,13 +194,26 @@ export class ChannelMedia {
     }
 
     /**
+     * resubscribe 使用
+     */
+    reinit(firstFrame) {
+        this.clearBuffer();
+        this.mediaPlayer = document.getElementById(this.videoId);
+        this.mediaPlayer.src = URL.createObjectURL(this.mediaSource);
+        this.pushData(firstFrame)
+    }
+
+    setVideoId(videoId) {
+        this.videoId = videoId;
+    }
+    /**
      * MediaSource已打开事件
      * @param e 事件
      */
     onMediaSourceOpen(e) {
         // URL.revokeObjectURL 主动释放引用
         URL.revokeObjectURL(this.mediaPlayer.src);
-        this.mediaSource.removeEventListener('sourceopen', this.onMediaSourceOpen.bind(this));
+        // this.mediaSource.removeEventListener('sourceopen', this.onMediaSourceOpen.bind(this));
 
         // console.log("MediaSource已打开")
         this.sourceBuffer = this.mediaSource.addSourceBuffer(this.codec);
@@ -240,5 +291,15 @@ export class ChannelMedia {
         } else if (currentTime - firstStart > 120 && lastEnd > currentTime) {
             this.sourceBuffer.remove(firstStart, lastEnd - 10)
         }
+    }
+
+    clearBuffer() {
+        if (!this.sourceBuffer || !this.sourceBuffer.buffered.length) return;
+        if (this.sourceBuffer.updating) {
+            this.sourceBuffer.abort();
+        }
+        const firstStart = this.sourceBuffer.buffered.start(0);
+        const lastEnd = this.sourceBuffer.buffered.end(this.sourceBuffer.buffered.length - 1);
+        this.sourceBuffer.remove(firstStart, lastEnd)
     }
 }

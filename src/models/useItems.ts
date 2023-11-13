@@ -18,17 +18,26 @@ export interface Fiber {
     location: Array<Coordinate[]>;
 }
 
-
 export default function ItemsModel() {
-    const { data: fiberList }: { data: Fiber[] } = useRequest(async () => {
+    useRequest(async () => {
         return await services.getFiberList();
+    }, {
+        onSuccess: (data) => {
+            setFiberList(data);
+        }
     });
-    const { data: cameraList }: { data: Camera[] } = useRequest(async () => {
+    useRequest(async () => {
         return await services.getCameraList().then();
+    }, {
+        onSuccess: (data) => {
+            setCameraList(data)
+        }
     });
 
     const [cameras, setCameras] = useState<Map<number, Camera>>(new Map)
     const [fibers, setFibers] = useState<Map<number, Fiber>>(new Map)
+    const [fiberList, setFiberList] = useState<Fiber[]>([])
+    const [cameraList, setCameraList] = useState<Camera[]>([])
 
     const { addPoint, addLine, toCenter, setClickPosition } = useModel('useMap');
 

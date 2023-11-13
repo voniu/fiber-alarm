@@ -10,5 +10,6 @@ export default defineConfig({
   request: {
     dataField: 'data'
   },
+  mock: false,
   npmClient: 'pnpm',
 });

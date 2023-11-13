@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { RtspStream } from '@/libs/rtspStream';
 import { useModel } from "umi";
 
-const wsUrl = `ws://${location.host}/ws`
+// const wsUrl = `ws://${location.host}/ws`
+const wsUrl = "ws://10.147.17.1:8080/ws"
 let rtsp: RtspStream | null;;
 const subscribed = new Set<number>();
 
@@ -40,7 +41,7 @@ function unsubscribe(cameraId: number) {
 export default function RTV() {
     const [gridPlay, setGridPlay] = useState(true);
     const [singlePlay, setSinglePlay] = useState(false);
-
+    const [singlePlayChannel, setSinglePlayChannel] = useState(0);
 
     useEffect(() => {
         connect()
@@ -61,11 +62,11 @@ export default function RTV() {
         setGridPlay(true);
     }
 
-    function startSinglePlay(camId: number, videoId: string) {
+    function startSinglePlay(camId: number) {
         unsubscribeAll();
+        setSinglePlayChannel(camId);
         setSinglePlay(true);
         setGridPlay(false);
-        subscribe(camId, videoId);
     }
 
     function stopSinglePlay() {
@@ -86,6 +87,8 @@ export default function RTV() {
         unsubscribeAll,
         startGridPlay,
         startSinglePlay,
-        stopSinglePlay
+        stopSinglePlay,
+        singlePlayChannel,
+        setSinglePlayChannel
     }
 }

@@ -7,13 +7,16 @@ import { CAMERA, FIBER } from '@/constant';
 import { Button } from 'antd';
 
 function CameraDetail({ camera }: { camera?: Camera }) {
+    const { startSinglePlay } = useModel('useRTV');
+
     if (!camera) return <div>
         <div>NOT FOUND</div>
     </div>
 
     function showRTV(id: number) {
-        console.log(id)
+        startSinglePlay(id);
     }
+
     return <div>
         <div>{camera.name}</div>
         <div style={{ fontSize: 14 }}>ID: {camera.id}</div>

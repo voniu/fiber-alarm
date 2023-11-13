@@ -8,6 +8,8 @@ export default function () {
     const { fiberList, centerTo } = useModel('useItems');
     const { selectFeature, getFeaturesByTypeAndId } = useModel('useMap');
     const { showPopup } = useModel('useModel')
+    if (!fiberList.length) return <div>无光纤数据</div>
+
     const config = {
         header: ['名称', '编号', '坐标'],
         data: fiberList.map(i => [i.name, i.id, i.location[0][0]]),
