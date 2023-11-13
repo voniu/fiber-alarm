@@ -30,9 +30,9 @@ export default function () {
             <select value={'' + fiberId || '0'} onChange={(event) => {
                 onFiberChange(event.target.value)
             }}>
-                <option value='0'>all</option>
+                <option key="all" value='0'>all</option>
                 {fiberList.map(f => {
-                    return <option value={f.id}>{f.name}</option>
+                    return <option key={f.id} value={f.id}>{f.name}</option>
                 })}
             </select>
         </div>
@@ -40,7 +40,7 @@ export default function () {
             {alarmList.map((i) => {
                 const d = new Date(i.time)
                 const time = `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()} ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`
-                return <div id={'' + i.id} onClick={() => onClick(i)} style={{ cursor: 'pointer', color: 'white', padding: '4px 8px', margin: 4, border: 'rgba(12,122,200,0.5) 1px solid' }} >
+                return <div key={'' + i.id} onClick={() => onClick(i)} style={{ cursor: 'pointer', color: 'white', padding: '4px 8px', margin: 4, border: 'rgba(12,122,200,0.5) 1px solid' }} >
                     <div style={{ display: "flex", justifyContent: 'space-between' }}>
                         <span style={{ fontSize: 14, backgroundImage: `url(${alarmDescriptionBg})`, backgroundRepeat: 'no-repeat', backgroundSize: '100% 100%', padding: 2 }}>{i.description}</span>
                         <span style={{ fontSize: 12 }}>{time}</span>

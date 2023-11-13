@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { Modal } from 'antd';
 import { useModel } from 'umi';
 

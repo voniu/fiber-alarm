@@ -5,7 +5,7 @@ import { useModel } from "umi";
 let index2camId: (number | null)[] = [null, null, null, null]
 
 export default function () {
-    const { gridPlay, setGridPlay, subscribe } = useModel('useRTV');
+    const { gridPlay, subscribe } = useModel('useRTV');
     const { cameraList, centerTo } = useModel('useItems');
     const { selectFeature, getFeaturesByTypeAndId } = useModel('useMap');
     const { showPopup } = useModel('useModel')
@@ -32,12 +32,12 @@ export default function () {
 
     function onClick(index: number) {
         const id = index2camId[index]
-        id && showCamera(id)
+        if (id) showCamera(id)
     }
 
     return <div className="dataAllBorder02 video_cage">
         {[0, 1, 2, 3].map(i => {
-            return <video id={`video${i}`} onClick={() => onClick(i)} muted autoPlay className="video_around" />
+            return <video key={`video${i}`} id={`video${i}`} onClick={() => onClick(i)} muted autoPlay className="video_around" />
         })}
     </div>
 }

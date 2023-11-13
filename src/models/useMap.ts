@@ -146,15 +146,15 @@ export default function MapModel() {
         map.getView().setCenter(center)
     }
 
+    function clearSelected() {
+        singleClickSelect.getFeatures().clear();
+        setCurrentItem({})
+    }
+
     function selectFeature(feature: Feature) {
         clearSelected()
         singleClickSelect.getFeatures().push(feature);
         setCurrentItem(feature.getProperties());
-    }
-
-    function clearSelected() {
-        singleClickSelect.getFeatures().clear();
-        setCurrentItem({})
     }
 
     function getFeaturesByTypeAndId(id: number, type: string) {

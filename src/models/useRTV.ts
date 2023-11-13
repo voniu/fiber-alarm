@@ -38,7 +38,6 @@ function unsubscribe(cameraId: number) {
 }
 
 export default function RTV() {
-    const { cameraList } = useModel('useItems');
     const [gridPlay, setGridPlay] = useState(true);
     const [singlePlay, setSinglePlay] = useState(false);
 

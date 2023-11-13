@@ -26,7 +26,12 @@ export default function ItemsModel() {
     const { data: cameraList }: { data: Camera[] } = useRequest(async () => {
         return await services.getCameraList().then();
     });
-    console.log(fiberList, cameraList)
+
+    const [cameras, setCameras] = useState<Map<number, Camera>>(new Map)
+    const [fibers, setFibers] = useState<Map<number, Fiber>>(new Map)
+
+    const { addPoint, addLine, toCenter, setClickPosition } = useModel('useMap');
+
     useEffect(() => {
         if (!fiberList?.length) return;
 
@@ -46,11 +51,6 @@ export default function ItemsModel() {
         });
         setCameras(map);
     }, [cameraList])
-
-    const [cameras, setCameras] = useState<Map<number, Camera>>(new Map)
-    const [fibers, setFibers] = useState<Map<number, Fiber>>(new Map)
-
-    const { addPoint, addLine, toCenter, setClickPosition } = useModel('useMap');
 
     function addCamera({ id, name, location }: Camera) {
         addPoint(location, id, name, CAMERA, 'red');

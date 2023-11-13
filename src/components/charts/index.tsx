@@ -34,7 +34,7 @@ const config = {
 }
 export default function () {
     useEffect(() => {
-        var myChart = echarts.init(document.getElementById('container_huan'));
+        let myChart = echarts.init(document.getElementById('container_huan'));
         // 绘制图表
         myChart.setOption({
             tooltip: {

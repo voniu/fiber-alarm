@@ -34,10 +34,10 @@ function FiberDetail({ fiber }: { fiber?: Fiber }) {
 }
 
 export default function () {
-    const { popupDisplay, hidenPopup } = useModel('useModel')
+    const { popupDisplay } = useModel('useModel')
     const { cameras, fibers } = useModel('useItems');
     const { map, currentItem, clickPosition } = useModel('useMap');
-    const [overlayer, setOverlayer] = useState(new Overlay({}))
+    const [overlayer] = useState(new Overlay({}))
 
     useEffect(() => {
         overlayer.setPosition(clickPosition)

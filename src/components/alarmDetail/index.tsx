@@ -48,7 +48,7 @@ export default function () {
                 <div style={{ fontSize: 14, marginTop: 4 }}>触发时间：{time}</div>
                 <div style={{ fontSize: 14, marginTop: 4 }}>图像数据：</div>
                 {alarm.snapshots.map(pic => {
-                    return <div id={'' + pic.id} style={{ margin: 4, display: 'flex', justifyContent: 'space-evenly', border: '1px solid rgba(12, 122, 200, 0.5)' }}>
+                    return <div key={'' + pic.id} style={{ margin: 4, display: 'flex', justifyContent: 'space-evenly', border: '1px solid rgba(12, 122, 200, 0.5)' }}>
                         <div style={{ display: 'inline-flex', flexDirection: 'column', justifyContent: 'center', verticalAlign: 'middle', fontSize: 12 }}>
                             <div style={{ color: 'gray' }}>点位：</div>
                             <div onClick={() => showCamera(pic.camera.id)} style={{ cursor: 'pointer', textDecoration: 'underline', color: '#10a4db' }}>{pic.camera.name}</div>

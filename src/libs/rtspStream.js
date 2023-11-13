@@ -76,7 +76,7 @@ export class RtspStream {
      * @param evt 数据
      */
     onMessage(evt) {
-        if (typeof (evt.data) == "string") {
+        if (typeof (evt.data) === "string") {
             let data = JSON.parse(evt.data);
             if (data.type === "SUBSCRIBE") this.channelMap.get(data.number).init(data.content);
             else if (data.type === "QUERY") console.log(`channel[${data.number}]: ${data.content}`);

@@ -1,4 +1,4 @@
-import { useModel, useRequest } from 'umi';
+import { useRequest } from 'umi';
 import { useEffect, useState } from "react"
 import services from '@/services';
 import ee from '@/libs/events';
