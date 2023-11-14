@@ -144,20 +144,15 @@
 
 .depart_number_cage {
     width: 45%;
-    float: left;
     height: 24px;
     padding-left: 4%;
     margin-top: 1%;
     margin-bottom: 8px;
 }
 
-.depart_number_cage li {
-    display: inline-block;
-    line-height: 24px
-}
 
 .depart_name {
-    font-size: 14px;
+    font-size: 12px;
     color: white;
     cursor: pointer;
 }
