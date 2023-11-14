@@ -11,7 +11,11 @@ export default function () {
     const { showPopup } = useModel('useModel')
     const { centerTo } = useModel('useItems')
 
-    if (!alarm) return <div style={{ padding: 56, textAlign: 'center', color: 'white' }}>暂无详情数据</div>;
+    if (!alarm) {
+        return <div style={{ height: '100%', display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
+            <div style={{ textAlign: 'center', color: 'white' }}>暂无详情数据</div>
+        </div>;
+    }
 
     const d = new Date(alarm.time)
     const time = `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()} ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`

@@ -45,14 +45,12 @@ export default function HomePage() {
             </div>
             <div className="dataAllBorder01 cage_cl" style={{ marginTop: '0.6%', height: '32.1%' }}>
               <div className="dataAllBorder01" id="map_title_innerbox1"
-                style={{ position: 'relative', overflow: 'auto' }}>
+                style={{ display: 'flex', flexDirection: 'column', position: 'relative', overflow: 'auto' }}>
                 <div className="map_title_box">
-                  <div className="map_title_innerbox">
-                    <div className="map_title" style={{ backgroundImage: `url(${secondTitlePng})` }}>
-                      防区数据</div>
-                  </div>
+                  <div className="map_title" style={{ backgroundImage: `url(${secondTitlePng})` }}>
+                    防区数据</div>
                 </div>
-                <div style={{ height: '89%' }}>
+                <div style={{ flex: '1' }}>
                   <FiberList />
                 </div>
               </div>

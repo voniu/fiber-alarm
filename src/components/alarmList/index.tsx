@@ -37,6 +37,9 @@ export default function () {
             </select>
         </div>
         <div style={{ flex: '1', overflowY: 'auto' }}>
+            {alarmList.length === 0 && <div style={{ height: '100%', display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
+                <div style={{ textAlign: 'center', color: 'white' }}>暂无列表数据</div>
+            </div>}
             {alarmList.map((i) => {
                 const d = new Date(i.time)
                 const time = `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()} ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`
