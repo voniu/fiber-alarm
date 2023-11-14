@@ -23,22 +23,26 @@ export default function () {
             <DigitalFlop config={config} style={{ height: '36px' }} />
             <Decoration2 style={{ height: '5px' }} />
             <div className="depart_number_box">
-                <ul className="depart_number_cage">
-                    <li className="depart_name">First Class Alarms:</li>
-                    <li className="depart_number">3,238</li>
-                </ul>
-                <ul className="depart_number_cage">
-                    <li className="depart_name">Second Class Alarms:</li>
-                    <li className="depart_number">1,630</li>
-                </ul>
-                <ul className="depart_number_cage" style={{ marginBottom: 0 }}>
-                    <li className="depart_name">Equipment Alarms:</li>
-                    <li className="depart_number">4,251</li>
-                </ul>
-                <ul className="depart_number_cage" style={{ marginBottom: 0 }}>
-                    <li className="depart_name">System Alarms:</li>
-                    <li className="depart_number">24</li>
-                </ul>
+                <div>
+                    <span className="depart_number_cage" style={{ display: 'inline-block' }}>
+                        <div className="depart_name" style={{ textAlign: 'center' }}>First Class Alarms:</div>
+                        <div className="depart_number" style={{ textAlign: 'center' }}>3,238</div>
+                    </span>
+                    <span className="depart_number_cage" style={{ display: 'inline-block' }}>
+                        <div className="depart_name" style={{ textAlign: 'center' }}>Second Class Alarms:</div>
+                        <div className="depart_number" style={{ textAlign: 'center' }}>1,630</div>
+                    </span>
+                </div>
+                <div>
+                    <span className="depart_number_cage" style={{ display: 'inline-block' }}>
+                        <div className="depart_name" style={{ textAlign: 'center' }}>Equipment Alarms:</div>
+                        <div className="depart_number" style={{ textAlign: 'center' }}>4,251</div>
+                    </span>
+                    <span className="depart_number_cage" style={{ display: 'inline-block' }}>
+                        <div className="depart_name" style={{ textAlign: 'center' }}>System Alarms:</div>
+                        <div className="depart_number" style={{ textAlign: 'center' }}>24</div>
+                    </span>
+                </div>
             </div>
         </div>
     </>
