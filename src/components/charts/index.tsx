@@ -8,19 +8,19 @@ import icon3 from '@/assets/pic_ico_03.png';
 const config = {
     data: [
         {
-            name: '综合指标',
+            name: 'Type A',
             value: 550
         },
         {
-            name: '指标A',
+            name: 'Type B',
             value: 1200
         },
         {
-            name: '指标',
+            name: 'Type C',
             value: 711
         },
         {
-            name: '指标C',
+            name: 'Type D',
             value: 874
         }
     ],
@@ -44,14 +44,14 @@ export default function () {
             legend: {
                 orient: 'vertical',
                 x: 'left',
-                data: ['非法入侵', '动物干扰', '天气影响', '地质灾害', '设备故障'],
+                data: ['Illegal Intrusion', 'Animal Disruption', 'Weather Affection', 'Geological Disaster', 'Equipment Fault'],
                 textStyle: {
                     color: "#e9ebee"
                 }
             },
             series: [
                 {
-                    name: '行业数据',
+                    name: 'Alarm Data',
                     type: 'pie',
                     center: ['80%', '50%'],
                     radius: ['50%', '80%'],
@@ -80,18 +80,18 @@ export default function () {
                         }
                     },
                     data: [
-                        { value: 335, name: '非法入侵' },
-                        { value: 310, name: '动物干扰' },
-                        { value: 234, name: '天气影响' },
-                        { value: 135, name: '地质灾害' },
-                        { value: 1548, name: '设备故障' }
+                        { value: 335, name: 'Illegal Intrusion' },
+                        { value: 310, name: 'Animal Disruption' },
+                        { value: 234, name: 'Weather Affection' },
+                        { value: 135, name: 'Geological Disaster' },
+                        { value: 1548, name: 'Equipment Fault' }
                     ]
                 }
             ]
         });
     }, [])
     return <>
-        <div className="analysis">报警分类占比：</div>
+        <div className="analysis">Alarm Analytics:</div>
         <div className="danger_contain_box">
             <div id="container_huan" style={{ width: '100%', height: '90%' }}></div>
         </div>

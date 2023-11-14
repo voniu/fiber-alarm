@@ -20,8 +20,8 @@ function CameraDetail({ camera }: { camera?: Camera }) {
     return <div>
         <div>{camera.name}</div>
         <div style={{ fontSize: 14 }}>ID: {camera.id}</div>
-        <div style={{ fontSize: 14 }}>坐标：{camera.location.toString()}</div>
-        <Button ghost onClick={() => showRTV(camera.id)}>查看视频</Button>
+        <div style={{ fontSize: 14 }}>Location: {camera.location.toString()}</div>
+        <Button ghost onClick={() => showRTV(camera.id)}>View Camera</Button>
     </div>
 }
 

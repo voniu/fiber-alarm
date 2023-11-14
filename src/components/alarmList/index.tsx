@@ -26,7 +26,7 @@ export default function () {
 
     return <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}>
         <div className="map_title" style={{ backgroundImage: `url(${secondTitlePng})` }}>
-            报警列表 :
+            Alarm List: 
             <select value={'' + fiberId || '0'} onChange={(event) => {
                 onFiberChange(event.target.value)
             }}>
@@ -38,7 +38,7 @@ export default function () {
         </div>
         <div style={{ flex: '1', overflowY: 'auto' }}>
             {alarmList.length === 0 && <div style={{ height: '100%', display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
-                <div style={{ textAlign: 'center', color: 'white' }}>暂无列表数据</div>
+                <div style={{ textAlign: 'center', color: 'white' }}>No Data</div>
             </div>}
             {alarmList.map((i) => {
                 const d = new Date(i.time)
@@ -50,17 +50,17 @@ export default function () {
                     </div>
                     <div style={{ display: "flex", justifyContent: 'space-between' }}>
                         <div style={{ height: 56, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'flex-end' }}>
-                            <div style={{ fontSize: 14, }}>触发：{i.fiber.name}</div>
-                            <div style={{ fontSize: 12, color: 'gray' }}>EVENT ID:{i.id}</div>
+                            <div style={{ fontSize: 14, }}>Triggered By: {i.fiber.name}</div>
+                            <div style={{ fontSize: 12, color: 'gray' }}>Event ID: {i.id}</div>
                         </div>
                         <div>
-                            {i.previewUrl ? <img style={{ height: 56 }} src={i.previewUrl} alt="" /> : <span>暂无图片</span>}
+                            {i.previewUrl ? <img style={{ height: 56 }} src={i.previewUrl} alt="" /> : <span>No Pictures</span>}
                         </div>
                     </div>
                 </div>
             })}
         </div>
-        <div style={{ color: '#b0a8a8', fontSize: 12, textAlign: 'center' }}><div >第 {page} 页</div><span style={{ cursor: page > 1 ? 'pointer' : 'not-allowed' }}>上一页</span>  |<span style={{ cursor: hasNextPage ? 'pointer' : 'not-allowed' }}>  下一页</span></div>
+        <div style={{ color: '#b0a8a8', fontSize: 12, textAlign: 'center' }}><div >Page {page}</div><span style={{ cursor: page > 1 ? 'pointer' : 'not-allowed' }}>Prev</span>  |<span style={{ cursor: hasNextPage ? 'pointer' : 'not-allowed' }}>  Next</span></div>
     </div>
 
 }

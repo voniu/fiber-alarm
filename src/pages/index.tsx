@@ -35,7 +35,7 @@ export default function HomePage() {
               <div className="dataAllBorder01" style={{ position: 'relative', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
                 <div className="map_title_box" style={{ height: 32 }}>
                   <div className="map_title_innerbox">
-                    <div className="map_title" style={{ backgroundImage: `url(${firstTitlePng})` }}>实时布防地图</div>
+                    <div className="map_title" style={{ backgroundImage: `url(${firstTitlePng})` }}>Real-Time Defense Area Map</div>
                   </div>
                 </div>
                 <div style={{ width: '100%', height: '100%' }}>
@@ -48,7 +48,7 @@ export default function HomePage() {
                 style={{ display: 'flex', flexDirection: 'column', position: 'relative', overflow: 'auto' }}>
                 <div className="map_title_box">
                   <div className="map_title" style={{ backgroundImage: `url(${secondTitlePng})` }}>
-                    防区数据</div>
+                    Defense Area Info</div>
                 </div>
                 <div style={{ flex: '1' }}>
                   <FiberList />

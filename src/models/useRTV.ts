@@ -22,7 +22,7 @@ function disconnect() {
 
 function subscribe(cameraId: number, videoDOMId: string) {
     if (!rtsp) {
-        alert("请先连接websocket");
+        alert("websocket not connected");
         return;
     }
     rtsp.subscribe(cameraId, videoDOMId);
@@ -31,7 +31,7 @@ function subscribe(cameraId: number, videoDOMId: string) {
 
 function unsubscribe(cameraId: number) {
     if (!rtsp) {
-        alert("请先连接websocket");
+        alert("websocket not connected");
         return;
     }
     rtsp.unsubscribe(cameraId);
