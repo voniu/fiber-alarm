@@ -28,8 +28,8 @@ export default function MapModel() {
                 source: new XYZ({
                     // url: 'http://127.0.0.1:8080/{z}/{y}/{x}.jpg',
                     // url: 'http://192.168.31.202:8000/{z}/{y}/{x}.png',
-                    // url: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                    url: 'http://mt0.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',
+                    url: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                    // url: 'http://mt0.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',
                     projection: 'EPSG:3857'
                 }),
             })
