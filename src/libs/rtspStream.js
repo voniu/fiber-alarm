@@ -34,6 +34,12 @@ export class RtspStream {
             }
         };
         this.websocket.send(JSON.stringify(params))
+        const channelMedia = new ChannelMedia(channel, videoId);
+        channelMedia.onReset = (number, videoId) => {
+            // 不支持
+            // this.resubscribe(number, videoId);
+        }
+        this.channelMap.set(channel, channelMedia)
     }
 
     /**
@@ -97,20 +103,14 @@ export class RtspStream {
         if (typeof (evt.data) === "string") {
             let data = JSON.parse(evt.data);
             if (data.type === "SUBSCRIBE") {
-                const channelMedia = new ChannelMedia(data.content.channel, videoId);
-                channelMedia.onReset = (number, videoId) => {
-                    // 不支持
-                    // this.resubscribe(number, videoId);
-                }
-                this.channelMap.set(channel, channelMedia)
-                channelMedia.init(data.content);
+                this.channelMap.get(data.content.channel).init(data.content.codec);
             }
-            else if ("RESUBSCRIBE") {
+            else if (data.type === "RESUBSCRIBE") {
                 const frame = base64ToUint8Array(data.content.header);
                 this.channelMap.get(data.content.channel).reinit(frame);
             }
-            else if ("UNSUBSCRIBE") {
-                
+            else if (data.type === "UNSUBSCRIBE") {
+
             }
             else if (data.type === "QUERY") {
                 console.log(`channel[${data.content.channel}]: ${data.content}`);
@@ -249,7 +249,7 @@ export class ChannelMedia {
         this.canFeed = false;
         try {
             const data = this.queue.shift();
-            this.sourceBuffer.appendBuffer(data);
+            this.sourceBuffer.appendBuffer(data); //TODO: state not ready
             this.canFeed = true;
         } catch (e) {
             console.log(e);

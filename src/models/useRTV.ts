@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { RtspStream } from '@/libs/rtspStream';
 import { useModel } from "umi";
 
-// const wsUrl = `ws://${location.host}/ws`
-const wsUrl = "ws://10.147.17.1:8080/ws"
+const wsUrl = `ws://${location.host}/ws`
+// const wsUrl = "ws://192.168.0.5:8080/ws"
 let rtsp: RtspStream | null;;
 const subscribed = new Set<number>();
 
