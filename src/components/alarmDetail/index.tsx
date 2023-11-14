@@ -4,6 +4,7 @@ import secondTitlePng from '@/assets/second_title.png';
 import emptyPng from '@/assets/empty.png';
 import { Image } from "antd";
 import { CAMERA, FIBER } from "@/constant";
+import dayjs from 'dayjs';
 
 export default function () {
     const { currentAlarm: alarm } = useModel('useAlarms')
@@ -16,9 +17,6 @@ export default function () {
             <div style={{ textAlign: 'center', color: 'white' }}>No Data</div>
         </div>;
     }
-
-    const d = new Date(alarm.time)
-    const time = `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()} ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`
 
     function showFiber(id: number) {
         const feature = getFeaturesByTypeAndId(id, FIBER)
@@ -49,7 +47,7 @@ export default function () {
                     <div style={{ fontSize: 12, color: 'gray' }}>Event ID: {alarm.id}</div>
                 </div>
                 <div style={{ fontSize: 14, marginTop: 4 }}>Triggered By: <span onClick={() => showFiber(alarm.fiber.id)}>{alarm.fiber.name}</span></div>
-                <div style={{ fontSize: 14, marginTop: 4 }}>Time: {time}</div>
+                <div style={{ fontSize: 14, marginTop: 4 }}>Time: {dayjs(alarm.time).format('YYYY-MM-DD HH:mm:ss')}</div>
                 <div style={{ fontSize: 14, marginTop: 4 }}>Captured Images: </div>
                 {alarm.snapshots.map(pic => {
                     return <div key={'' + pic.id} style={{ margin: 4, display: 'flex', justifyContent: 'space-evenly', border: '1px solid rgba(12, 122, 200, 0.5)' }}>

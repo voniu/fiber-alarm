@@ -4,6 +4,7 @@ import secondTitlePng from '@/assets/second_title.png';
 import alarmDescriptionBg from '@/assets/pushmessage_class.png'
 import { useMemo } from "react";
 import { Alarm } from "@/models/useAlarms";
+import dayjs from "dayjs";
 
 export default function () {
     const { fiberList } = useModel('useItems');
@@ -41,12 +42,10 @@ export default function () {
                 <div style={{ textAlign: 'center', color: 'white' }}>No Data</div>
             </div>}
             {alarmList.map((i) => {
-                const d = new Date(i.time)
-                const time = `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()} ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`
                 return <div key={'' + i.id} onClick={() => onClick(i)} style={{ cursor: 'pointer', color: 'white', padding: '4px 6%', margin: 4, border: 'rgba(12,122,200,0.5) 1px solid' }} >
                     <div style={{ display: "flex", justifyContent: 'space-between' }}>
                         <span style={{ fontSize: 14, backgroundImage: `url(${alarmDescriptionBg})`, backgroundRepeat: 'no-repeat', backgroundSize: '100% 100%', padding: 2 }}>{i.description}</span>
-                        <span style={{ fontSize: 12 }}>{time}</span>
+                        <span style={{ fontSize: 12 }}>{dayjs(i.time).format('YYYY-MM-DD HH:mm:ss')}</span>
                     </div>
                     <div style={{ display: "flex", justifyContent: 'space-between' }}>
                         <div style={{ height: 56, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'flex-end' }}>

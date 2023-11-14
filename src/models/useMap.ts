@@ -127,7 +127,7 @@ export default function MapModel() {
             style: new Style({
                 stroke: new Stroke({
                     color: color,
-                    width: 5
+                    width: 4
                 }),
                 text: new Text({
                     textAlign: 'right',
