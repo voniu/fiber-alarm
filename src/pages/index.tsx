@@ -2,7 +2,6 @@
 import blueVideo from '../assets/blue.mov';
 import firstTitlePng from '../assets/first_title.png';
 import secondTitlePng from '../assets/second_title.png';
-import './bigData.css'
 import Map from '@/components/map'
 import Charts from '@/components/charts';
 import DigitalFlop from '@/components/digitalFlop';
@@ -11,10 +10,20 @@ import AlarmList from '@/components/alarmList';
 import AlarmDetail from '@/components/alarmDetail';
 import SingleRTV from '@/components/singleRTV';
 import GridRTV from '@/components/gridRTV';
+import { Decoration7 } from '@jiaminghi/data-view-react';
+import './bigData.css'
+import './index.less'
 
 export default function HomePage() {
   return (
     <div className="data_body">
+      <div style={{ height: '10vh', color: '#ccc', paddingTop: 12 }}>
+        <Decoration7 style={{ width: '300px', height: '20px' }}>
+          <div className='nav-item' onClick={() => {
+            window.open('http://localhost:8000/list/table-list', '_blank')
+          }}>alarm management</div>
+        </Decoration7>
+      </div>
       <div className="index_tabs">
         <div className="inner" style={{ height: '100%' }}>
           <div className="left_cage">
