@@ -30,13 +30,14 @@ export default function MapModel() {
                     // url: 'http://192.168.31.202:8000/{z}/{y}/{x}.png',
                     url: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
                     // url: 'http://mt0.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',
+                    // url: 'http://wprd04.is.autonavi.com/appmaptile?lang=zh_cn&size=1&style=7&x={x}&y={y}&z={z}',
                     projection: 'EPSG:3857'
                 }),
             })
         ],
         view: new View({
-            center: [48.206151, 40.027136],//地图中心点
-            zoom: 6,
+            center: [121.286308,14.071002],//地图中心点
+            zoom: 19,
             projection: 'EPSG:4326',
         }),
         controls: defaults().extend([
