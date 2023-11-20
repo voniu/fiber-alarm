@@ -6,7 +6,7 @@
     "build": "umi build",
     "postinstall": "umi setup",
     "setup": "umi setup",
-    "start": "npm run dev",
+    "start": "cross-env MOCK=true umi dev",
     "lint": "umi lint --fix"
   },
   "dependencies": {
@@ -26,6 +26,7 @@
     "@types/react-dom": "^18.2.14",
     "@umijs/lint": "^4.0.88",
     "@umijs/plugins": "^4.0.87",
+    "cross-env": "^7.0.3",
     "eslint": "^8.53.0",
     "stylelint": "^15.11.0",
     "typescript": "^5.2.2"

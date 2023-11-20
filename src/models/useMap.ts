@@ -36,8 +36,8 @@ export default function MapModel() {
             })
         ],
         view: new View({
-            center: [121.286308,14.071002],//地图中心点
-            zoom: 19,
+            center: [48.206151, 40.027136],//地图中心点
+            zoom: 6,
             projection: 'EPSG:4326',
         }),
         controls: defaults().extend([

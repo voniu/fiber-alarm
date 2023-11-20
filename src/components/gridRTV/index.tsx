@@ -10,7 +10,6 @@ export default function () {
     const { selectFeature, getFeaturesByTypeAndId } = useModel('useMap');
     const { showPopup } = useModel('useModel')
 
-
     useEffect(() => {
         if (gridPlay) {
             index2camId = [null, null, null, null]

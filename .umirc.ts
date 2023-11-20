@@ -1,5 +1,7 @@
 import { defineConfig } from "umi";
 
+const MOCK = process.env.MOCK === 'true' ? undefined : false;
+
 export default defineConfig({
   routes: [
     { path: "/", component: "index" },
@@ -10,6 +12,7 @@ export default defineConfig({
   request: {
     dataField: 'data'
   },
-  mock: false,
+  mock: MOCK,
   npmClient: 'pnpm',
+  define: { "process.env": { ...process.env, }, },
 });

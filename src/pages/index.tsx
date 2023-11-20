@@ -14,6 +14,8 @@ import { Decoration7 } from '@jiaminghi/data-view-react';
 import './bigData.css'
 import './index.less'
 
+const REAL_TIME_VIDEO_DISABLE = process.env.MOCK === 'true';
+
 export default function HomePage() {
   return (
     <div className="data_body">
@@ -31,7 +33,7 @@ export default function HomePage() {
               <video muted autoPlay loop src={blueVideo} className="dataAllBorder01 video_cage" />
             </div>
             <div className="dataAllBorder01 cage_cl" style={{ marginTop: '1.5%', height: '38%' }}>
-              <GridRTV />
+              {REAL_TIME_VIDEO_DISABLE && <GridRTV />}
             </div>
             <div className="dataAllBorder01 cage_cl" style={{ marginTop: '1.5%', height: '32%', position: 'relative' }}>
               <Charts />
