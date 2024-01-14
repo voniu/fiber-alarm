@@ -5,9 +5,9 @@ import { useState } from "react";
 export default function Guards() {
   const [currentGuards, setCurrentGuards] = useState<Partial<User>>({});
   const setGuards = async (guardId: number) => {
-    const guard = await onDuty(guardId);
-    localStorage.setItem("guard", JSON.stringify(guard));
-    setCurrentGuards(guard);
+    const { data } = await onDuty(guardId);
+    localStorage.setItem("guard", JSON.stringify(data));
+    setCurrentGuards(data);
   };
   const unsetGuards = async (username: string, password: string) => {
     await offDuty(username, password);

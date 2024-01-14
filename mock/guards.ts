@@ -37,7 +37,13 @@ export default {
     return res.json({
       success: true,
       message: "",
-      data,
+      data: {
+        key: "1",
+        id: 1,
+        name: "John Brown",
+        status: "on",
+        address: "New York No. 1 Lake Park",
+      },
     });
   },
 };

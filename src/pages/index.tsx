@@ -15,22 +15,14 @@ import "./bigData.css";
 import "./index.less";
 import AlarmModal from "@/components/alarmModal";
 import WithAuth from "@/wrappers/auth";
+import Header from "./home/header";
 const REAL_TIME_VIDEO_DISABLE = process.env.MOCK === "true";
 
 function HomePage() {
   return (
     <div className="data_body">
       <div style={{ height: "10vh", color: "#ccc", paddingTop: 12 }}>
-        <Decoration7 style={{ width: "300px", height: "20px" }}>
-          <div
-            className="nav-item"
-            onClick={() => {
-              window.open("http://localhost:8000/list/table-list", "_blank");
-            }}
-          >
-            alarm management
-          </div>
-        </Decoration7>
+        <Header />
       </div>
       <div className="index_tabs">
         <div className="inner" style={{ height: "100%" }}>
