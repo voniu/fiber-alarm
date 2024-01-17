@@ -27,14 +27,14 @@ export const AuthModal = (props: {
   };
   return (
     <Modal
-      style={{ top: 20 }}
+      style={{ top: 120 }}
       title={null}
       keyboard={false}
       maskClosable={false}
       open={isModalOpen}
       onCancel={onCancel}
       confirmLoading={confirmLoading}
-      width={500}
+      width={400}
       onOk={onOk}
     >
       <div className={styles["container"]}>

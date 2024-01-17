@@ -30,14 +30,14 @@ export default defineConfig({
           component: "@/pages/manage/alarm",
         },
         {
+          name: "defense zone",
+          path: "defenseZone",
+          component: "@/pages/manage/defenseZone",
+        },
+        {
           name: "admin",
           path: "admin",
           component: "@/pages/manage/admin",
-        },
-        {
-          name: "user manage",
-          path: "user",
-          component: "@/pages/manage/dtyo",
         },
       ],
     },

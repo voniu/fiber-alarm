@@ -16,9 +16,16 @@ import "./index.less";
 import AlarmModal from "@/components/alarmModal";
 import WithAuth from "@/wrappers/auth";
 import Header from "./home/header";
+import { Radio } from "antd";
+import { useState } from "react";
+import CameraList from "@/components/cameraList";
 const REAL_TIME_VIDEO_DISABLE = process.env.MOCK === "true";
 
 function HomePage() {
+  const [listType, setListType] = useState("fiber");
+  const handleChange = (e: any) => {
+    setListType(e.target.value);
+  };
   return (
     <div className="data_body">
       <div style={{ height: "10vh", color: "#ccc", paddingTop: 12 }}>
@@ -66,10 +73,32 @@ function HomePage() {
                   >
                     Defense Area Info
                   </div>
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: 3,
+                      right: 10,
+                    }}
+                  >
+                    <Radio.Group
+                      value={listType}
+                      onChange={handleChange}
+                      size="small"
+                    >
+                      <Radio.Button value="fiber">fiber</Radio.Button>
+                      <Radio.Button value="camera">camera</Radio.Button>
+                    </Radio.Group>
+                  </div>
                 </div>
-                <div style={{ flex: "1" }}>
-                  <FiberList />
-                </div>
+                {listType === "fiber" ? (
+                  <div style={{ flex: "1" }}>
+                    <FiberList />
+                  </div>
+                ) : (
+                  <div style={{ flex: "1" }}>
+                    <CameraList />
+                  </div>
+                )}
               </div>
             </div>
           </div>

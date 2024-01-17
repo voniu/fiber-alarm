@@ -25,7 +25,7 @@ export const getGuards = async () => {
 };
 
 // 进入值班
-export const onDuty = (guardID: number) => {
+export const onDuty = async (guardID: number) => {
   return request(`${prefix}/onduty`, {
     method: "POST",
     data: {

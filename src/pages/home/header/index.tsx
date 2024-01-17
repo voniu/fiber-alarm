@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { AuthModal } from "../authModal";
 import styles from "./index.less";
-import { Select } from "antd";
+import { Button, Select } from "antd";
 
 export default () => {
   const [isModalOpen, setModalOpen] = useState(false);
@@ -26,7 +26,7 @@ export default () => {
     <div className={styles["header"]}>
       <div className={styles["select"]}>
         <span className={styles["select-span"]} style={{ color: "#fff" }}>
-          值班人员:
+          Person:
         </span>
         <Select
           value={selectVal}
@@ -51,6 +51,7 @@ export default () => {
             },
           ]}
         />
+        <Button style={{ marginLeft: 20 }}>EXIT</Button>
       </div>
       <AuthModal
         isModalOpen={isModalOpen}

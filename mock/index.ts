@@ -1,9 +1,5 @@
 // ./mock/users.ts
-import login from "./login";
-import guards from "./guards";
 export default {
-  ...login,
-  ...guards,
   // 返回值可以是数组形式
   "GET /api/view/fiber": {
     success: true,

@@ -122,7 +122,7 @@ export const getAlarmList = (props: {
   pageSize?: number;
 }) => {
   if (props.fiberId === 0) delete props.fiberId;
-  return request(`${prefix}/alarm/alarm`, { params: props });
+  return request(`${prefix}/alarm`, { params: props });
 };
 
 export const getAlarmDetail = (id: number) => {
