@@ -35,9 +35,24 @@ export default defineConfig({
           component: "@/pages/manage/defenseZone",
         },
         {
-          name: "admin",
-          path: "admin",
-          component: "@/pages/manage/admin",
+          name: "device manage",
+          path: "device",
+          component: "@/pages/manage/device",
+        },
+        {
+          name: "monitor setting",
+          path: "monitor",
+          component: "@/pages/manage/monitor",
+        },
+        {
+          name: "fiber sensitivity",
+          path: "sensitivity",
+          component: "@/pages/manage/sensitivity",
+        },
+        {
+          name: "user manage",
+          path: "user",
+          component: "@/pages/manage/user",
         },
       ],
     },

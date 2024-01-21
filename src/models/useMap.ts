@@ -28,16 +28,16 @@ export default function MapModel() {
                 source: new XYZ({
                     // url: 'http://127.0.0.1:8080/{z}/{y}/{x}.jpg',
                     // url: 'http://192.168.31.202:8000/{z}/{y}/{x}.png',
-                    url: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                    // url: 'http://mt0.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',
+                    // url: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                    url: 'http://mt0.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',
                     // url: 'http://wprd04.is.autonavi.com/appmaptile?lang=zh_cn&size=1&style=7&x={x}&y={y}&z={z}',
                     projection: 'EPSG:3857'
                 }),
             })
         ],
         view: new View({
-            center: [48.206151, 40.027136],//地图中心点
-            zoom: 6,
+            center: [40.60328820848655, 49.67083191777059],//地图中心点
+            zoom: 14,
             projection: 'EPSG:4326',
         }),
         controls: defaults().extend([

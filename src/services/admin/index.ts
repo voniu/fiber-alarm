@@ -133,7 +133,8 @@ export const delAlarmDetail = (id: number) => {
   return request(`${prefix}/alarm/${id}`, { method: "DELETE" });
 };
 
-// 用户信息
+// 用户信息(不包括保安)
+// type 0 = 超级管理员 1 = 管理员 2 = 主管
 export const getUser = (type: number, nameKw: string) => {
   return request(`${prefix}/user`, {
     params: {

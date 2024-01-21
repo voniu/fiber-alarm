@@ -19,6 +19,11 @@ export interface Fiber {
 }
 
 export default function ItemsModel() {
+    const [cameras, setCameras] = useState<Map<number, Camera>>(new Map)
+    const [fibers, setFibers] = useState<Map<number, Fiber>>(new Map)
+    const [fiberList, setFiberList] = useState<Fiber[]>([])
+    const [cameraList, setCameraList] = useState<Camera[]>([])
+
     useRequest(async () => {
         return await services.getFiberList();
     }, {
@@ -34,10 +39,6 @@ export default function ItemsModel() {
         }
     });
 
-    const [cameras, setCameras] = useState<Map<number, Camera>>(new Map)
-    const [fibers, setFibers] = useState<Map<number, Fiber>>(new Map)
-    const [fiberList, setFiberList] = useState<Fiber[]>([])
-    const [cameraList, setCameraList] = useState<Camera[]>([])
 
     const { addPoint, addLine, toCenter, setClickPosition } = useModel('useMap');
 

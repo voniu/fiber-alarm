@@ -1,10 +1,10 @@
 import FiberList from "@/components/fiberList";
 import WithAuth from "@/wrappers/auth";
 import { useEffect, useState } from "react";
-import { useModel } from "umi";
 import styles from "./index.less";
-import { Button, Radio } from "antd";
+import { Radio } from "antd";
 import CameraList from "@/components/cameraList";
+import { useModel } from "umi";
 const DefenseZone = () => {
   const { setTarget } = useModel("useMap");
   const [listType, setListType] = useState("fiber");
@@ -14,28 +14,33 @@ const DefenseZone = () => {
   useEffect(() => {
     setTarget("manage-zone-map");
     return () => {
+      const dom = document.getElementById("manage-zone-map");
       setTarget("");
+      if (dom) {
+        dom.innerHTML = "";
+      }
     };
-  });
+  }, []);
   return (
     <div className={styles["container"]}>
-      <div className={styles["left"]}>
-        <div className={styles["operator"]}>
-          <Button onClick={() => {}}>Add Fiber</Button>
-          <Button onClick={() => {}}>Add Camera</Button>
+      <p style={{ fontSize: 20, fontWeight: "bold", height: 20 }}>
+        DefenseZone
+      </p>
+      <div style={{ display: "flex" }}>
+        <div className={styles["left"]}>
+          <div style={{}}>
+            <Radio.Group value={listType} onChange={handleChange} size="middle">
+              <Radio.Button value="fiber">fiber</Radio.Button>
+              <Radio.Button value="camera">camera</Radio.Button>
+            </Radio.Group>
+          </div>
+          <div className={styles["left-list"]}>
+            {listType === "fiber" && <FiberList />}
+            {listType === "camera" && <CameraList />}
+          </div>
         </div>
-        <div style={{}}>
-          <Radio.Group value={listType} onChange={handleChange} size="middle">
-            <Radio.Button value="fiber">fiber</Radio.Button>
-            <Radio.Button value="camera">camera</Radio.Button>
-          </Radio.Group>
-        </div>
-        <div className={styles["left-list"]}>
-          {listType === "fiber" && <FiberList />}
-          {listType === "camera" && <CameraList />}
-        </div>
+        <div style={{ height: 500, width: 700 }} id="manage-zone-map"></div>
       </div>
-      <div style={{ height: 500, width: 700 }} id="manage-zone-map"></div>
     </div>
   );
 };

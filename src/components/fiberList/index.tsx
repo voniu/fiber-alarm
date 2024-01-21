@@ -10,7 +10,7 @@ export default function () {
 
     const config = {
         header: ['Name', 'ID', 'Location'],
-        data: fiberList.map(i => [i.name, i.id, i.location[0][0]]),
+        data: fiberList.map(i => [i.name, i.id, i.location[0][1].map(i=>{return i.toFixed(6)})]),
         rowNum: 6,
         index: true,
         columnWidth: [50],

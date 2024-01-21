@@ -70,6 +70,9 @@ const Duty = () => {
 
   return (
     <div>
+      <p style={{ fontSize: 20, fontWeight: "bold", height: 20 }}>
+        Duty Manage
+      </p>
       <Table pagination={false} columns={columns} dataSource={data} bordered />
     </div>
   );

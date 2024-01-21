@@ -19,6 +19,10 @@ import Header from "./home/header";
 import { Radio } from "antd";
 import { useState } from "react";
 import CameraList from "@/components/cameraList";
+import video1 from "@/assets/video/1.png";
+import video2 from "@/assets/video/2.png";
+import video3 from "@/assets/video/3.png";
+import video4 from "@/assets/video/4.png";
 const REAL_TIME_VIDEO_DISABLE = process.env.MOCK === "true";
 
 function HomePage() {
@@ -44,6 +48,14 @@ function HomePage() {
               />
             </div> */}
             <div className="dataAllBorder01 cage_cl" style={{ height: "48%" }}>
+              <div style={{ display: "flex", marginTop: 2, marginLeft: 4 }}>
+                <img style={{ height: 140, width: 330 }} src={video1}></img>
+                <img style={{ height: 140, width: 330 }} src={video2}></img>
+              </div>
+              <div style={{ display: "flex", marginTop: 2, marginLeft: 4 }}>
+                <img style={{ height: 140, width: 330 }} src={video3}></img>
+                <img style={{ height: 140, width: 330 }} src={video4}></img>
+              </div>
               {!REAL_TIME_VIDEO_DISABLE && <GridRTV />}
             </div>
             {/* <div
