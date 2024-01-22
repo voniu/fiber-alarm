@@ -1,6 +1,7 @@
 import EditMap from "@/components/editMap";
 import { Form, Modal, Input, Button } from "antd";
 import styles from "./index.less";
+import { useEffect } from "react";
 interface IProps {
   isModalOpen: boolean;
   addType: string;
@@ -13,6 +14,15 @@ interface IProps {
 export default (props: IProps) => {
   const { isModalOpen, addType, onClose, draw, setDraw, layer, setLayer } =
     props;
+  const [form] = Form.useForm();
+  const setLocation = (location: any) => {
+    form.setFieldValue("location", location);
+  };
+  useEffect(() => {
+    console.log("form   sadas");
+
+    form.setFieldValue(location, "");
+  }, []);
   return (
     <Modal
       style={{ top: 20 }}
@@ -26,22 +36,25 @@ export default (props: IProps) => {
       onCancel={onClose}
       afterClose={onClose}
     >
-      <p style={{ fontWeight: "bold" }}>Add Camera</p>
+      {addType === "camera" && <p style={{ fontWeight: "bold" }}>Add Camera</p>}
+      {addType === "fiber" && <p style={{ fontWeight: "bold" }}>Add Fiber</p>}
       <div className={styles["container"]}>
         <div style={{ width: 400 }}>
           <Form
+            form={form}
+            labelAlign={"left"}
             labelCol={{ span: 6 }}
             wrapperCol={{ span: 14 }}
             style={{ maxWidth: 600 }}
           >
-            <Form.Item label="Camera Id">
+            <Form.Item label="Id">
               <Input placeholder="input" />
             </Form.Item>
-            <Form.Item label="Camera Name">
+            <Form.Item label="Name">
               <Input placeholder="input" />
             </Form.Item>
-            <Form.Item label="Location">
-              <Input placeholder="auto select" />
+            <Form.Item label="Location" name={"location"}>
+              <Input.TextArea autoSize disabled placeholder="auto select" />
             </Form.Item>
             <Form.Item label="Other Info">
               <Input placeholder="" />
@@ -53,6 +66,7 @@ export default (props: IProps) => {
         </div>
         <div>
           <EditMap
+            setLocation={(l: any) => setLocation(l)}
             type={addType === "fiber" ? "LineString" : "Point"}
             draw={draw}
             setDraw={setDraw}
