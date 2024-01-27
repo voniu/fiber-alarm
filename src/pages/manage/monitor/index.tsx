@@ -1,4 +1,4 @@
-import WithAuth from "@/wrappers/auth";
+import WithAuth from "@/wrappers/authAdmin";
 import styles from "./index.less";
 import video1 from "@/assets/video/1.png";
 import video2 from "@/assets/video/2.png";

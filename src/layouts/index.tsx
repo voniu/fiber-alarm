@@ -1,26 +1,69 @@
 import { ProLayout } from "@ant-design/pro-layout";
-import { NavLink, Outlet, useAppData, useLocation, useModel } from "umi";
+import {
+  NavLink,
+  Outlet,
+  useAppData,
+  useLocation,
+  useModel,
+  history,
+} from "umi";
 import MenuHeader from "./HeaderTitle";
-import { Dropdown } from "antd";
+import { Badge, Dropdown, Popover } from "antd";
 import { LogoutOutlined } from "@ant-design/icons";
+import trumpetOn from "@/assets/trumpet/trumpet-on.png";
+import trumpetOff from "@/assets/trumpet/trumpet-off.png";
+import styles from "./index.less";
 export default function Layout() {
   const { clientRoutes } = useAppData();
   const location = useLocation();
   console.log(clientRoutes, location);
-  const { monitor } = useModel("useUserInfo");
-
+  const { admin } = useModel("useAdminInfo");
+  const { alarmList } = useModel("useAlarms");
   return (
     <ProLayout
       layout="mix"
-      route={clientRoutes[5]}
+      route={clientRoutes[clientRoutes.length - 1]}
       location={location}
       token={{
         sider: {},
       }}
+      actionsRender={(props) => {
+        if (props.isMobile) return [];
+        if (typeof window === "undefined") return [];
+        return [
+          <Popover
+            key={"d"}
+            placement="left"
+            content={`There are ${alarmList.length} pending alarms`}
+          >
+            <Badge
+              count={alarmList.length}
+              offset={[-5, 10]}
+              size="small"
+              key={"trumpet"}
+            >
+              <div
+                onClick={() => {
+                  history.push("/manage/currentAlarm");
+                }}
+                className={styles["trumpet"]}
+              >
+                {alarmList.length > 0 && <img src={trumpetOn} />}
+                {alarmList.length <= 0 && <img src={trumpetOff} />}
+              </div>
+              {/* <div
+              style={{ position: "absolute", left: 0, top: "100%", width: 100 }}
+            >
+              <span>There are five pending alarms</span>
+            </div> */}
+            </Badge>
+          </Popover>,
+        ];
+      }}
       avatarProps={{
         src: "https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg",
         size: "small",
-        title: monitor!.name,
+        title: admin!.name,
         render: (props, dom) => {
           return (
             <Dropdown

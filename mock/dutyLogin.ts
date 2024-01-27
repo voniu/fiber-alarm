@@ -1,5 +1,5 @@
 export default {
-  "POST /api/admin/login": (req, res) => {
+  "POST /api/guard/login": (req, res) => {
     console.log(req.body);
 
     return res.json({
@@ -11,7 +11,7 @@ export default {
       },
     });
   },
-  "GET /api/admin/loginState": (req, res) => {
+  "GET /api/guard/loginState": (req, res) => {
     console.log(req.body);
 
     return res.json({
@@ -26,6 +26,26 @@ export default {
           type: 0,
         },
         isOnDuty: true, // 当前登录态是否处于值班状态
+        guard: {
+          // 当前值班的保安
+          id: 1,
+          name: "Guard 1",
+        },
+      },
+    });
+  },
+  "GET /api/guard/onduty": (req, res) => {
+    console.log(req.body);
+    return res.json({
+      success: true,
+      message: "",
+      data: {
+        isAnyoneOnDuty: false, // 是否有主管处于值班状态，true 才有下面
+        isSelfOnDuty: false, // 当前登录的主管是否处于值班状态
+        manager: {
+          id: 1,
+          name: "Manager 1",
+        },
         guard: {
           // 当前值班的保安
           id: 1,

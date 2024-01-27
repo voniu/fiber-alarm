@@ -1,5 +1,5 @@
 import FiberList from "@/components/fiberList";
-import WithAuth from "@/wrappers/auth";
+import WithAuth from "@/wrappers/authAdmin";
 import { useEffect, useState } from "react";
 import styles from "./index.less";
 import { Radio } from "antd";

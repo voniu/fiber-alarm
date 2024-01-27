@@ -1,5 +1,5 @@
 import { getAlarmList } from "@/services/admin";
-import WithAuth from "@/wrappers/auth";
+import WithAuth from "@/wrappers/authAdmin";
 import { DatePicker, Select, Table, Tag } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useEffect, useState } from "react";

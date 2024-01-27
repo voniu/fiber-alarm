@@ -1,4 +1,4 @@
-import { request } from "@@/plugin-request";
+import { request } from "umi";
 const prefix = "/api/guard";
 
 function locationConverter<T>(item: any): T {

@@ -1,5 +1,6 @@
+import { request } from "umi";
 import { CameraDetil, FiberDetil, User } from "@/type";
-import { request } from "@@/plugin-request";
+// import { request } from "@@/plugin-request";
 const prefix = "/api/admin";
 
 function locationConverter<T>(item: any): T {
@@ -7,14 +8,20 @@ function locationConverter<T>(item: any): T {
 }
 
 // admin后台 登陆, 登出
-export const adminLogin = (username: string, password: string) => {
-  return request(`${prefix}/login`, {
+export const adminLogin = async (username: string, password: string) => {
+  const { data } = await request(`${prefix}/login`, {
     method: "POST",
     data: {
       username,
       password,
     },
   });
+  return data;
+};
+
+export const adminLoginState = async () => {
+  const { data } = await request(`${prefix}/loginState`);
+  return data;
 };
 
 export const adminLogout = () => {

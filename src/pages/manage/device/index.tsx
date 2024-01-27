@@ -1,4 +1,4 @@
-import WithAuth from "@/wrappers/auth";
+import WithAuth from "@/wrappers/authAdmin";
 import { useEffect, useState } from "react";
 import styles from "./index.less";
 import { Button, Input, Radio } from "antd";

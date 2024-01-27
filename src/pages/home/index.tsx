@@ -12,7 +12,7 @@ import { Decoration7 } from "@jiaminghi/data-view-react";
 import "./bigData.css";
 import "./index.less";
 import AlarmModal from "@/components/alarmModal";
-import WithAuth from "@/wrappers/auth";
+import WithAuth from "@/wrappers/authDuty";
 import Header from "./header";
 import { Radio } from "antd";
 import { useState } from "react";

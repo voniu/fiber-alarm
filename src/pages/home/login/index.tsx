@@ -4,7 +4,7 @@ import { history, useModel } from "umi";
 import earth from "@/assets/dutyLogin/earth.png";
 import userpng from "@/assets/dutyLogin/user.png";
 import passwordpng from "@/assets/dutyLogin/password.png";
-import WithAuth from "@/wrappers/auth";
+import WithAuth from "@/wrappers/authDuty";
 const Login = () => {
   const { login } = useModel("useUserInfo");
   const [loading, setLoading] = useState(false);

@@ -1,4 +1,4 @@
-import WithAuth from "@/wrappers/auth";
+import WithAuth from "@/wrappers/authAdmin";
 import styles from "./index.less";
 const FiberSensitivity = () => {
   return (

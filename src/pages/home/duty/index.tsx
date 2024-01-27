@@ -1,5 +1,5 @@
 import { getDuty, getGuards } from "@/services/monitor";
-import WithAuth from "@/wrappers/auth";
+import WithAuth from "@/wrappers/authDuty";
 import { Table, Popconfirm, ConfigProvider } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useEffect, useState } from "react";
