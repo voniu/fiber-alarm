@@ -10,8 +10,9 @@ import {
 import MenuHeader from "./HeaderTitle";
 import { Badge, Dropdown, Popover } from "antd";
 import { LogoutOutlined } from "@ant-design/icons";
-import trumpetOn from "@/assets/trumpet/trumpet-on.png";
-import trumpetOff from "@/assets/trumpet/trumpet-off.png";
+import trumpetOn from "@/assets/trumpet/trumpet_on.png";
+import trumpetOff from "@/assets/trumpet/trumpet_off.png";
+import Icons from "./menuIcon";
 import styles from "./index.less";
 export default function Layout() {
   const { clientRoutes } = useAppData();
@@ -19,14 +20,37 @@ export default function Layout() {
   console.log(clientRoutes, location);
   const { admin } = useModel("useAdminInfo");
   const { alarmList } = useModel("useAlarms");
+  const route = clientRoutes[clientRoutes.length - 1];
+  console.log(route);
+
   return (
     <ProLayout
       layout="mix"
       route={clientRoutes[clientRoutes.length - 1]}
       location={location}
       token={{
-        sider: {},
+        header: {
+          colorBgHeader: "#292f33",
+          colorHeaderTitle: "#fff",
+          colorTextMenu: "#dfdfdf",
+          colorTextMenuSecondary: "#dfdfdf",
+          colorTextMenuSelected: "#fff",
+          colorBgMenuItemSelected: "#22272b",
+          colorTextMenuActive: "rgba(255,255,255,0.85)",
+          colorTextRightActionsItem: "#dfdfdf",
+        },
+        colorTextAppListIconHover: "#fff",
+        colorTextAppListIcon: "#dfdfdf",
+        sider: {
+          colorMenuBackground: "#fff",
+          colorMenuItemDivider: "#dfdfdf",
+          colorBgMenuItemHover: "#f6f6f6",
+          colorTextMenu: "#595959",
+          colorTextMenuSelected: "#242424",
+          colorTextMenuActive: "#000",
+        },
       }}
+      siderWidth={220}
       actionsRender={(props) => {
         if (props.isMobile) return [];
         if (typeof window === "undefined") return [];
@@ -51,11 +75,6 @@ export default function Layout() {
                 {alarmList.length > 0 && <img src={trumpetOn} />}
                 {alarmList.length <= 0 && <img src={trumpetOff} />}
               </div>
-              {/* <div
-              style={{ position: "absolute", left: 0, top: "100%", width: 100 }}
-            >
-              <span>There are five pending alarms</span>
-            </div> */}
             </Badge>
           </Popover>,
         ];
@@ -84,7 +103,7 @@ export default function Layout() {
       }}
       headerTitleRender={MenuHeader}
       menuItemRender={(menuItemProps, defaultDom) => {
-        console.log("dasdsad");
+        console.log("dasdsad", menuItemProps.path);
 
         if (menuItemProps.isUrl || menuItemProps.children) {
           return defaultDom;
@@ -96,11 +115,21 @@ export default function Layout() {
               to={menuItemProps.path}
               target={menuItemProps.target}
             >
-              {defaultDom}
+              <div style={{ display: "flex", gap: 20, paddingLeft: 10 }}>
+                {/* @ts-ignore */}
+                {Icons[menuItemProps.path]}
+                {defaultDom}
+              </div>
             </NavLink>
           );
         }
-        return defaultDom;
+        return (
+          <div style={{ display: "flex", gap: 20, paddingLeft: 10 }}>
+            {/* @ts-ignore */}
+            {Icons[menuItemProps.path]}
+            {defaultDom}
+          </div>
+        );
       }}
     >
       <Outlet />
