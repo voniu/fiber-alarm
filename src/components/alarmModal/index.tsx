@@ -1,15 +1,59 @@
-import { ConfigProvider, Modal, Tabs, Input, Button } from "antd";
+import { ConfigProvider, Modal, Tabs, Input, Button, Row, Col } from "antd";
 import { useModel } from "umi";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import styles from "./index.less";
-
+import { getAlarmDetail } from "@/services/monitor";
+import { AlarmDetail } from "@/models/useAlarms";
+import dayjs from "dayjs";
+const DescriptionText = ({
+  label,
+  content,
+  Other,
+}: {
+  label: string;
+  content?: string;
+  Other?: () => JSX.Element;
+}) => {
+  return (
+    <div>
+      <Row
+        className={styles["info-row"]}
+        style={{ width: "100%", flexDirection: "row" }}
+      >
+        <Col span={6}>
+          <div className={styles["info-label"]}>{label}:</div>
+        </Col>
+        <Col span={12}>
+          {Other ? (
+            <Other />
+          ) : (
+            <div className={styles["info-content"]}>{content}</div>
+          )}
+        </Col>
+      </Row>
+    </div>
+  );
+};
 const TabContent = (props: { id: number }) => {
   const { setTarget } = useModel("useMap");
-  const onSubmit = (e: any) => {
-    console.log("Change:", e.target.value);
+  const { alarmList } = useModel("useAlarms");
+  const { monitor } = useModel("useUserInfo");
+  const { centerTo } = useModel("useItems");
+  const [alarmDetail, setDetail] = useState<AlarmDetail>();
+  const [ProcessInfo, setProcess] = useState("");
+  const { id } = props;
+  const onSubmit = () => {
+    // TODO: 触发提交处理事件
   };
   useEffect(() => {
     setTarget("alarm-map-container");
+
+    getAlarmDetail(id).then((res) => {
+      console.log(res);
+
+      setDetail(res.data);
+      centerTo(res.data.fiber.id, "fiber");
+    });
 
     return function () {
       const dom = document.getElementById("alarm-map-container");
@@ -18,18 +62,53 @@ const TabContent = (props: { id: number }) => {
         dom.innerHTML = "";
       }
     };
-  }, []);
+  }, [alarmList.length]);
   return (
     <div className={styles["tab-content"]}>
       <div className={styles["tab-list"]}>
-        <span>alarm info{props.id}</span>
-        <div className={styles["tab-info"]}></div>
+        <span style={{ fontSize: 16, fontWeight: "bold", color: "black" }}>
+          Alarm Info
+        </span>
+        <div className={styles["tab-info"]}>
+          <DescriptionText
+            label="Alarm Time"
+            content={dayjs(alarmDetail?.createTime).format(
+              "MMMM D, YYYY h:mm A"
+            )}
+          />
+          <DescriptionText
+            label="Fiber Name"
+            content={alarmDetail?.fiber.name}
+          />
+          <DescriptionText
+            label="Alarm Type"
+            content={alarmDetail?.description}
+          />
+          <DescriptionText
+            label="Camera Info"
+            Other={() => (
+              <div className={styles["camera-scroll"]}>
+                {alarmDetail?.snapshots.map((item) => {
+                  return (
+                    <div key={item.id}>
+                      <div>{item.camera.name}</div>
+                      <img style={{ width: 200 }} src={item.picUrl} />
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          />
+        </div>
+        <DescriptionText label="Manager" content={monitor?.name} />
         <div className={styles["tab-sub"]}>
           <Input.TextArea
             showCount
-            maxLength={100}
+            maxLength={200}
+            value={ProcessInfo}
+            onChange={(e) => setProcess(e.target.value)}
             placeholder="input info"
-            style={{ height: 120, resize: "none" }}
+            style={{ height: 100, resize: "none" }}
           />
           <Button style={{ marginTop: 20 }} onClick={onSubmit}>
             submit
@@ -46,8 +125,8 @@ const TabContent = (props: { id: number }) => {
   );
 };
 export default function () {
-  const { currentAlarm } = useModel("useAlarms");
-  const isModalOpen = !currentAlarm;
+  const { alarmList } = useModel("useAlarms");
+  const isModalOpen = !(alarmList.length === 0);
   return (
     <>
       <Modal
@@ -71,12 +150,12 @@ export default function () {
             destroyInactiveTabPane
             defaultActiveKey="1"
             centered
-            items={new Array(3).fill(null).map((_, i) => {
+            items={alarmList.map((item, i) => {
               const id = String(i + 1);
               return {
                 label: `alarm ${id}`,
                 key: id,
-                children: <TabContent id={i} />,
+                children: <TabContent id={item.id} />,
               };
             })}
           />

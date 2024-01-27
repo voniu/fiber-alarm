@@ -106,3 +106,7 @@ export const getCameraDetail = (id: number) => {
     return res;
   });
 };
+
+export const getAlarmDetail = (id: number) => {
+  return request(`${prefix}/alarm/${id}`);
+};
