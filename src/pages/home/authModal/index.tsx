@@ -1,29 +1,24 @@
 import { Input, Modal } from "antd";
 import Verify from "@/assets/verify.svg";
 import { useState } from "react";
-import { useModel } from "umi";
+import { useModel, history } from "umi";
 import styles from "./index.less";
-import { offDuty, onDuty } from "@/services/monitor";
+import { offDuty } from "@/services/monitor";
 export const AuthModal = (props: {
   isModalOpen: boolean;
   setModal: (val: boolean) => void;
   onCancel: () => void;
-  selectVal: string | null;
-  newVal: string | null;
-  setSelect: (val: string) => void;
 }) => {
-  const { isModalOpen, onCancel, setModal, setSelect, newVal } = props;
+  const { isModalOpen, onCancel, setModal } = props;
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [password, setPassword] = useState("");
-  const { currentUser } = useModel("useUserInfo");
+  const { monitor } = useModel("useUserInfo");
   const onOk = async () => {
-    setSelect(newVal as string);
     setConfirmLoading(true);
-    await offDuty(currentUser.name, password);
-    await onDuty(Number(newVal));
+    await offDuty(monitor!.name, password);
     setConfirmLoading(false);
-
     setModal(false);
+    history.push("/home/duty");
   };
   return (
     <Modal
@@ -42,7 +37,7 @@ export const AuthModal = (props: {
         <div style={{ width: 300 }}>
           <div className={styles["verify-form"]}>
             <span style={{ marginBottom: 20 }}>current manager:</span>
-            <span>{currentUser.name}</span>
+            <span>{monitor!.name}</span>
           </div>
           <div className={styles["verify-form"]}>
             <span

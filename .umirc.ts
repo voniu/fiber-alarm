@@ -4,10 +4,27 @@ const MOCK = process.env.MOCK === "true" ? undefined : false;
 
 export default defineConfig({
   routes: [
-    { path: "/login", component: "login", layout: false },
     {
       path: "/",
-      component: "index",
+      component: "@/pages/home/index",
+      layout: false,
+    },
+    {
+      path: "/home",
+      name: "home",
+      component: "@/pages/home/index",
+      layout: false,
+    },
+    {
+      path: "/home/login",
+      name: "Duty System Login",
+      component: "@/pages/home/login",
+      layout: false,
+    },
+    {
+      path: "/home/duty",
+      name: "Duty Select",
+      component: "@/pages/home/duty",
       layout: false,
     },
     {
@@ -16,47 +33,54 @@ export default defineConfig({
       flatMenu: true,
       routes: [
         {
-          redirect: "/manage/duty",
+          redirect: "/manage/currentAlarm",
           path: "/manage",
         },
         {
-          name: "duty manage",
-          path: "duty",
-          component: "@/pages/manage/duty",
+          name: "Current Alarm",
+          path: "currentAlarm",
+          component: "@/pages/manage/currentAlarm",
         },
         {
-          name: "alarm manage",
+          name: "History Alarm",
           path: "alarm",
           component: "@/pages/manage/alarm",
         },
         {
-          name: "defense zone",
+          name: "Defense Zone",
           path: "defenseZone",
           component: "@/pages/manage/defenseZone",
         },
         {
-          name: "device manage",
+          name: "Device Manage",
           path: "device",
           component: "@/pages/manage/device",
         },
         {
-          name: "monitor setting",
+          name: "Monitor Setting",
           path: "monitor",
           component: "@/pages/manage/monitor",
         },
         {
-          name: "fiber sensitivity",
+          name: "Fiber Sensitivity",
           path: "sensitivity",
           component: "@/pages/manage/sensitivity",
         },
         {
-          name: "user manage",
+          name: "User Manage",
           path: "user",
           component: "@/pages/manage/user",
         },
       ],
     },
-    { path: "/test", component: "test" },
+    {
+      name: "Duty Manage Login",
+      path: "/manage/login",
+      component: "@/pages/manage/login",
+      layout: false,
+    },
+    // { path: "/test", component: "test" },
+    { path: "/*", component: "@/pages/404", layout: false },
   ],
   plugins: ["@umijs/plugins/dist/model", "@umijs/plugins/dist/request"],
   model: {},

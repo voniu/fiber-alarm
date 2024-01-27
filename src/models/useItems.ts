@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { Coordinate } from 'ol/coordinate';
 import { useModel, useRequest } from 'umi';
 import { CAMERA, FIBER } from "@/constant";
-import services from "@/services";
+import { getFiber, getCamera } from "@/services/monitor";
 
 const colors = ['#8cc540', '#009f5d', '#019fa0', '#019fde', '#007cdc', '#887ddd', '#cd7bdd', '#ff5675', '#ff1244', '#ff8345', '#f8bd0b',]
 
@@ -25,14 +25,14 @@ export default function ItemsModel() {
     const [cameraList, setCameraList] = useState<Camera[]>([])
 
     useRequest(async () => {
-        return await services.getFiberList();
+        return await getFiber("");
     }, {
         onSuccess: (data) => {
             setFiberList(data);
         }
     });
     useRequest(async () => {
-        return await services.getCameraList().then();
+        return await getCamera("").then();
     }, {
         onSuccess: (data) => {
             setCameraList(data)

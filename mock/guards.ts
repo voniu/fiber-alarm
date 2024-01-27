@@ -22,7 +22,7 @@ const data = [
   },
 ];
 export default {
-  "GET /api/monitor/guards": (req, res) => {
+  "GET /api/guard/guards": (req, res) => {
     console.log(req.body);
 
     return res.json({
@@ -31,7 +31,7 @@ export default {
       data,
     });
   },
-  "POST /api/monitor/onduty": (req, res) => {
+  "POST /api/guard/onduty": (req, res) => {
     console.log(req.body);
 
     return res.json({

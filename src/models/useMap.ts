@@ -16,6 +16,8 @@ import Text from 'ol/style/Text';
 import Select from 'ol/interaction/Select';
 import { CAMERA, FIBER } from '@/constant';
 import { useModel } from 'umi';
+import { getFiberDetail } from '@/services/monitor';
+import { Camera } from './useItems';
 
 let instance: OlMap;
 const featuresByTypeAndId = new Map<string, Feature>();
@@ -51,6 +53,16 @@ export default function MapModel() {
 
     const { showPopup, hidenPopup } = useModel('useModel')
 
+    function getFeaturesByTypeAndId(id: number, type: string) {
+        return featuresByTypeAndId.get(`${type}-${id}`);
+    }
+    const highLightTrigger = (fiberId: number) => {
+      getFiberDetail(fiberId).then((res) => {
+        res.data.triggerCameras.forEach((camera: Camera) => {
+            singleClickSelect.getFeatures().push(getFeaturesByTypeAndId(camera.id, CAMERA)!)
+        });
+      });
+    };
     useEffect(() => {
         map.addInteraction(singleClickSelect);
         singleClickSelect.on('select', function (event) {
@@ -58,6 +70,9 @@ export default function MapModel() {
             if (event.selected.length > 0) {
                 const item = event.selected[0].getProperties()
                 setCurrentItem(item);
+                if(item.type === 'fiber'){
+                    highLightTrigger(item.id)
+                }
                 setClickPosition(map.getCoordinateFromPixel(event.mapBrowserEvent.pixel_ || [48.206151, 40.027136]))
                 if ([CAMERA, FIBER].includes(item.type)) {
                     showPopup();
@@ -158,9 +173,6 @@ export default function MapModel() {
         setCurrentItem(feature.getProperties());
     }
 
-    function getFeaturesByTypeAndId(id: number, type: string) {
-        return featuresByTypeAndId.get(`${type}-${id}`);
-    }
 
     return {
         map,
@@ -174,6 +186,7 @@ export default function MapModel() {
         setClickPosition,
         getFeaturesByTypeAndId,
         selectFeature,
-        clearSelected
+        clearSelected,
+        highLightTrigger
     };
 };

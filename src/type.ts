@@ -1,6 +1,9 @@
+import { Camera } from "./models/useItems";
+
 export interface FiberDetil {
   name: string;
   location: string;
+  triggerCameras: Camera[];
 }
 export interface CameraDetil {
   name: string;

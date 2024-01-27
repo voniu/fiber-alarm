@@ -7,13 +7,12 @@ export default function Layout() {
   const { clientRoutes } = useAppData();
   const location = useLocation();
   console.log(clientRoutes, location);
-  const { currentUser } = useModel("useUserInfo");
-  console.log(currentUser);
+  const { monitor } = useModel("useUserInfo");
 
   return (
     <ProLayout
       layout="mix"
-      route={clientRoutes[2]}
+      route={clientRoutes[5]}
       location={location}
       token={{
         sider: {},
@@ -21,7 +20,7 @@ export default function Layout() {
       avatarProps={{
         src: "https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg",
         size: "small",
-        title: currentUser.name,
+        title: monitor!.name,
         render: (props, dom) => {
           return (
             <Dropdown

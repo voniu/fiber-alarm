@@ -5,6 +5,8 @@ import { Overlay } from 'ol';
 import { Camera, Fiber } from '@/models/useItems';
 import { CAMERA, FIBER } from '@/constant';
 import { Button } from 'antd';
+import { getFiberDetail } from '@/services/monitor';
+import { FiberDetil } from '@/type';
 
 function CameraDetail({ camera }: { camera?: Camera }) {
     const { startSinglePlay } = useModel('useRTV');
@@ -26,14 +28,25 @@ function CameraDetail({ camera }: { camera?: Camera }) {
 }
 
 function FiberDetail({ fiber }: { fiber?: Fiber }) {
+    console.log(fiber,"dsajdksaj");
+    const [fiberDetail,setDetail] = useState<FiberDetil>()
+    useEffect(()=>{
+        getFiberDetail(fiber!.id).then((res)=>{
+            setDetail(res.data)
+        })
+    },[])
     if (!fiber) return <div>
         <div>NOT FOUND</div>
     </div>
-    return <div>
+    return (
+      <div>
         <div>{fiber?.name}</div>
         <div style={{ fontSize: 14 }}>ID: {fiber.id}</div>
-        {/* <div>坐标：{fiber?.location.toString()}</div> */}
-    </div>
+        {fiberDetail?.triggerCameras.map((item) => {
+          return <div key={item.id}>{`camera: ${item.name}`}</div>;
+        })}
+      </div>
+    );
 }
 
 export default function () {
