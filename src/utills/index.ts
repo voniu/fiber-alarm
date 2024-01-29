@@ -1,3 +1,5 @@
+import { MonitorSetting } from "@/type";
+
 export const ArrayItemToFixed = (arr: number[], length: number) => {
   console.log(arr);
 
@@ -10,4 +12,17 @@ export const generateLines = (pointsArray: number[][]) => {
     lines.push(line);
   }
   return lines;
+};
+
+export const matrixData = (obj: any): MonitorSetting[] => {
+  const result = [];
+
+  for (const key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      const [row, column] = key.split("-").map(Number);
+      const cameraId = obj[key];
+      result.push({ row: row + 1, column: column + 1, cameraId });
+    }
+  }
+  return result;
 };

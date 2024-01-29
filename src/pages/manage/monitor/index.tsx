@@ -4,8 +4,42 @@ import video1 from "@/assets/video/1.png";
 import video2 from "@/assets/video/2.png";
 import video3 from "@/assets/video/3.png";
 import video4 from "@/assets/video/4.png";
-import { Button, Form, Select } from "antd";
-const MonitorSetting = () => {
+import { Button, Form, Select, message } from "antd";
+import { useEffect, useState } from "react";
+import { getCamera } from "@/services/admin";
+import { getMatrix, setMatrix } from "@/services/common";
+import { MonitorSetting } from "@/type";
+import { matrixData } from "@/utills";
+const Monitor = () => {
+  const [cameraOptions, setCameraOp] = useState();
+  const [form] = Form.useForm();
+  const fetchOptions = async () => {
+    const { data: allCamera } = await getCamera("");
+    console.log(allCamera);
+
+    const options = allCamera.map((item: any) => {
+      return {
+        value: item.id,
+        label: item.name,
+      };
+    });
+    const { data: matrix } = await getMatrix();
+    const camerasSetting: any = {};
+
+    matrix.forEach((item: MonitorSetting) => {
+      camerasSetting[`${item.row - 1}-${item.column - 1}`] = item.cameraId;
+    });
+    setCameraOp(options);
+    form.setFieldsValue(camerasSetting);
+  };
+  const onFinsh = (value: any) => {
+    console.log(value, matrixData(value));
+    setMatrix(matrixData(value));
+    message.success("Success");
+  };
+  useEffect(() => {
+    fetchOptions();
+  }, []);
   return (
     <div>
       <p style={{ fontSize: 20, fontWeight: "bold", height: 20 }}>
@@ -26,41 +60,49 @@ const MonitorSetting = () => {
           <p className={styles["title"]}>Set up monitoring matrix</p>
           <div className={styles["form-container"]}>
             <Form
+              form={form}
               labelAlign={"left"}
               labelCol={{ span: 8 }}
               wrapperCol={{ span: 12 }}
               layout="horizontal"
+              onFinish={onFinsh}
             >
-              <Form.Item label="Left Top">
-                <Select>
-                  <Select.Option value="camera1">camera1</Select.Option>
-                  <Select.Option value="camera2">camera2</Select.Option>
-                  <Select.Option value="camera3">camera3</Select.Option>
-                </Select>
+              <Form.Item label="Left Top" name={"0-0"}>
+                <Select
+                  size={"middle"}
+                  placeholder="Please select"
+                  style={{ width: "150px" }}
+                  options={cameraOptions}
+                />
               </Form.Item>
-              <Form.Item label="Right Top">
-                <Select>
-                  <Select.Option value="camera1">camera1</Select.Option>
-                  <Select.Option value="camera2">camera2</Select.Option>
-                  <Select.Option value="camera3">camera3</Select.Option>
-                </Select>
+              <Form.Item label="Right Top" name={"0-1"}>
+                <Select
+                  size={"middle"}
+                  placeholder="Please select"
+                  style={{ width: "150px" }}
+                  options={cameraOptions}
+                />
               </Form.Item>
-              <Form.Item label="Left Bottom">
-                <Select>
-                  <Select.Option value="camera1">camera1</Select.Option>
-                  <Select.Option value="camera2">camera2</Select.Option>
-                  <Select.Option value="camera3">camera3</Select.Option>
-                </Select>
+              <Form.Item label="Left Bottom" name={"1-0"}>
+                <Select
+                  size={"middle"}
+                  placeholder="Please select"
+                  style={{ width: "150px" }}
+                  options={cameraOptions}
+                />
               </Form.Item>
-              <Form.Item label="Right Bottom">
-                <Select>
-                  <Select.Option value="camera1">camera1</Select.Option>
-                  <Select.Option value="camera2">camera2</Select.Option>
-                  <Select.Option value="camera3">camera3</Select.Option>
-                </Select>
+              <Form.Item label="Right Bottom" name={"1-1"}>
+                <Select
+                  size={"middle"}
+                  placeholder="Please select"
+                  style={{ width: "150px" }}
+                  options={cameraOptions}
+                />
               </Form.Item>
               <Form.Item wrapperCol={{ offset: 8 }}>
-                <Button>Submit</Button>
+                <Button type="primary" htmlType="submit">
+                  Submit
+                </Button>
               </Form.Item>
             </Form>
           </div>
@@ -70,4 +112,4 @@ const MonitorSetting = () => {
   );
 };
 
-export default WithAuth(MonitorSetting);
+export default WithAuth(Monitor);

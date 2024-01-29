@@ -1,5 +1,10 @@
 import { Camera } from "./models/useItems";
 
+export interface MonitorSetting {
+  row: number;
+  column: number;
+  cameraId: number;
+}
 export interface FiberDetail {
   name: string;
   location: string;
