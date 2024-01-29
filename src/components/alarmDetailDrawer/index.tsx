@@ -1,10 +1,14 @@
 import { Button, Col, Drawer, Input, Row, Tag } from "antd";
 import styles from "./index.less";
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { getAlarmDetail } from "@/services/admin";
+import { AlarmDetail } from "@/models/useAlarms";
+import dayjs from "@/utills/day";
 interface IProps {
   open: boolean;
   onClose: () => void;
-  detail: any;
+  alarmID: number;
+  isHistory?: boolean;
 }
 const DescriptionText = ({
   label,
@@ -21,10 +25,10 @@ const DescriptionText = ({
         className={styles["info-row"]}
         style={{ width: "100%", flexDirection: "row" }}
       >
-        <Col span={4}>
+        <Col span={7}>
           <div className={styles["info-label"]}>{label}:</div>
         </Col>
-        <Col span={8}>
+        <Col span={14}>
           {Other ? (
             <Other />
           ) : (
@@ -37,15 +41,22 @@ const DescriptionText = ({
 };
 
 export default (props: IProps) => {
-  const { open, onClose, detail } = props;
-  const { name, fiber, description, status, guard, manager } = detail;
+  const { open, onClose, alarmID, isHistory } = props;
+  const [detail, setDetail] = useState<AlarmDetail>();
+
   const processInfo = useRef();
-  const statusMemo = useMemo(() => status, [status]);
-  useEffect(() => {}, []);
+  useEffect(() => {
+    console.log("dddddd");
+    if (alarmID === -1) return;
+    getAlarmDetail(alarmID).then((res) => {
+      setDetail(res.data);
+    });
+  }, [alarmID]);
 
   const renderStatus = (status: number) => {
     const statusMap = ["pending", "processing", "solved"];
     const colorMap = ["default", "processing", "success"];
+    if (status === -1) return <div>not found</div>;
     return <Tag color={colorMap[status]}>{statusMap[status]}</Tag>;
   };
   const onChange = (e: any) => {
@@ -55,7 +66,7 @@ export default (props: IProps) => {
     console.log(processInfo.current);
   };
   const renderInfo = (status: number, info: string) => {
-    return statusMemo === 1 ? (
+    return status === 1 && !isHistory ? (
       <Input.TextArea
         showCount
         maxLength={100}
@@ -65,36 +76,67 @@ export default (props: IProps) => {
         style={{ height: 120, resize: "none" }}
       />
     ) : (
-      <div className={styles["info-content"]}>{info}</div>
+      <div className={styles["info-content"]}>{info || "processing"}</div>
     );
   };
   return (
-    <Drawer title="Alarm Detail" onClose={onClose} open={open} width={700}>
+    <Drawer
+      destroyOnClose
+      title="Alarm Detail"
+      onClose={onClose}
+      open={open}
+      width={500}
+    >
       <div>
-        <DescriptionText label="Name" content={name} />
-        <DescriptionText label="FiberName" content={fiber.name} />
-        <DescriptionText label="description" content={description} />
-        <DescriptionText label="status" Other={() => renderStatus(status)} />
+        <DescriptionText label="ID" content={detail?.id.toString()} />
+        <DescriptionText label="FiberName" content={detail?.fiber.name} />
+        <DescriptionText label="description" content={detail?.description} />
+        <DescriptionText
+          label="Alarm Time"
+          content={dayjs(detail?.createTime).format("MMMM D, YYYY h:mm A")}
+        />
+        <DescriptionText
+          label="Guard Time"
+          content={dayjs(detail?.createTime).format("MMMM D, YYYY h:mm A")}
+        />
+        <DescriptionText
+          label="status"
+          Other={() =>
+            renderStatus(
+              typeof detail?.status === "undefined" ? -1 : detail?.status
+            )
+          }
+        />
 
         <DescriptionText
-          label="image"
+          label="Camera Info"
           Other={() => (
-            <div className={styles["info-content"]}>
-              <img
-                className={styles["info-image"]}
-                src="https://images.unsplash.com/photo-1682686580186-b55d2a91053c?q=80&w=775&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-              />
+            <div className={styles["camera-scroll"]}>
+              {detail?.snapshots.map((item) => {
+                return (
+                  <div key={item.id}>
+                    <div>{item.camera.name}</div>
+                    <img style={{ width: 200 }} src={item.picUrl} />
+                  </div>
+                );
+              })}
             </div>
           )}
         />
-        <DescriptionText label="guard" content={guard?.log} />
+        <DescriptionText label="guard" content={detail?.guard?.log} />
         <DescriptionText
           label="manage"
-          Other={() => renderInfo(status, manager?.log)}
+          Other={() =>
+            renderInfo(detail?.status || -1, detail?.manager?.log || "")
+          }
         />
-        <div className={styles["button-container"]}>
-          {status === 1 && <Button onClick={handleSubmit}>submit</Button>}
-        </div>
+        {!isHistory && (
+          <div className={styles["button-container"]}>
+            {detail?.status === 1 && (
+              <Button onClick={handleSubmit}>submit</Button>
+            )}
+          </div>
+        )}
       </div>
     </Drawer>
   );

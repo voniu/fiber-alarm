@@ -1,10 +1,12 @@
-import FiberList from "@/components/fiberList";
+import FiberList from "./list/fiberList";
 import WithAuth from "@/wrappers/authAdmin";
 import { useEffect, useState } from "react";
 import styles from "./index.less";
 import { Radio } from "antd";
-import CameraList from "@/components/cameraList";
+import CameraList from "./list/cameraList";
 import { useModel } from "umi";
+import Popup from "@/components/map/popup";
+
 const DefenseZone = () => {
   const { setTarget } = useModel("useMap");
   const [listType, setListType] = useState("fiber");
@@ -40,6 +42,7 @@ const DefenseZone = () => {
           </div>
         </div>
         <div style={{ height: 500, width: 700 }} id="manage-zone-map"></div>
+        <Popup />
       </div>
     </div>
   );

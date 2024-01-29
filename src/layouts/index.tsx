@@ -45,9 +45,13 @@ export default function Layout() {
           colorMenuBackground: "#fff",
           colorMenuItemDivider: "#dfdfdf",
           colorBgMenuItemHover: "#f6f6f6",
-          colorTextMenu: "#595959",
+          colorTextMenu: "#3b3b3b",
           colorTextMenuSelected: "#242424",
           colorTextMenuActive: "#000",
+        },
+        pageContainer: {
+          paddingBlockPageContainerContent: 20,
+          paddingInlinePageContainerContent: 20,
         },
       }}
       siderWidth={220}

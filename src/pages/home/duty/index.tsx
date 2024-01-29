@@ -37,6 +37,7 @@ const Duty = () => {
   };
   const handleResume = async () => {
     await resumeGuards();
+    history.push("/home")
   };
   useEffect(() => {
     getDuty().then((res) => {
@@ -129,6 +130,9 @@ const Duty = () => {
               The security guard you set is currently on duty, click to resume
               duty.
             </p>
+            <div style={{ color: "#699ef8", marginBottom: 10 }}>
+              <div>Current Guard: {dutyState.guard.name}</div>
+            </div>
             <div className={styles["resume-btn"]} onClick={handleResume}>
               <span>Resume</span>
             </div>

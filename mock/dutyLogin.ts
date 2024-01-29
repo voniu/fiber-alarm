@@ -40,8 +40,8 @@ export default {
       success: true,
       message: "",
       data: {
-        isAnyoneOnDuty: false, // 是否有主管处于值班状态，true 才有下面
-        isSelfOnDuty: false, // 当前登录的主管是否处于值班状态
+        isAnyoneOnDuty: true, // 是否有主管处于值班状态，true 才有下面
+        isSelfOnDuty: true, // 当前登录的主管是否处于值班状态
         manager: {
           id: 1,
           name: "Manager 1",

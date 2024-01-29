@@ -1,10 +1,32 @@
 import { Button, Popconfirm, Table } from "antd";
 import type { TableColumnsType } from "antd";
-import { useModel } from "umi";
 import type { Camera } from "@/models/useItems";
-import { ArrayItemToFixed } from "@/utills";
-export default function () {
-  const { cameraList } = useModel("useItems");
+import { delCamera } from "@/services/admin";
+import MapModal from "@/components/mapModal";
+import { useState } from "react";
+interface IProps {
+  flush: () => void;
+  data: Camera[];
+  edit: (device: number, type: string) => void;
+}
+export default function (props: IProps) {
+  const { edit, data, flush } = props;
+  const [mapModal, setMapModal] = useState({
+    id: -1,
+    type: "",
+    isModalOpen: false,
+  });
+  const deleteCamera = async (id: number) => {
+    await delCamera(id);
+    flush();
+  };
+  const onClose = () => {
+    setMapModal({
+      id: -1,
+      type: "",
+      isModalOpen: false,
+    });
+  };
   const columns: TableColumnsType<Camera> = [
     {
       title: "ID",
@@ -19,7 +41,18 @@ export default function () {
     {
       title: "Location",
       dataIndex: "location",
-      render: (_, record) => <a>{ArrayItemToFixed(record.location, 4)}</a>,
+      render: (_, record) => {
+        return (
+          <Button
+            onClick={() => {
+              console.log(record.id);
+              setMapModal({ id: record.id, type: "fiber", isModalOpen: true });
+            }}
+          >
+            查看地图
+          </Button>
+        );
+      },
     },
     {
       title: "Operator",
@@ -31,10 +64,10 @@ export default function () {
                 type="primary"
                 size="small"
                 onClick={() => {
-                  console.log(record);
+                  edit(record.id, "camera");
                 }}
               >
-                {"Deatil"}
+                {"Edit"}
               </Button>
             </a>
             <a style={{ color: "blue" }}>
@@ -44,7 +77,11 @@ export default function () {
                 okText="Yes"
                 cancelText="No"
               >
-                <Button danger size="small">
+                <Button
+                  danger
+                  size="small"
+                  onClick={() => deleteCamera(record.id)}
+                >
                   Delete
                 </Button>
               </Popconfirm>
@@ -58,10 +95,17 @@ export default function () {
   return (
     <>
       <Table
-        pagination={false}
+        rowKey={"id"}
+        pagination={{ pageSize: 7 }}
         columns={columns}
-        dataSource={cameraList}
+        dataSource={data}
         bordered
+      />
+      <MapModal
+        id={mapModal.id}
+        isModalOpen={mapModal.isModalOpen}
+        type={mapModal.type}
+        onClose={onClose}
       />
     </>
   );

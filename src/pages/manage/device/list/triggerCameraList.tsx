@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { getFiberDetail } from "@/services/admin";
 import { Button, List, Popconfirm } from "antd";
 import type { Camera } from "@/models/useItems";
-import { ArrayItemToFixed } from "@/utills";
 interface IProps {
   id: number;
 }
@@ -46,11 +45,11 @@ export default (props: IProps) => {
             <div>
               <span>{item.name}</span>
             </div>
-            <div>
+            {/* <div>
               <span>
                 {ArrayItemToFixed(JSON.parse(item.location.toString()), 4)}
               </span>
-            </div>
+            </div> */}
           </List.Item>
         )}
       />

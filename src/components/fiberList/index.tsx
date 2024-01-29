@@ -1,3 +1,4 @@
+//@ts-ignore
 import { ScrollBoard } from "@jiaminghi/data-view-react";
 import "./index.css";
 import { useModel } from "umi";

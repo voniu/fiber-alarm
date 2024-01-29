@@ -13,6 +13,17 @@ export interface AlarmDetail extends Alarm {
   };
   description: string;
   previewUrl: string;
+  status: number;
+  guard?: {
+    id: number;
+    name: string;
+    log: string;
+  };
+  manager?: {
+    id: number;
+    name: string;
+    log: string;
+  };
   snapshots: Array<{
     id: number;
     camera: {

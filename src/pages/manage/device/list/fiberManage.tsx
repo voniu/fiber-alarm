@@ -1,12 +1,41 @@
 import { Button, Popconfirm, Table } from "antd";
 import type { TableColumnsType } from "antd";
-import { useModel } from "umi";
 import type { Fiber } from "@/models/useItems";
-import { ArrayItemToFixed } from "@/utills";
 import TriggerCameraList from "./triggerCameraList";
+import { delFiber } from "@/services/admin";
+import MapModal from "@/components/mapModal";
+import { useState } from "react";
 
-export default function () {
-  const { fiberList } = useModel("useItems");
+interface IProps {
+  flush: () => void;
+  data: Fiber[];
+  edit: (device: number, type: string) => void;
+  setRelation: (
+    isModalOpen: boolean,
+    fiber: {
+      id: number;
+      name: string;
+    }
+  ) => void;
+}
+export default function (props: IProps) {
+  const { edit, setRelation, data, flush } = props;
+  const [mapModal, setMapModal] = useState({
+    id: -1,
+    type: "",
+    isModalOpen: false,
+  });
+  const deleteFiber = async (id: number) => {
+    await delFiber(id);
+    flush();
+  };
+  const onClose = () => {
+    setMapModal({
+      id: -1,
+      type: "",
+      isModalOpen: false,
+    });
+  };
   const columns: TableColumnsType<Fiber> = [
     {
       title: "ID",
@@ -21,13 +50,18 @@ export default function () {
     {
       title: "Location",
       dataIndex: "location",
-      render: (_, record) => (
-        <a>
-          {ArrayItemToFixed(record.location[0][0], 4) +
-            "," +
-            ArrayItemToFixed(record.location[record.location.length - 1][1], 4)}
-        </a>
-      ),
+      render: (_, record) => {
+        return (
+          <Button
+            onClick={() => {
+              console.log(record.id);
+              setMapModal({ id: record.id, type: "fiber", isModalOpen: true });
+            }}
+          >
+            查看地图
+          </Button>
+        );
+      },
     },
     {
       title: "Operator",
@@ -40,10 +74,21 @@ export default function () {
                 type="primary"
                 size="small"
                 onClick={() => {
-                  console.log(record);
+                  edit(record.id, "fiber");
                 }}
               >
-                {"Deatil"}
+                {"Edit"}
+              </Button>
+            </a>
+            <a style={{ color: "blue", marginRight: 20 }}>
+              <Button
+                type="primary"
+                size="small"
+                onClick={() => {
+                  setRelation(true, { id: record.id, name: record.name });
+                }}
+              >
+                {"Relation"}
               </Button>
             </a>
             <a style={{ color: "blue" }}>
@@ -53,7 +98,11 @@ export default function () {
                 okText="Yes"
                 cancelText="No"
               >
-                <Button danger size="small">
+                <Button
+                  danger
+                  size="small"
+                  onClick={() => deleteFiber(record.id)}
+                >
                   Delete
                 </Button>
               </Popconfirm>
@@ -68,14 +117,20 @@ export default function () {
     <>
       <Table
         rowKey={"id"}
-        pagination={false}
+        pagination={{ pageSize: 7 }}
         columns={columns}
-        dataSource={fiberList}
+        dataSource={data}
         bordered
         expandable={{
-          expandedRowRender: (record) => <TriggerCameraList id={record.id}/>,
+          expandedRowRender: (record) => <TriggerCameraList id={record.id} />,
           rowExpandable: (record) => record.name !== "Not Expandable",
         }}
+      />
+      <MapModal
+        id={mapModal.id}
+        isModalOpen={mapModal.isModalOpen}
+        type={mapModal.type}
+        onClose={onClose}
       />
     </>
   );

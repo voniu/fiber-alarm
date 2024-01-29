@@ -21,8 +21,11 @@ export default {
     success: true,
     "m's'g": "xxxxxx错误",
     data: {
-      id: 2213,
-      name: "门口光纤",
+      id: 234321,
+      name: "fiber test1",
+      ip: "192.168.31.200",
+      zone: "zone 1",
+      subzone: "subzone 1",
       location:
         "[[[48.206151, 40.027136], [49.206151, 41.027136]], [[49.206151, 41.027136], [42.206151, 43.027136]]]",
       triggerCameras: [
@@ -43,8 +46,8 @@ export default {
     success: true,
     "m's'g": "xxxxxx错误",
     data: {
-      id: 2213,
-      name: "门口光纤",
+      id: 22228,
+      name: "fiber test2",
       location:
         "[[[48.206151, 40.027136], [49.206151, 41.027136]], [[49.206151, 41.027136], [42.206151, 43.027136]]]",
       triggerCameras: [
@@ -83,16 +86,6 @@ export default {
       ],
     },
   },
-  "GET  /api/admin/fiber/22228": {
-    success: true,
-    msg: "xxxxxx错误",
-    data: {
-      id: 22228,
-      name: "窗户光纤",
-      location:
-        "[[[46.606151, 41.127136], [43.406151, 41.927136]], [[43.406151, 41.927136], [44.206151, 44.027136]]]",
-    },
-  },
   "GET /api/admin/camera": {
     success: true,
     msg: "xxxxxx错误",
@@ -117,14 +110,13 @@ export default {
       id: 2132,
       name: "camera1",
       location: "[48.206151, 40.027136]",
-      triggeredByFibers: [
-        {
-          id: 2213,
-          name: "门口光纤",
-          location:
-            "[[[48.206151, 40.027136], [49.206151, 41.027136]], [[49.206151, 41.027136], [42.206151, 43.027136]]]",
-        },
-      ],
+      ip: "192.168.21.1",
+      username: "jack",
+      password: "pppppp",
+      picurl: "https://a.com",
+      picport: "1111",
+      videourl: "https://b.com",
+      videoport: "2222",
     },
   },
 

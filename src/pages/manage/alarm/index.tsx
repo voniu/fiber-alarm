@@ -1,10 +1,11 @@
-import { getAlarmList } from "@/services/admin";
+import { getAlarmList, getFiber, getGuard, getUser } from "@/services/admin";
 import WithAuth from "@/wrappers/authAdmin";
-import { DatePicker, Select, Table, Tag } from "antd";
+import { DatePicker, Form, Select, Table, Tag, Row, Col, Button } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useEffect, useState } from "react";
 import styles from "./index.less";
 import AlarmDetailDrawer from "@/components/alarmDetailDrawer";
+import locale from "antd/es/date-picker/locale/en_GB";
 interface AlarmDetail {
   key?: string;
   id: number;
@@ -27,25 +28,24 @@ interface AlarmDetail {
   };
 }
 
-const Alarm = () => {
-  const initDetail = {
-    id: -1,
-    name: "",
-    fiber: { id: -1, name: "" },
-    status: 0,
-    description: "",
-    guard: { id: -1, name: "", log: "" },
-    manager: { id: -1, name: "", log: "" },
-  };
+const HistoryAlarm = () => {
   const [data, setData] = useState();
   const [open, setOpen] = useState(false);
-  const [detail, setDetail] = useState<AlarmDetail>(initDetail);
+  const [loading, setLoading] = useState(false);
+  const [dealId, setDealId] = useState<number>(-1);
+
   const statusMap = ["pending", "processing", "solved"];
   const colorMap = ["default", "processing", "success"];
+
   const onClose = () => setOpen(false);
+
+  const [form] = Form.useForm();
+  const [fiberOptions, setFiberOp] = useState();
+  const [guardOptions, setGuardOp] = useState();
+  const [managerOptions, setManagerOp] = useState();
   const columns: ColumnsType<AlarmDetail> = [
     {
-      title: "Name",
+      title: "ID",
       dataIndex: "id",
       render: (text) => <a>{text}</a>,
     },
@@ -62,6 +62,16 @@ const Alarm = () => {
       ),
     },
     {
+      title: "manager",
+      dataIndex: "manager",
+      render: (_, record) => <a>{record.manager?.name}</a>,
+    },
+    {
+      title: "guard",
+      dataIndex: "guard",
+      render: (_, record) => <a>{record.guard?.name}</a>,
+    },
+    {
       title: "Operator",
       render: (_, record) => {
         return (
@@ -69,7 +79,7 @@ const Alarm = () => {
             style={{ color: "blue" }}
             onClick={() => {
               setOpen(true);
-              setDetail(record);
+              setDealId(record.id);
             }}
           >
             {"Detail"}
@@ -78,69 +88,160 @@ const Alarm = () => {
       },
     },
   ];
+
+  const fetchFormValue = async () => {
+    const { data: allFiber } = await getFiber("");
+    const f = allFiber.map((item: any) => {
+      return {
+        value: item.id,
+        label: item.name,
+      };
+    });
+    const { data: allGuard } = await getGuard();
+    const g = allGuard.map((item: any) => {
+      return {
+        value: item.id,
+        label: item.name,
+      };
+    });
+    const { data: allManager } = await getUser(1, "");
+    const m = allManager.map((item: any) => {
+      return {
+        value: item.id,
+        label: item.name,
+      };
+    });
+    setFiberOp(f);
+    setGuardOp(g);
+    setManagerOp(m);
+    console.log(allFiber, allManager, allGuard);
+  };
   useEffect(() => {
+    fetchFormValue();
+    setLoading(true);
     getAlarmList({}).then((res) => {
       console.log(res);
+      setLoading(false);
       const { data } = res;
       setData(data);
     });
   }, []);
 
+  const handleSearch = (values: any) => {
+    // setLoading(true);
+    console.log(values);
+  };
   return (
     <div className={styles["container"]}>
       <p style={{ fontSize: 20, fontWeight: "bold", height: 20 }}>AlarmList</p>
-      <div style={{ display: "flex" }}>
-        <div style={{ margin: "10px 0" }}>
-          <span>status: </span>
-          <Select
-            defaultValue="all"
-            style={{ width: 150 }}
-            onChange={() => {}}
-            options={[
-              { value: "all", label: "all" },
-              { value: "pending", label: "pending" },
-              { value: "processing1", label: "processing|(my)" },
-              { value: "processing2", label: "processing|(other)" },
-              { value: "lucy", label: "solved" },
-            ]}
-          />
-        </div>
-        <div style={{ margin: "10px 20px" }}>
-          <span>timeSelectType: </span>
-          <Select
-            defaultValue="all"
-            style={{ width: 150 }}
-            onChange={() => {}}
-            options={[
-              { value: "all", label: "all" },
-              { value: "happen", label: "happen" },
-              { value: "guard process", label: "guard process" },
-              { value: "manager process", label: "manager process" },
-            ]}
-          />
-          <DatePicker.RangePicker
-            showTime
-            format="YYYY/MM/DD HH:mm:ss"
-            onChange={() => {}}
-          />
-        </div>
-        <div style={{ margin: "10px 0" }}>
-          <span>device:</span>
-          <Select
-            mode="tags"
-            size={"middle"}
-            placeholder="Please select"
-            defaultValue={["a10", "c12"]}
-            onChange={() => {}}
-            style={{ width: "200px" }}
-            options={[]}
-          />
-        </div>
-      </div>
+      <Form
+        form={form}
+        name="advanced_search"
+        onFinish={handleSearch}
+        labelAlign="right"
+      >
+        <Row gutter={24}>
+          <Col>
+            <Form.Item name={`fiber`} label={`fiber`}>
+              <Select
+                mode="tags"
+                size={"middle"}
+                placeholder="Please select"
+                defaultValue={[]}
+                style={{ width: "150px" }}
+                options={fiberOptions}
+              />
+            </Form.Item>
+          </Col>
+          <Col>
+            <Form.Item name={`status`} label={`status`}>
+              <Select
+                defaultValue="all"
+                style={{ width: 150 }}
+                options={[
+                  { value: "all", label: "all" },
+                  { value: "happen", label: "happen" },
+                  { value: "guard process", label: "guard process" },
+                  { value: "manager process", label: "manager process" },
+                ]}
+              />
+            </Form.Item>
+          </Col>
+          <Col>
+            <Form.Item name={`timeType`} label={`timeType`}>
+              <Select
+                defaultValue="all"
+                style={{ width: 100 }}
+                options={[
+                  { value: "all", label: "all" },
+                  { value: "CREATE", label: "CREATE" },
+                  { value: "GUARD", label: "GUARD" },
+                  { value: "MANAGER", label: "MANAGER" },
+                ]}
+              />
+            </Form.Item>
+          </Col>
+          <Col>
+            <Form.Item name={`time`} label={``}>
+              <DatePicker.RangePicker
+                locale={locale}
+                style={{ width: 350 }}
+                showTime
+                format="YYYY/MM/DD HH:mm:ss"
+              />
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row gutter={24}>
+          <Col>
+            <Form.Item name={`manager`} label={`manager`}>
+              <Select
+                mode="tags"
+                size={"middle"}
+                placeholder="Please select"
+                defaultValue={[]}
+                style={{ width: "150px" }}
+                options={managerOptions}
+              />
+            </Form.Item>
+          </Col>
+          <Col>
+            <Form.Item name={`guard`} label={`guard`}>
+              <Select
+                mode="tags"
+                size={"middle"}
+                placeholder="Please select"
+                defaultValue={[]}
+                style={{ width: "150px" }}
+                options={guardOptions}
+              />
+            </Form.Item>
+          </Col>
+          <Col>
+            <Form.Item>
+              <Button type="primary" loading={loading} htmlType="submit">
+                Search
+              </Button>
+            </Form.Item>
+          </Col>
+        </Row>
+      </Form>
 
-      <Table pagination={false} columns={columns} dataSource={data} bordered />
-      <AlarmDetailDrawer open={open} onClose={onClose} detail={detail} />
+      <Table
+        loading={loading}
+        rowKey={"id"}
+        pagination={{ pageSize: 6 }}
+        columns={columns}
+        dataSource={data}
+        bordered
+      />
+      <AlarmDetailDrawer
+        open={open}
+        onClose={onClose}
+        alarmID={dealId}
+        isHistory
+      />
     </div>
   );
 };
-export default WithAuth(Alarm);
+export default WithAuth(HistoryAlarm);

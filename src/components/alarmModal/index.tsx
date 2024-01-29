@@ -1,10 +1,21 @@
-import { ConfigProvider, Modal, Tabs, Input, Button, Row, Col } from "antd";
+import {
+  ConfigProvider,
+  Modal,
+  Tabs,
+  Input,
+  Button,
+  Row,
+  Col,
+  Popover,
+} from "antd";
 import { useModel } from "umi";
 import { useEffect, useState } from "react";
 import styles from "./index.less";
 import { getAlarmDetail } from "@/services/monitor";
-import { AlarmDetail } from "@/models/useAlarms";
-import dayjs from "dayjs";
+import { Alarm, AlarmDetail } from "@/models/useAlarms";
+import dayjs from "@/utills/day";
+import trumpetOn from "@/assets/trumpet/trumpet_on_b.png";
+import trumpetOff from "@/assets/trumpet/trumpet_off_b.png";
 const DescriptionText = ({
   label,
   content,
@@ -48,7 +59,7 @@ const TabContent = (props: { id: number }) => {
   useEffect(() => {
     setTarget("alarm-map-container");
 
-    getAlarmDetail(id).then((res) => {
+    getAlarmDetail(id).then((res: any) => {
       console.log(res);
 
       setDetail(res.data);
@@ -126,7 +137,9 @@ const TabContent = (props: { id: number }) => {
 };
 export default function () {
   const { alarmList } = useModel("useAlarms");
-  const isModalOpen = !(alarmList.length === 0);
+  const isModalOpen = (alarmList.length === 0);
+  const [isTrumpetOn, setTrumpetOn] = useState(true);
+
   return (
     <>
       <Modal
@@ -150,7 +163,7 @@ export default function () {
             destroyInactiveTabPane
             defaultActiveKey="1"
             centered
-            items={alarmList.map((item, i) => {
+            items={alarmList.map((item: Alarm, i: number) => {
               const id = String(i + 1);
               return {
                 label: `alarm ${id}`,
@@ -158,6 +171,32 @@ export default function () {
                 children: <TabContent id={item.id} />,
               };
             })}
+            tabBarExtraContent={{
+              left: isTrumpetOn ? (
+                <Popover
+                  placement="right"
+                  content={
+                    <Button
+                      onClick={() => {
+                        setTrumpetOn(false);
+                      }}
+                    >
+                      click to close
+                    </Button>
+                  }
+                >
+                  <div className={styles["trumpet"]}>
+                    <img src={trumpetOn} />
+                  </div>
+                </Popover>
+              ) : (
+                <Popover placement="right">
+                  <div className={styles["trumpet"]}>
+                    <img src={trumpetOff} />
+                  </div>
+                </Popover>
+              ),
+            }}
           />
         </ConfigProvider>
       </Modal>

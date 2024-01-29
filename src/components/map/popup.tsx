@@ -6,7 +6,7 @@ import { Camera, Fiber } from '@/models/useItems';
 import { CAMERA, FIBER } from '@/constant';
 import { Button } from 'antd';
 import { getFiberDetail } from '@/services/monitor';
-import { FiberDetil } from '@/type';
+import { FiberDetail } from '@/type';
 
 function CameraDetail({ camera }: { camera?: Camera }) {
     const { startSinglePlay } = useModel('useRTV');
@@ -27,9 +27,9 @@ function CameraDetail({ camera }: { camera?: Camera }) {
     </div>
 }
 
-function FiberDetail({ fiber }: { fiber?: Fiber }) {
+function FiberDetailList({ fiber }: { fiber?: Fiber }) {
     console.log(fiber,"dsajdksaj");
-    const [fiberDetail,setDetail] = useState<FiberDetil>()
+    const [fiberDetail,setDetail] = useState<FiberDetail>()
     useEffect(()=>{
         getFiberDetail(fiber!.id).then((res)=>{
             setDetail(res.data)
@@ -59,7 +59,9 @@ export default function () {
         overlayer.setPosition(clickPosition)
         overlayer.setElement(document.getElementById('map-popup')!)
         map.addOverlay(overlayer)
-        // TODO: remove it
+        return () => {
+            overlayer.setPosition(undefined)
+        }
     }, [clickPosition])
 
     return <div id='map-popup' style={{ maxWidth: 300, border: '1px solid rgba(12, 122, 200, 0.7)', overflow: 'hidden', backgroundColor: 'rgba(12, 122, 200, 0.6)', borderRadius: 4, color: '#fff', padding: 4, display: popupDisplay ? 'block' : 'none' }}>
@@ -68,6 +70,6 @@ export default function () {
         </div> */}
 
         {currentItem.type === CAMERA && <CameraDetail camera={cameras.get(currentItem.id)} />}
-        {currentItem.type === FIBER && <FiberDetail fiber={fibers.get(currentItem.id)} />}
+        {currentItem.type === FIBER && <FiberDetailList fiber={fibers.get(currentItem.id)} />}
     </div>
 }

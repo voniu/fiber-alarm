@@ -8,6 +8,7 @@ import { ArrayItemToFixed } from "@/utills";
 import { Feature } from "ol";
 import { Geometry } from "ol/geom";
 import { Button } from "antd";
+
 export default function ({
   setLocation,
   type,

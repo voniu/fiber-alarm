@@ -1,5 +1,5 @@
 import { request } from "umi";
-import { CameraDetil, FiberDetil, User } from "@/type";
+import { CameraDetail, FiberDetail, User } from "@/type";
 // import { request } from "@@/plugin-request";
 const prefix = "/api/admin";
 
@@ -49,9 +49,12 @@ export const getFiberDetail = (id: number) => {
     return res;
   });
 };
+export const addFiber = (fiber: FiberDetail) => {
+  return request(`${prefix}/fiber`, { method: "POST", data: fiber });
+};
 
 // 修改光纤信息(除了关联摄像头)
-export const setFiberDetail = (id: number, fiber: Partial<FiberDetil>) => {
+export const setFiberDetail = (id: number, fiber: Partial<FiberDetail>) => {
   return request(`${prefix}/fiber/${id}`, { method: "PUT", data: fiber });
 };
 
@@ -97,7 +100,7 @@ export const getCameraDetail = (id: number) => {
 };
 
 // 创建摄像头
-export const addCamera = (camera: CameraDetil) => {
+export const addCamera = (camera: CameraDetail) => {
   return request(`${prefix}/camera`, {
     method: "PUT",
     data: camera,
@@ -107,7 +110,7 @@ export const addCamera = (camera: CameraDetil) => {
 // 更新摄像头
 export const updateCamera = (
   cameraId: number,
-  camera: Partial<CameraDetil>
+  camera: Partial<CameraDetail>
 ) => {
   return request(`${prefix}/camera/${cameraId}`, {
     method: "POST",
@@ -138,6 +141,10 @@ export const getAlarmDetail = (id: number) => {
 
 export const delAlarmDetail = (id: number) => {
   return request(`${prefix}/alarm/${id}`, { method: "DELETE" });
+};
+
+export const getGuard = () => {
+  return request(`${prefix}/guard`)
 };
 
 // 用户信息(不包括保安)
