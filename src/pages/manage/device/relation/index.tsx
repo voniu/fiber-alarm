@@ -83,6 +83,7 @@ export default function (props: IProps) {
                 value={value}
                 onChange={handleChange}
                 style={{ width: "100%" }}
+                maxTagCount={1}
                 options={options}
               />
             </Col>

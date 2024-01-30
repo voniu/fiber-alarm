@@ -210,3 +210,7 @@ export const delTask = (id: number) => {
     method: "DELETE",
   });
 };
+
+export const getLog = () => {
+  return request(`${prefix}/log`);
+};

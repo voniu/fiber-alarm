@@ -67,6 +67,11 @@ export default defineConfig({
           component: "@/pages/manage/sensitivity",
         },
         {
+          name: "Log Information",
+          path: "log",
+          component: "@/pages/manage/log",
+        },
+        {
           name: "User Manage",
           path: "user",
           component: "@/pages/manage/user",

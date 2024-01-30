@@ -144,19 +144,18 @@ const HistoryAlarm = () => {
           <Col>
             <Form.Item name={`fiber`} label={`fiber`}>
               <Select
-                mode="tags"
+                mode="multiple"
                 size={"middle"}
                 placeholder="Please select"
-                defaultValue={[]}
-                style={{ width: "150px" }}
+                style={{ width: "230px" }}
                 options={fiberOptions}
+                maxTagCount={1}
               />
             </Form.Item>
           </Col>
           <Col>
             <Form.Item name={`status`} label={`status`}>
               <Select
-                defaultValue="all"
                 style={{ width: 150 }}
                 options={[
                   { value: "all", label: "all" },
@@ -170,7 +169,6 @@ const HistoryAlarm = () => {
           <Col>
             <Form.Item name={`timeType`} label={`timeType`}>
               <Select
-                defaultValue="all"
                 style={{ width: 100 }}
                 options={[
                   { value: "all", label: "all" },
@@ -196,11 +194,11 @@ const HistoryAlarm = () => {
           <Col>
             <Form.Item name={`manager`} label={`manager`}>
               <Select
-                mode="tags"
+                mode="multiple"
                 size={"middle"}
                 placeholder="Please select"
-                defaultValue={[]}
-                style={{ width: "150px" }}
+                style={{ width: "230px" }}
+                maxTagCount={1}
                 options={managerOptions}
               />
             </Form.Item>
@@ -208,11 +206,11 @@ const HistoryAlarm = () => {
           <Col>
             <Form.Item name={`guard`} label={`guard`}>
               <Select
-                mode="tags"
+                mode="multiple"
                 size={"middle"}
                 placeholder="Please select"
-                defaultValue={[]}
-                style={{ width: "150px" }}
+                style={{ width: "230px" }}
+                maxTagCount={1}
                 options={guardOptions}
               />
             </Form.Item>

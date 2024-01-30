@@ -34,3 +34,8 @@ export interface Guard {
   nickname: string;
   createTime: number;
 }
+
+export interface LogInfo {
+  id: number;
+  detail: string;
+}

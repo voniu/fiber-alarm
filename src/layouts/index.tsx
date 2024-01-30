@@ -9,11 +9,13 @@ import {
 } from "umi";
 import MenuHeader from "./HeaderTitle";
 import { Badge, Dropdown, Popover } from "antd";
-import { LogoutOutlined } from "@ant-design/icons";
+import { LogoutOutlined, KeyOutlined } from "@ant-design/icons";
 import trumpetOn from "@/assets/trumpet/trumpet_on.png";
 import trumpetOff from "@/assets/trumpet/trumpet_off.png";
 import Icons from "./menuIcon";
 import styles from "./index.less";
+import ChangeModal from "./changeModal";
+import { useState } from "react";
 export default function Layout() {
   const { clientRoutes } = useAppData();
   const location = useLocation();
@@ -21,8 +23,14 @@ export default function Layout() {
   const { admin } = useModel("useAdminInfo");
   const { alarmList } = useModel("useAlarms");
   const route = clientRoutes[clientRoutes.length - 1];
-  console.log(route);
 
+  const [open, setIsOpen] = useState(false);
+  console.log(route);
+  const handleClick = (e: any) => {
+    if (e.key === "change password") {
+      setIsOpen(true);
+    }
+  };
   return (
     <ProLayout
       layout="mix"
@@ -95,9 +103,15 @@ export default function Layout() {
                   {
                     key: "logout",
                     icon: <LogoutOutlined />,
-                    label: "退出登录",
+                    label: "Logout",
+                  },
+                  {
+                    key: "change password",
+                    icon: <KeyOutlined />,
+                    label: "Change Password",
                   },
                 ],
+                onClick: handleClick,
               }}
             >
               {dom}
@@ -137,6 +151,7 @@ export default function Layout() {
       }}
     >
       <Outlet />
+      <ChangeModal open={open} onCancel={() => setIsOpen(false)} />
     </ProLayout>
   );
 }

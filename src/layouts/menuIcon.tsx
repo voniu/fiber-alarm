@@ -6,6 +6,7 @@ import {
   SettingOutlined,
   ShakeOutlined,
   UserOutlined,
+  ContainerOutlined,
 } from "@ant-design/icons";
 
 export default {
@@ -16,4 +17,5 @@ export default {
   "/manage/monitor": <LaptopOutlined />,
   "/manage/sensitivity": <ShakeOutlined />,
   "/manage/user": <UserOutlined />,
+  "/manage/log": <ContainerOutlined />,
 };
