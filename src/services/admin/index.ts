@@ -1,5 +1,5 @@
 import { request } from "umi";
-import { CameraDetail, FiberDetail, User } from "@/type";
+import { CameraDetail, FiberDetail, Guard, User } from "@/type";
 // import { request } from "@@/plugin-request";
 const prefix = "/api/admin";
 
@@ -146,7 +146,23 @@ export const delAlarmDetail = (id: number) => {
 export const getGuard = () => {
   return request(`${prefix}/guard`);
 };
-
+export const updateGuard = (id: number, user: Guard) => {
+  return request(`${prefix}/guard/${id}`, {
+    method: "PUT",
+    data: user,
+  });
+};
+export const addGuard = (user: { name: string; nickname: string }) => {
+  return request(`${prefix}/guard`, {
+    method: "POST",
+    data: user,
+  });
+};
+export const delGuard = (id: number) => {
+  return request(`${prefix}/guard/${id}`, {
+    method: "DELETE",
+  });
+};
 // 用户信息(不包括保安)
 // type 0 = 超级管理员 1 = 管理员 2 = 主管
 export const getUser = (type: number, nameKw: string) => {
@@ -157,9 +173,9 @@ export const getUser = (type: number, nameKw: string) => {
     },
   });
 };
-export const addUser = (user: User) => {
+export const addUser = (user: { name: string; nickname: string }) => {
   return request(`${prefix}/user`, {
-    method: "PUT",
+    method: "POST",
     data: user,
   });
 };

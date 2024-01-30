@@ -14,8 +14,23 @@ export interface CameraDetail {
   name: string;
   location: string;
 }
-export interface User {
+export interface UserDetail {
+  id: number;
   name: string;
   type: number;
   password: string;
+}
+export interface User {
+  id: number;
+  name: string;
+  nickname: string;
+  type: number;
+  createTime: number;
+  password: string;
+}
+export interface Guard {
+  id: number;
+  name: string;
+  nickname: string;
+  createTime: number;
 }

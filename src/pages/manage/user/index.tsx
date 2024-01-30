@@ -1,69 +1,72 @@
-import { getUser } from "@/services/admin";
+import { getGuard, getUser } from "@/services/admin";
 import WithAuth from "@/wrappers/authAdmin";
 import { useEffect, useState } from "react";
 import styles from "./index.less";
-import { Button, Popconfirm, Table, TableColumnsType } from "antd";
-interface UserDetail {
-  id: number;
-  name: string;
-  type: number;
-}
+import { Button, Radio } from "antd";
+import { User } from "@/type";
+import UserList from "./list/userList";
+import GuardList from "./list/guardList";
+import AddModal from "./addModal";
+
 const UserManage = () => {
-  const identity = ["super admin", "admin", "manager"];
-  const [data, setData] = useState<UserDetail[]>();
+  const [data, setData] = useState<User[]>();
+  const [open, setIsOpen] = useState(false);
+  const [listType, setList] = useState("user");
+  const onCancel = () => {
+    setIsOpen(false);
+  };
+  const handleChange = (e: any) => {
+    setList(e.target.value);
+  };
+  const fetchUser = async () => {
+    const { data: superAdmin } = await getUser(0, "");
+    const { data: admin } = await getUser(1, "");
+    const { data: manager } = await getUser(2, "");
+    setData([...superAdmin, ...admin, ...manager]);
+  };
+  const fetchGuard = async () => {
+    const { data } = await getGuard();
+    setData(data);
+  };
   useEffect(() => {
-    getUser(0, "").then((res) => {
-      console.log(res.data);
-      setData(res.data);
-    });
-  }, []);
-  const columns: TableColumnsType<UserDetail> = [
-    {
-      title: "ID",
-      dataIndex: "id",
-      render: (text) => <a>{text}</a>,
-    },
-    {
-      title: "Name",
-      dataIndex: "name",
-      render: (text, record) => <a>{record.name}</a>,
-    },
-    {
-      title: "Identity",
-      dataIndex: "type",
-      render: (_, record) => <div>{identity[record.type]}</div>,
-    },
-    {
-      title: "Rest Password",
-      render: (_, record) => {
-        return (
-          <Popconfirm
-            title="reset the password"
-            description="Are you sure to reset the password?"
-            okText="Yes"
-            cancelText="No"
-          >
-            <Button danger size="small" onClick={() => console.log(record)}>
-              Reset
-            </Button>
-          </Popconfirm>
-        );
-      },
-    },
-  ];
+    console.log("dsadas");
+
+    if (listType === "user") {
+      fetchUser();
+    } else {
+      fetchGuard();
+    }
+  }, [listType]);
+
   return (
     <div>
       <p style={{ fontSize: 20, fontWeight: "bold", height: 20 }}>
         User Manage
       </p>
       <div className={styles["main"]}>
-        <Table
-          pagination={false}
-          columns={columns}
-          dataSource={data}
-          bordered
-        />
+        <div className={styles["header"]}>
+          <Radio.Group value={listType} onChange={handleChange} size="middle">
+            <Radio.Button value="user">user</Radio.Button>
+            <Radio.Button value="guard">guard</Radio.Button>
+          </Radio.Group>
+          <div>
+            <Button type="primary" onClick={() => setIsOpen(true)}>
+              Add
+            </Button>
+          </div>
+        </div>
+        <div>
+          {listType === "user" && (
+            <UserList flush={fetchUser} data={data || []} />
+          )}
+        </div>
+        <div>
+          {listType === "guard" && (
+            <GuardList flush={fetchGuard} data={data || []} />
+          )}
+        </div>
       </div>
+      <AddModal isModalOpen={open} onCancel={onCancel} />
     </div>
   );
 };
