@@ -144,7 +144,7 @@ export const delAlarmDetail = (id: number) => {
 };
 
 export const getGuard = () => {
-  return request(`${prefix}/guard`)
+  return request(`${prefix}/guard`);
 };
 
 // 用户信息(不包括保安)
@@ -171,6 +171,26 @@ export const updateUser = (id: number, user: User) => {
 };
 export const delUser = (id: number) => {
   return request(`${prefix}/user/${id}`, {
+    method: "DELETE",
+  });
+};
+
+export const getTask = () => {
+  return request(`${prefix}/task`);
+};
+
+export const addTask = (
+  time: { hour: number; minute: number },
+  fibers: number[],
+  level: number
+) => {
+  return request(`${prefix}/task/`, {
+    method: "POST",
+    data: { hour: time.hour, minute: time.minute, fiberId: fibers, level },
+  });
+};
+export const delTask = (id: number) => {
+  return request(`${prefix}/task/${id}`, {
     method: "DELETE",
   });
 };

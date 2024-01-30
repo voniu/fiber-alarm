@@ -1,14 +1,9 @@
 import firstTitlePng from "@/assets/first_title.png";
 import secondTitlePng from "@/assets//second_title.png";
 import Map from "@/components/map";
-import Charts from "@/components/charts";
-import DigitalFlop from "@/components/digitalFlop";
 import FiberList from "@/components/fiberList";
-import AlarmList from "@/components/alarmList";
-import AlarmDetail from "@/components/alarmDetail";
 import SingleRTV from "@/components/singleRTV";
 import GridRTV from "@/components/gridRTV";
-import { Decoration7 } from "@jiaminghi/data-view-react";
 import "./bigData.css";
 import "./index.less";
 import AlarmModal from "@/components/alarmModal";
