@@ -3,7 +3,6 @@ import secondTitlePng from "@/assets//second_title.png";
 import Map from "@/components/map";
 import FiberList from "@/components/fiberList";
 import SingleRTV from "@/components/singleRTV";
-import GridRTV from "@/components/gridRTV";
 import "./bigData.css";
 import "./index.less";
 import AlarmModal from "@/components/alarmModal";
@@ -12,11 +11,11 @@ import Header from "./header";
 import { Radio } from "antd";
 import { useState } from "react";
 import CameraList from "@/components/cameraList";
-import video1 from "@/assets/video/1.png";
-import video2 from "@/assets/video/2.png";
-import video3 from "@/assets/video/3.png";
-import video4 from "@/assets/video/4.png";
-const REAL_TIME_VIDEO_DISABLE = process.env.MOCK === "true";
+// import video1 from "@/assets/video/1.png";
+// import video2 from "@/assets/video/2.png";
+// import video3 from "@/assets/video/3.png";
+// import video4 from "@/assets/video/4.png";
+import RtspVideo from "../../components/map/videoModal/video"
 
 function HomePage() {
   const [listType, setListType] = useState("fiber");
@@ -41,22 +40,16 @@ function HomePage() {
               />
             </div> */}
             <div className="dataAllBorder01 cage_cl" style={{ height: "48%" }}>
-              <div style={{ display: "flex", marginTop: 2, marginLeft: 4 }}>
+              <RtspVideo id={1}/>
+              {/* <div style={{ display: "flex", marginTop: 2, marginLeft: 4 }}>
                 <img style={{ height: 140, width: 330 }} src={video1}></img>
                 <img style={{ height: 140, width: 330 }} src={video2}></img>
               </div>
               <div style={{ display: "flex", marginTop: 2, marginLeft: 4 }}>
                 <img style={{ height: 140, width: 330 }} src={video3}></img>
                 <img style={{ height: 140, width: 330 }} src={video4}></img>
-              </div>
-              {!REAL_TIME_VIDEO_DISABLE && <GridRTV />}
+              </div> */}
             </div>
-            {/* <div
-              className="dataAllBorder01 cage_cl"
-              style={{ marginTop: "1.5%", height: "32%", position: "relative" }}
-            >
-              <Charts />
-            </div> */}
             <div
               className="dataAllBorder01 cage_cl"
               style={{ marginTop: "0.6%", height: "50.1%" }}
@@ -138,29 +131,6 @@ function HomePage() {
               </div>
             </div>
           </div>
-
-          {/* <div className="right_cage">
-            <div className="dataAllBorder01 cage_cl" style={{ height: "30%" }}>
-              <div
-                className="dataAllBorder01"
-                style={{ display: "flex", flexDirection: "column" }}
-              >
-                <DigitalFlop />
-              </div>
-            </div>
-            <div
-              className="dataAllBorder01 cage_cl"
-              style={{ marginTop: "1.5%", height: "34%" }}
-            >
-              <AlarmList />
-            </div>
-            <div
-              className="dataAllBorder01 cage_cl"
-              style={{ marginTop: "1.5%", height: "30%" }}
-            >
-              <AlarmDetail />
-            </div>
-          </div> */}
         </div>
       </div>
       <SingleRTV />

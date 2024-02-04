@@ -1,5 +1,6 @@
 import { adminLogin, adminLoginState, adminLogout } from "@/services/admin";
 import { User } from "@/type";
+import { message } from "antd";
 import { useEffect, useState } from "react";
 // interface LoginState {
 //   isLogined: boolean;
@@ -21,8 +22,14 @@ export default function AdminInfo() {
   const [admin, setAdmin] = useState<User>();
 
   useEffect(() => {
-    adminLoginState().then((data) => {
-      const { isLogined, user } = data;
+    adminLoginState().then((res) => {
+      console.log("admin state", res);
+
+      if (!res.data) {
+        message.info(res.msg);
+        return;
+      }
+      const { isLogined, user } = res.data;
       setIsLogin(isLogined);
       if (isLogined) {
         setAdmin(user);
@@ -31,11 +38,17 @@ export default function AdminInfo() {
   }, []);
 
   const login = async (username: string, password: string) => {
-    const data = await adminLogin(username, password);
+    const { data, msg } = await adminLogin(username, password);
+    if (!data) {
+      message.info(msg);
+      return;
+    }
+    setIsLogin(true);
     setAdmin(data.user);
   };
   const logout = () => {
     adminLogout();
+    setIsLogin(false);
     setAdmin(undefined);
   };
   return {

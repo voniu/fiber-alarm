@@ -1,10 +1,10 @@
 import { Button, Form, Input, Divider } from "antd";
 import styles from "./index.less";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { history, useModel } from "umi";
-import WithAuth from "@/wrappers/authAdmin"
+import WithAuth from "@/wrappers/authAdmin";
 const Login = () => {
-  const { login } = useModel("useUserInfo");
+  const { login, isLogin } = useModel("useAdminInfo");
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
 
@@ -14,8 +14,11 @@ const Login = () => {
     setLoading(true);
     await login(username, password);
     setLoading(false);
-    history.push("/manage");
+    history.push("/manage/monitor");
   };
+  useEffect(() => {
+    console.log(isLogin);
+  }, []);
   return (
     <div className={`${styles["login-container"]} ${styles["bg0"]}`}>
       <div className={styles.form}>

@@ -137,4 +137,16 @@ export default {
       ],
     },
   },
+  "GET /api/admin/fiberControl": {
+    success: true,
+    msg: "xxxxxx错误",
+    data: [
+      {
+        id: 1,
+        name: "fibercontrol1",
+        type: 1,
+        fiberNum: 10,
+      },
+    ],
+  },
 };

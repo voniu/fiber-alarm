@@ -1,13 +1,19 @@
 import { useEffect } from "react";
-import { useModel, Navigate, history, useLocation } from "umi";
+import { useModel, history, useLocation } from "umi";
 
 export default (Component: () => JSX.Element) => () => {
   const { isLogin } = useModel("useAdminInfo");
   const location = useLocation();
   useEffect(() => {
-    if (isLogin && location.pathname === "/manage/login") {
-      history.push("/manage/currentAlarm");
-    }
-  }, []);
-  return isLogin ? <Component /> : <Navigate to={"/manage/login"} />;
+    console.log("admin", isLogin);
+
+    if (isLogin) {
+      if (location.pathname === "/manage/login") {
+        history.push("/manage/currentAlarm");
+        return;
+      }
+      history.push(location.pathname);
+    } else history.push("/manage/login");
+  }, [isLogin]);
+  return <Component />;
 };

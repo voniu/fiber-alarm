@@ -2,6 +2,7 @@ import { Table } from "antd";
 import type { TableColumnsType } from "antd";
 import { useModel } from "umi";
 import type { Fiber } from "@/models/useItems";
+import { useEffect } from "react";
 
 export default function () {
   const { fiberList, centerTo } = useModel("useItems");
@@ -21,7 +22,9 @@ export default function () {
       render: (text, record) => <a>{record.name}</a>,
     },
   ];
-
+  useEffect(() => {
+    console.log("fffff", fiberList);
+  }, []);
   return (
     <>
       <Table
@@ -42,7 +45,7 @@ export default function () {
         rowKey={"id"}
         pagination={{ pageSize: 5 }}
         columns={columns}
-        dataSource={fiberList}
+        dataSource={fiberList || []}
         bordered
       />
     </>

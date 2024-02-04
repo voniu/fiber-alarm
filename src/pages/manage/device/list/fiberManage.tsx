@@ -7,6 +7,7 @@ import MapModal from "@/components/mapModal";
 import { useState } from "react";
 
 interface IProps {
+  loading: boolean;
   flush: () => void;
   data: Fiber[];
   edit: (device: number, type: string) => void;
@@ -19,7 +20,7 @@ interface IProps {
   ) => void;
 }
 export default function (props: IProps) {
-  const { edit, setRelation, data, flush } = props;
+  const { edit, setRelation, data, flush, loading } = props;
   const [mapModal, setMapModal] = useState({
     id: -1,
     type: "",
@@ -116,6 +117,7 @@ export default function (props: IProps) {
   return (
     <>
       <Table
+        loading={loading}
         rowKey={"id"}
         pagination={{ pageSize: 7 }}
         columns={columns}

@@ -6,9 +6,10 @@ import { delGuard, updateGuard } from "@/services/admin";
 interface IProps {
   data: Guard[];
   flush: () => void;
+  loading: boolean;
 }
 export default (props: IProps) => {
-  const { data, flush } = props;
+  const { data, flush, loading } = props;
   const deleteUser = async (id: number) => {
     await delGuard(id);
     flush();
@@ -75,6 +76,7 @@ export default (props: IProps) => {
   return (
     <>
       <Table
+        loading={loading}
         rowKey={"id"}
         pagination={{ pageSize: 7 }}
         columns={columns}

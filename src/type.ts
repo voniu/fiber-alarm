@@ -39,3 +39,9 @@ export interface LogInfo {
   id: number;
   detail: string;
 }
+export interface FiberControl {
+  id: number;
+  name: string;
+  type: number;
+  fiberNum: number;
+}

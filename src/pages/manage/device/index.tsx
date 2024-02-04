@@ -7,8 +7,8 @@ import { useModel } from "umi";
 import FiberManage from "./list/fiberManage";
 import CameraManage from "./list/cameraManage";
 import AddRelation from "./relation/index";
-import { Camera, Fiber } from "@/models/useItems";
-import { getCamera, getFiber } from "@/services/admin";
+import { getCamera, getFiber, getFiberControl } from "@/services/admin";
+import FiberList from "./list/fiberList";
 interface DeviceModal {
   operator: string;
   type: string;
@@ -27,15 +27,14 @@ const DeviceManage = () => {
     isModalOpen: false,
     fiber: { id: 0, name: "" },
   });
-  const [listType, setListType] = useState("fiber");
+  const [listType, setListType] = useState("fiber-control");
 
   const [draw, setDraw] = useState<any>();
   const [layer, setLayer] = useState<any>();
 
-  const [listData, setListData] = useState<{
-    fiberData: Fiber[];
-    cameraData: Camera[];
-  }>({ fiberData: [], cameraData: [] });
+  const [listData, setListData] = useState([]);
+  const [loading, setLoading] = useState(false);
+
   const handleChange = (e: any) => {
     setListType(e.target.value);
   };
@@ -48,18 +47,31 @@ const DeviceManage = () => {
     });
   };
   const onClose = () => {
-    setDevice({ isModalOpen: false, operator: "", type: "" });
+    setDevice({ isModalOpen: false, operator: "", type: listType });
     if (draw) map.removeInteraction(draw);
     if (layer) map.removeLayer(layer);
   };
   const fetchList = async () => {
-    const { data: cameraData } = await getCamera("");
-    const { data: fiberData } = await getFiber("");
-    setListData({ cameraData, fiberData });
+    if (listType === "fiber-control") {
+      setLoading(true);
+      const { data: fiberControlData } = await getFiberControl("");
+      setListData(fiberControlData);
+      setLoading(false);
+    } else if (listType === "fiber") {
+      setLoading(true);
+      const { data: fiberData } = await getFiber("");
+      setListData(fiberData);
+      setLoading(false);
+    } else if (listType === "camera") {
+      setLoading(true);
+      const { data: cameraData } = await getCamera("");
+      setListData(cameraData);
+      setLoading(false);
+    }
   };
   useEffect(() => {
     fetchList();
-  }, []);
+  }, [listType]);
   return (
     <div className={styles["container"]}>
       <p style={{ fontSize: 20, fontWeight: "bold", height: 20 }}>
@@ -67,22 +79,6 @@ const DeviceManage = () => {
       </p>
 
       <div className={styles["main"]}>
-        <div className={styles["operator"]}>
-          <Button
-            onClick={() => {
-              setDevice({ operator: "add", type: "fiber", isModalOpen: true });
-            }}
-          >
-            Add Fiber
-          </Button>
-          <Button
-            onClick={() => {
-              setDevice({ operator: "add", type: "camera", isModalOpen: true });
-            }}
-          >
-            Add Camera
-          </Button>
-        </div>
         <div className={styles["list-operator"]}>
           {/* <div style={{ display: "flex" }}>
             <Input className={styles["list-search"]} />
@@ -90,16 +86,36 @@ const DeviceManage = () => {
           </div> */}
           <div className={styles["list-type"]}>
             <Radio.Group value={listType} onChange={handleChange} size="middle">
+              <Radio.Button value="fiber-control">fiberControl</Radio.Button>
               <Radio.Button value="fiber">fiber</Radio.Button>
               <Radio.Button value="camera">camera</Radio.Button>
             </Radio.Group>
           </div>
         </div>
+        <div className={styles["operator"]}>
+          <Button
+            type="primary"
+            onClick={() => {
+              setDevice({ operator: "add", type: listType, isModalOpen: true });
+            }}
+          >
+            Add Device
+          </Button>
+        </div>
         <div className={styles["list"]}>
+          {listType === "fiber-control" && (
+            <FiberList
+              loading={loading}
+              flush={fetchList}
+              data={listData || []}
+              edit={edit}
+            />
+          )}
           {listType === "fiber" && (
             <FiberManage
+              loading={loading}
               flush={fetchList}
-              data={listData?.fiberData}
+              data={listData || []}
               edit={edit}
               setRelation={(
                 isModalOpen: boolean,
@@ -114,8 +130,9 @@ const DeviceManage = () => {
           )}
           {listType === "camera" && (
             <CameraManage
+              loading={loading}
               flush={fetchList}
-              data={listData?.cameraData}
+              data={listData || []}
               edit={edit}
             />
           )}
@@ -123,7 +140,7 @@ const DeviceManage = () => {
       </div>
       <AddDevice
         operator={device.operator}
-        addType={device.type}
+        type={device.type}
         isModalOpen={device.isModalOpen}
         deviceId={device.deviceId}
         onClose={onClose}

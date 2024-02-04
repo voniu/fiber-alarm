@@ -17,6 +17,7 @@ export default function () {
     index: true,
     columnWidth: [50],
     align: ["center"],
+    hoverPause: fiberList.length > 6
   };
 
   function onClick({ row }: { row: [any, any, number, any] }) {

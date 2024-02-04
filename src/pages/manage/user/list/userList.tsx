@@ -6,9 +6,10 @@ import { delUser, updateUser } from "@/services/admin";
 interface IProps {
   data: User[];
   flush: () => void;
+  loading: boolean;
 }
 export default (props: IProps) => {
-  const { data, flush } = props;
+  const { data, flush, loading } = props;
   const identity = ["super admin", "admin", "manager"];
   const deleteUser = async (id: number) => {
     await delUser(id);
@@ -94,6 +95,7 @@ export default (props: IProps) => {
   return (
     <>
       <Table
+        loading={loading}
         rowKey={"id"}
         pagination={{ pageSize: 7 }}
         columns={columns}

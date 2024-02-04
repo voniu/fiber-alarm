@@ -7,23 +7,22 @@ import { CAMERA, FIBER } from '@/constant';
 import { Button } from 'antd';
 import { getFiberDetail } from '@/services/monitor';
 import { FiberDetail } from '@/type';
+import VideoModal from './videoModal';
 
 function CameraDetail({ camera }: { camera?: Camera }) {
-    const { startSinglePlay } = useModel('useRTV');
 
+    const [open,setOpen] = useState(false)
     if (!camera) return <div>
         <div>NOT FOUND</div>
     </div>
 
-    function showRTV(id: number) {
-        startSinglePlay(id);
-    }
 
     return <div>
         <div>{camera.name}</div>
         <div style={{ fontSize: 14 }}>ID: {camera.id}</div>
         <div style={{ fontSize: 14 }}>Location: {camera.location.toString()}</div>
-        <Button ghost onClick={() => showRTV(camera.id)}>View Camera</Button>
+        <Button ghost onClick={() => setOpen(true)}>View Camera</Button>
+        <VideoModal id={camera.id} open={open} onCancel={() => setOpen(false)}/>
     </div>
 }
 

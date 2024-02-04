@@ -16,16 +16,14 @@ import Icons from "./menuIcon";
 import styles from "./index.less";
 import ChangeModal from "./changeModal";
 import { useState } from "react";
-export default function Layout() {
+import WithAuth from "@/wrappers/authAdmin";
+const Layout = () => {
   const { clientRoutes } = useAppData();
   const location = useLocation();
-  console.log(clientRoutes, location);
   const { admin } = useModel("useAdminInfo");
   const { alarmList } = useModel("useAlarms");
-  const route = clientRoutes[clientRoutes.length - 1];
 
   const [open, setIsOpen] = useState(false);
-  console.log(route);
   const handleClick = (e: any) => {
     if (e.key === "change password") {
       setIsOpen(true);
@@ -94,7 +92,7 @@ export default function Layout() {
       avatarProps={{
         src: "https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg",
         size: "small",
-        title: admin!.name,
+        title: admin?.name,
         render: (props, dom) => {
           return (
             <Dropdown
@@ -121,8 +119,6 @@ export default function Layout() {
       }}
       headerTitleRender={MenuHeader}
       menuItemRender={(menuItemProps, defaultDom) => {
-        console.log("dasdsad", menuItemProps.path);
-
         if (menuItemProps.isUrl || menuItemProps.children) {
           return defaultDom;
         }
@@ -154,4 +150,6 @@ export default function Layout() {
       <ChangeModal open={open} onCancel={() => setIsOpen(false)} />
     </ProLayout>
   );
-}
+};
+
+export default WithAuth(Layout);

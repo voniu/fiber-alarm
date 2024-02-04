@@ -1,34 +1,16 @@
 import { Button, Popconfirm, Table } from "antd";
 import type { TableColumnsType } from "antd";
-import type { Camera } from "@/models/useItems";
-import { delCamera } from "@/services/admin";
-import MapModal from "@/components/mapModal";
-import { useState } from "react";
+import { delControl } from "@/services/admin";
+import { FiberControl } from "@/type";
 interface IProps {
   flush: () => void;
-  data: Camera[];
-  loading: boolean;
+  data: FiberControl[];
   edit: (device: number, type: string) => void;
+  loading: boolean;
 }
 export default function (props: IProps) {
   const { edit, data, flush, loading } = props;
-  const [mapModal, setMapModal] = useState({
-    id: -1,
-    type: "",
-    isModalOpen: false,
-  });
-  const deleteCamera = async (id: number) => {
-    await delCamera(id);
-    flush();
-  };
-  const onClose = () => {
-    setMapModal({
-      id: -1,
-      type: "",
-      isModalOpen: false,
-    });
-  };
-  const columns: TableColumnsType<Camera> = [
+  const columns: TableColumnsType<FiberControl> = [
     {
       title: "ID",
       dataIndex: "id",
@@ -40,20 +22,14 @@ export default function (props: IProps) {
       render: (text, record) => <a>{record.name}</a>,
     },
     {
-      title: "Location",
-      dataIndex: "location",
-      render: (_, record) => {
-        return (
-          <Button
-            onClick={() => {
-              console.log(record.id);
-              setMapModal({ id: record.id, type: "camera", isModalOpen: true });
-            }}
-          >
-            查看地图
-          </Button>
-        );
-      },
+      title: "Type",
+      dataIndex: "type",
+      render: (text, record) => <a>{record.name}</a>,
+    },
+    {
+      title: "Fiber Number",
+      dataIndex: "fiberNum",
+      render: (text, record) => <a>{record.fiberNum}</a>,
     },
     {
       title: "Operator",
@@ -65,7 +41,7 @@ export default function (props: IProps) {
                 type="primary"
                 size="small"
                 onClick={() => {
-                  edit(record.id, "camera");
+                  edit(record.id, "fiber-control");
                 }}
               >
                 {"Edit"}
@@ -81,7 +57,7 @@ export default function (props: IProps) {
                 <Button
                   danger
                   size="small"
-                  onClick={() => deleteCamera(record.id)}
+                  onClick={() => delControl(record.id)}
                 >
                   Delete
                 </Button>
@@ -102,12 +78,6 @@ export default function (props: IProps) {
         columns={columns}
         dataSource={data}
         bordered
-      />
-      <MapModal
-        id={mapModal.id}
-        isModalOpen={mapModal.isModalOpen}
-        type={mapModal.type}
-        onClose={onClose}
       />
     </>
   );

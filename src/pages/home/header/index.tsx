@@ -2,8 +2,10 @@ import { useState } from "react";
 import { AuthModal } from "../authModal";
 import styles from "./index.less";
 import { Button } from "antd";
+import { useModel } from "@/.umi/plugin-model";
 
 export default () => {
+  const { guard, monitor } = useModel("useUserInfo");
   const [isModalOpen, setModalOpen] = useState(false);
   const ExitDuty = () => {
     setModalOpen(true);
@@ -15,13 +17,13 @@ export default () => {
           Manager:
         </span>
         <span className={styles["select-span"]} style={{ color: "#ffffff" }}>
-          olfmanshin
+          {monitor?.name}
         </span>
         <span className={styles["select-span"]} style={{ color: "#d3d3d3" }}>
           Guard:
         </span>
         <span className={styles["select-span"]} style={{ color: "#ffffff" }}>
-          jack minsklu
+          {guard?.name}
         </span>
         <Button style={{ marginLeft: 20 }} onClick={ExitDuty}>
           EXIT DUTY

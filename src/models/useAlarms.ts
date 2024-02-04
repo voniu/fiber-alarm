@@ -1,5 +1,6 @@
+import { wsUrl } from "@/constant";
 import { useEffect, useState } from "react";
-import ee from "@/libs/events";
+import { useModel } from "umi";
 
 export interface Alarm {
   id: number;
@@ -37,9 +38,8 @@ export interface AlarmDetail extends Alarm {
 const alarms = new Map<number, AlarmDetail>();
 
 export default function Alarms() {
-  const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(20);
-  const [fiberId, setFiberId] = useState(0);
+  const { isLogin: userLogin } = useModel("useUserInfo");
+  const { isLogin: adminLogin } = useModel("useAdminInfo");
   const [alarmList, setAlarmList] = useState<Alarm[]>([
     { id: 1 },
     { id: 2 },
@@ -47,29 +47,92 @@ export default function Alarms() {
     { id: 4 },
     { id: 5 },
   ]);
-  // const [total, setTotal] = useState(0)
-  // const [currentAlarm, setCurrentAlarm] = useState<AlarmDetail>()
-  const [currentAlarmId, setCurrentAlarmId] = useState(0);
+  const [manageAlarm, setManageAlarm] = useState<Alarm[]>();
 
+  const [guardSocekt, setGuardSocket] = useState<WebSocket>();
+  const [manageSocekt, setManageSocket] = useState<WebSocket>();
+
+  const handleGuard = (log: string) => {
+    guardSocekt?.send(
+      JSON.stringify({
+        type: "RESOLVE",
+        content: {
+          alarmId: 1,
+          log,
+        },
+      })
+    );
+  };
+  const handleManage = (log: string) => {
+    manageSocekt?.send(
+      JSON.stringify({
+        type: "RESOLVE",
+        content: {
+          alarmId: 1,
+          log,
+        },
+      })
+    );
+  };
+  const getMangerAlarm = () => {
+    const socket2 = new WebSocket(
+      `${wsUrl}/api/common/pendingAlarm?type=manager`
+    );
+    socket2.onmessage = (e: MessageEvent) => {
+      if (typeof e.data === "string") {
+        let data = JSON.parse(e.data);
+        if (data.type === "UPDATE") {
+          setManageAlarm(data.content);
+        }
+      }
+    };
+    setManageSocket(socket2);
+  };
+  const getGuardAlarm = () => {
+    const socket1 = new WebSocket(
+      `${wsUrl}/api/common/pendingAlarm?type=guard`
+    );
+    console.log(socket1);
+
+    socket1.onmessage = (e: MessageEvent) => {
+      if (typeof e.data === "string") {
+        let data = JSON.parse(e.data);
+        if (data.type === "UPDATE") {
+          setAlarmList(data.content);
+        }
+      }
+    };
+    setGuardSocket(socket1);
+  };
   useEffect(() => {
-    ee.on("ALARM", function (data) {
-      console.log(data);
-      setAlarmList(data);
-    });
-  }, []);
+    if (adminLogin) {
+      getMangerAlarm();
+    }
+    if (userLogin) {
+      getGuardAlarm();
+    }
+
+    return () => {
+      manageSocekt?.close();
+      guardSocekt?.close();
+    };
+  }, [userLogin, adminLogin]);
 
   return {
     alarms,
     alarmList,
-    page,
-    setPage,
-    pageSize,
-    setPageSize,
-    fiberId,
-    setFiberId,
+    manageAlarm,
+    handleManage,
+    handleGuard,
+    // page,
+    // setPage,
+    // pageSize,
+    // setPageSize,
+    // fiberId,
+    // setFiberId,
     // total,
-    currentAlarmId,
-    setCurrentAlarmId,
+    // currentAlarmId,
+    // setCurrentAlarmId,
     // currentAlarm
   };
 }

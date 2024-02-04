@@ -37,21 +37,38 @@ export default function UserInfo() {
         if (isOnDuty) setGuard(guard);
       }
     });
-  }, []);
+  }, [isOnDuty]);
 
   const login = async (username: string, password: string) => {
-    const data = await monitorLogin(username, password);
-    setMonitor(data.user);
+    const { success, data, msg } = await monitorLogin(username, password);
+    if (success) {
+      setIsLogin(true);
+      setMonitor(data.user);
+    }
+    return { success, data, msg };
   };
-  const logout = () => {
-    monitorLogout();
-    setMonitor(undefined);
+  const logout = async () => {
+    const { success, data, msg } = await monitorLogout();
+    if (success) {
+      setIsLogin(false);
+      setMonitor(undefined);
+    }
+    return { success, data, msg };
   };
   const setGuards = async (guardId: number) => {
-    await onDuty(guardId);
+    const { success, msg } = await onDuty(guardId);
+    if (success) {
+      setDuty(true);
+    }
+    return { success, msg };
   };
   const unsetGuards = async (password: string) => {
-    await offDuty(password);
+    const { success, msg } = await offDuty(password);
+    if (success) {
+      setDuty(false);
+      setGuard(undefined);
+    }
+    return { success, msg };
   };
   const resumeGuards = async () => {
     await resumeDuty();

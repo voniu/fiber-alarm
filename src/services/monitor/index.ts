@@ -6,14 +6,14 @@ function locationConverter<T>(item: any): T {
 }
 // 主管登陆, 登出
 export const monitorLogin = async (username: string, password: string) => {
-  const { data } = await request(`${prefix}/login`, {
+  const { data, msg, success } = await request(`${prefix}/login`, {
     method: "POST",
     data: {
       username,
       password,
     },
   });
-  return data;
+  return { data, msg, success };
 };
 export const monitorLoginState = async () => {
   const { data } = await request(`${prefix}/loginState`);
@@ -28,7 +28,7 @@ export const monitorLogout = () => {
 
 // 获取保安列表
 export const getGuards = async () => {
-  const { data } = await request(`${prefix}/guards`);
+  const { data } = await request(`${prefix}/guard`);
   return data;
 };
 export const getDuty = async () => {
@@ -61,7 +61,7 @@ export const offDuty = (password: string) => {
   return request(`${prefix}/onduty`, {
     method: "POST",
     data: {
-      operator: "STOP",
+      operation: "STOP",
       password,
     },
   });

@@ -9,19 +9,18 @@ function locationConverter<T>(item: any): T {
 
 // admin后台 登陆, 登出
 export const adminLogin = async (username: string, password: string) => {
-  const { data } = await request(`${prefix}/login`, {
+  const { data, msg } = await request(`${prefix}/login`, {
     method: "POST",
     data: {
       username,
       password,
     },
   });
-  return data;
+  return { data, msg };
 };
 
 export const adminLoginState = async () => {
-  const { data } = await request(`${prefix}/loginState`);
-  return data;
+  return request(`${prefix}/loginState`);
 };
 
 export const adminLogout = () => {
@@ -29,7 +28,15 @@ export const adminLogout = () => {
     method: "POST",
   });
 };
-
+//
+export const getFiberControl = (nameKw?: string) => {
+  return request(`${prefix}/fiberControl`, {
+    params: { nameKw },
+  });
+};
+export const delControl = (id: number) => {
+  return request(`${prefix}/fiberControl/${id}`, { method: "DELETE" });
+};
 // 光纤查询
 export const getFiber = (nameKw?: string) => {
   return request(`${prefix}/fiber`, {

@@ -137,7 +137,7 @@ const TabContent = (props: { id: number }) => {
 };
 export default function () {
   const { alarmList } = useModel("useAlarms");
-  const isModalOpen = (alarmList.length === 0);
+  const isModalOpen = (alarmList?.length === 0);
   const [isTrumpetOn, setTrumpetOn] = useState(true);
 
   return (

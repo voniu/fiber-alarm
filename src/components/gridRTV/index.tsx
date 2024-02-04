@@ -13,7 +13,7 @@ export default function () {
     useEffect(() => {
         if (gridPlay) {
             index2camId = [null, null, null, null]
-            cameraList.forEach((cam, index) => {
+            cameraList?.forEach((cam, index) => {
                 subscribe(cam.id, `video${index}`)
                 index2camId[index] = cam.id
             })

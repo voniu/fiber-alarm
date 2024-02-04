@@ -6,7 +6,8 @@
     "build": "umi build",
     "postinstall": "umi setup",
     "setup": "umi setup",
-    "start": "cross-env MOCK=true umi dev",
+    "start": "cross-env MOCK=false umi dev",
+    "start:mock": "cross-env MOCK=true umi dev",
     "lint": "umi lint --fix"
   },
   "dependencies": {

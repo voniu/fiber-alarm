@@ -12,6 +12,8 @@ const UserManage = () => {
   const [data, setData] = useState<User[]>();
   const [open, setIsOpen] = useState(false);
   const [listType, setList] = useState("user");
+  const [loading1, setLoading1] = useState(false);
+  const [loading2, setLoading2] = useState(false);
   const onCancel = () => {
     setIsOpen(false);
   };
@@ -19,18 +21,18 @@ const UserManage = () => {
     setList(e.target.value);
   };
   const fetchUser = async () => {
-    const { data: superAdmin } = await getUser(0, "");
-    const { data: admin } = await getUser(1, "");
-    const { data: manager } = await getUser(2, "");
-    setData([...superAdmin, ...admin, ...manager]);
+    setLoading2(true)
+    const { data } = await getUser(0, "");
+    setLoading2(false)
+    setData(data);
   };
   const fetchGuard = async () => {
+    setLoading1(true);
     const { data } = await getGuard();
+    setLoading1(false)
     setData(data);
   };
   useEffect(() => {
-    console.log("dsadas");
-
     if (listType === "user") {
       fetchUser();
     } else {
@@ -57,12 +59,12 @@ const UserManage = () => {
         </div>
         <div>
           {listType === "user" && (
-            <UserList flush={fetchUser} data={data || []} />
+            <UserList loading={loading2} flush={fetchUser} data={data || []} />
           )}
         </div>
         <div>
           {listType === "guard" && (
-            <GuardList flush={fetchGuard} data={data || []} />
+            <GuardList loading={loading1} flush={fetchGuard} data={data || []} />
           )}
         </div>
       </div>

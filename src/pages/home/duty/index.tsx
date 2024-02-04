@@ -1,6 +1,6 @@
 import { getDuty, getGuards } from "@/services/monitor";
 import WithAuth from "@/wrappers/authDuty";
-import { Table, Popconfirm, ConfigProvider } from "antd";
+import { Table, Popconfirm, ConfigProvider, message } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useEffect, useState } from "react";
 import { useModel, history } from "umi";
@@ -29,15 +29,27 @@ interface DataType {
 const Duty = () => {
   const [data, setData] = useState();
   const [dutyState, setDutyState] = useState<DutyState>();
-
-  const { setGuards, resumeGuards } = useModel("useUserInfo");
+  const [loading, setLoading] = useState(true);
+  const { setGuards, resumeGuards, logout } = useModel("useUserInfo");
   const handleConfirm = async (guardId: number) => {
-    await setGuards(guardId);
+    const { success, msg } = await setGuards(guardId);
+    if (!success) {
+      message.info(msg);
+      return;
+    }
     history.push("/home");
   };
   const handleResume = async () => {
     await resumeGuards();
-    history.push("/home")
+    history.push("/home");
+  };
+  const handleLogout = async () => {
+    const { success, msg } = await logout();
+    if (!success) {
+      message.info(msg);
+      return;
+    }
+    history.push("/home/login");
   };
   useEffect(() => {
     getDuty().then((res) => {
@@ -45,7 +57,9 @@ const Duty = () => {
     });
   }, []);
   useEffect(() => {
+    setLoading(true);
     getGuards().then((res) => {
+      setLoading(false);
       console.log(res);
       setData(res);
     });
@@ -96,7 +110,9 @@ const Duty = () => {
         >
           Duty Manage
         </p>
-        <div className={styles["logout-btn"]}>Logout</div>
+        <div className={styles["logout-btn"]} onClick={handleLogout}>
+          Logout
+        </div>
         {!dutyState?.isAnyoneOnDuty && (
           <ConfigProvider
             theme={{
@@ -114,6 +130,8 @@ const Duty = () => {
             }}
           >
             <Table
+              loading={loading}
+              rowKey={"id"}
               rowClassName={() => {
                 return styles["row-bg"];
               }}

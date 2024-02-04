@@ -1,23 +1,27 @@
 import styles from "./index.less";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { history, useModel } from "umi";
 import earth from "@/assets/dutyLogin/earth.png";
 import userpng from "@/assets/dutyLogin/user.png";
 import passwordpng from "@/assets/dutyLogin/password.png";
 import WithAuth from "@/wrappers/authDuty";
+import { message } from "antd";
 const Login = () => {
   const { login } = useModel("useUserInfo");
   const [loading, setLoading] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
-  const submit = useCallback(async () => {
+  const submit = async () => {
     setLoading(true);
-    await login(username, password);
+    const { success, msg } = await login(username, password);
+    if (!success) {
+      message.error(msg);
+      setLoading(false);
+      return;
+    }
     setLoading(false);
     history.push("/home/duty");
-    await login(username, password);
-  }, [username, password]);
+  };
 
   return (
     <div className={styles["container"]}>

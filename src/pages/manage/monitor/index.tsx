@@ -11,7 +11,7 @@ import { getMatrix, setMatrix } from "@/services/common";
 import { MonitorSetting } from "@/type";
 import { matrixData } from "@/utills";
 const Monitor = () => {
-  const [cameraOptions, setCameraOp] = useState();
+  const [cameraOptions, setCameraOp] = useState([]);
   const [form] = Form.useForm();
   const fetchOptions = async () => {
     const { data: allCamera } = await getCamera("");

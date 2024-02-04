@@ -1,7 +1,7 @@
 import EditMap from "@/components/editMap";
-import { Form, Modal, Input, Button } from "antd";
+import { Form, Modal, Input, Button, Select } from "antd";
 import styles from "./index.less";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   addCamera,
   addFiber,
@@ -14,7 +14,7 @@ import { ArrayItemToFixed, generateLines } from "@/utills";
 interface IProps {
   operator: string;
   isModalOpen: boolean;
-  addType: string;
+  type: string;
   deviceId?: number;
   onClose: () => void;
   draw: any;
@@ -27,7 +27,7 @@ export default (props: IProps) => {
     operator,
     deviceId,
     isModalOpen,
-    addType,
+    type,
     onClose,
     draw,
     setDraw,
@@ -37,10 +37,13 @@ export default (props: IProps) => {
   const titleMap: any = {
     "add-camera": "Add Camera",
     "add-fiber": "Add fiber",
+    "add-fiber-control": "Add Fiber Control",
     "edit-camera": "Edit Camera",
     "edit-fiber": "Edit Fiber",
+    "edit-fiber-control": "Edit Fiber Control",
   };
   const [form] = Form.useForm();
+  const [fiberControlType, setFiberControlType] = useState(1);
   const setLocation = (location: any) => {
     form.setFieldValue("location", location);
   };
@@ -91,18 +94,18 @@ export default (props: IProps) => {
     console.log(value);
 
     if (operator === "add") {
-      if (addType === "camera") {
+      if (type === "camera") {
         await addCamera({ ...value, location: generateLines(value.location) });
-      } else if (addType === "fiber") {
+      } else if (type === "fiber") {
         await addFiber({ ...value, location: generateLines(value.location) });
       }
     } else {
-      if (addType === "camera") {
+      if (type === "camera") {
         await updateCamera(deviceId!, {
           ...value,
           location: generateLines(value.location),
         });
-      } else if (addType === "fiber") {
+      } else if (type === "fiber") {
         await setFiberDetail(deviceId!, {
           ...value,
           location: generateLines(value.location),
@@ -119,9 +122,9 @@ export default (props: IProps) => {
     if (operator === "add") {
       form.setFieldValue(location, "");
     } else {
-      if (addType === "fiber") {
+      if (type === "fiber") {
         getFiberForm();
-      } else if (addType === "camera") {
+      } else if (type === "camera") {
         getCameraForm();
       }
     }
@@ -135,15 +138,15 @@ export default (props: IProps) => {
       keyboard={false}
       maskClosable={false}
       open={isModalOpen}
-      width={1100}
+      width={type === "fiber-control" ? 400 : 1100}
       onCancel={onClose}
       afterClose={onClose}
     >
-      <p style={{ fontWeight: "bold" }}>{titleMap[`${operator}-${addType}`]}</p>
+      <p style={{ fontWeight: "bold" }}>{titleMap[`${operator}-${type}`]}</p>
 
       <div className={styles["container"]}>
         <div style={{ width: 400 }}>
-          {addType === "camera" && (
+          {type === "camera" && (
             <Form
               form={form}
               labelAlign={"left"}
@@ -156,51 +159,71 @@ export default (props: IProps) => {
                 className={styles["form-item"]}
                 label="Name"
                 name={"name"}
+                rules={[{ required: true, message: "Please input your name!" }]}
               >
-                <Input placeholder="input" />
-              </Form.Item>
-              <Form.Item className={styles["form-item"]} label="Ip" name={"ip"}>
                 <Input placeholder="input" />
               </Form.Item>
               <Form.Item
                 className={styles["form-item"]}
-                label="username"
+                label="Ip"
+                name={"ip"}
+                rules={[
+                  { required: true, message: "Please input IP address!" },
+                ]}
+              >
+                <Input placeholder="input" />
+              </Form.Item>
+              <Form.Item
+                className={styles["form-item"]}
+                label="Username"
                 name={"username"}
+                rules={[
+                  { required: true, message: "Please input your username!" },
+                ]}
               >
                 <Input placeholder="input" />
               </Form.Item>
               <Form.Item
                 className={styles["form-item"]}
-                label="password"
+                label="Password"
                 name={"password"}
+                rules={[
+                  { required: true, message: "Please input your password!" },
+                ]}
               >
-                <Input placeholder="input" />
+                <Input.Password placeholder="input" />
               </Form.Item>
               <Form.Item
                 className={styles["form-item"]}
-                label="picurl"
+                label="Pic URL"
                 name={"picurl"}
+                rules={[{ required: true, message: "Please input pic URL!" }]}
               >
                 <Input placeholder="" />
               </Form.Item>
               <Form.Item
                 className={styles["form-item"]}
-                label="pic port"
+                label="Pic Port"
                 name={"picport"}
+                rules={[{ required: true, message: "Please input pic port!" }]}
               >
                 <Input placeholder="" />
               </Form.Item>
               <Form.Item
                 className={styles["form-item"]}
-                label="video url"
+                label="Video URL"
                 name={"videourl"}
+                rules={[{ required: true, message: "Please input video URL!" }]}
               >
                 <Input placeholder="" />
               </Form.Item>
               <Form.Item
                 className={styles["form-item"]}
-                label="video port"
+                label="Video Port"
                 name={"videoport"}
+                rules={[
+                  { required: true, message: "Please input video port!" },
+                ]}
               >
                 <Input placeholder="" />
               </Form.Item>
@@ -208,6 +231,7 @@ export default (props: IProps) => {
                 className={styles["form-item"]}
                 label="Location"
                 name={"location"}
+                rules={[{ required: true, message: "Please input location!" }]}
               >
                 <Input.TextArea autoSize disabled placeholder="auto select" />
               </Form.Item>
@@ -222,7 +246,7 @@ export default (props: IProps) => {
               </Form.Item>
             </Form>
           )}
-          {addType === "fiber" && (
+          {type === "fiber" && (
             <Form
               form={form}
               labelAlign={"left"}
@@ -235,30 +259,83 @@ export default (props: IProps) => {
                 className={styles["form-item"]}
                 label="Name"
                 name={"name"}
-              >
-                <Input placeholder="input" />
-              </Form.Item>
-              <Form.Item className={styles["form-item"]} label="Ip" name={"ip"}>
-                <Input placeholder="input" />
-              </Form.Item>
-              <Form.Item
-                className={styles["form-item"]}
-                label="Zone"
-                name={"zone"}
+                rules={[{ required: true, message: "Please input your name!" }]}
               >
                 <Input placeholder="input" />
               </Form.Item>
               <Form.Item
                 className={styles["form-item"]}
-                label="Sub Zone"
-                name={"subzone"}
+                label="control"
+                name={"fiberControl"}
+                rules={[
+                  { required: true, message: "Please select fiber control!" },
+                ]}
               >
-                <Input placeholder="input" />
+                <Select
+                  value={fiberControlType}
+                  onChange={(value) => setFiberControlType(value)}
+                  disabled={operator === "edit"}
+                  options={[
+                    { label: "1", value: 1 },
+                    { label: "2", value: 2 },
+                  ]}
+                ></Select>
               </Form.Item>
+              {fiberControlType === 1 && (
+                <>
+                  <Form.Item
+                    className={styles["form-item"]}
+                    label="Zone"
+                    name={"zone"}
+                    rules={[
+                      { required: true, message: "Please input the zone!" },
+                    ]}
+                  >
+                    <Input placeholder="input" />
+                  </Form.Item>
+                  <Form.Item
+                    className={styles["form-item"]}
+                    label="Sub Zone"
+                    name={"subzone"}
+                    rules={[
+                      { required: true, message: "Please input the sub zone!" },
+                    ]}
+                  >
+                    <Input placeholder="input" />
+                  </Form.Item>
+                </>
+              )}
+              {fiberControlType === 2 && (
+                <>
+                  <Form.Item
+                    className={styles["form-item"]}
+                    label="Zone2"
+                    name={"zone"}
+                    rules={[
+                      { required: true, message: "Please input the zone!" },
+                    ]}
+                  >
+                    <Input placeholder="input" />
+                  </Form.Item>
+                  <Form.Item
+                    className={styles["form-item"]}
+                    label="Sub Zone2"
+                    name={"subzone"}
+                    rules={[
+                      { required: true, message: "Please input the sub zone!" },
+                    ]}
+                  >
+                    <Input placeholder="input" />
+                  </Form.Item>
+                </>
+              )}
               <Form.Item
                 className={styles["form-item"]}
                 label="Location"
                 name={"location"}
+                rules={[
+                  { required: true, message: "Please input the location!" },
+                ]}
               >
                 <Input.TextArea
                   autoSize={{ maxRows: 4 }}
@@ -276,16 +353,77 @@ export default (props: IProps) => {
               </Form.Item>
             </Form>
           )}
+          {type === "fiber-control" && (
+            <Form
+              form={form}
+              labelAlign={"left"}
+              labelCol={{ span: 6 }}
+              wrapperCol={{ span: 14 }}
+              style={{ maxWidth: 600 }}
+              onFinish={onFinish}
+            >
+              <Form.Item
+                className={styles["form-item"]}
+                label="Name"
+                name={"name"}
+                rules={[{ required: true, message: "Please input your name!" }]}
+              >
+                <Input placeholder="input" />
+              </Form.Item>
+              <Form.Item
+                className={styles["form-item"]}
+                label="Host Name"
+                name={"ip"}
+                rules={[
+                  { required: true, message: "Please input the host name!" },
+                ]}
+              >
+                <Input placeholder="input" />
+              </Form.Item>
+              <Form.Item
+                className={styles["form-item"]}
+                label="Port"
+                name={"port"}
+                rules={[{ required: true, message: "Please input the port!" }]}
+              >
+                <Input placeholder="input" />
+              </Form.Item>
+              <Form.Item
+                className={styles["form-item"]}
+                label="Type"
+                name={"type"}
+                rules={[{ required: true, message: "Please select the type!" }]}
+              >
+                <Select
+                  disabled={operator === "edit"}
+                  options={[
+                    { label: "1", value: 1 },
+                    { label: "2", value: 2 },
+                  ]}
+                ></Select>
+              </Form.Item>
+              <Form.Item
+                className={styles["form-item"]}
+                wrapperCol={{ offset: 16 }}
+              >
+                <Button type="primary" htmlType="submit">
+                  Submit
+                </Button>
+              </Form.Item>
+            </Form>
+          )}
         </div>
         <div>
-          <EditMap
-            setLocation={(l: any) => setLocation(l)}
-            type={addType === "fiber" ? "LineString" : "Point"}
-            draw={draw}
-            setDraw={setDraw}
-            layer={layer}
-            setLayer={setLayer}
-          />
+          {!(type === "fiber-control") && (
+            <EditMap
+              setLocation={(l: any) => setLocation(l)}
+              type={type === "fiber" ? "LineString" : "Point"}
+              draw={draw}
+              setDraw={setDraw}
+              layer={layer}
+              setLayer={setLayer}
+            />
+          )}
         </div>
       </div>
     </Modal>
