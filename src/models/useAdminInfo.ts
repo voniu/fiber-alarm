@@ -20,11 +20,8 @@ import { useEffect, useState } from "react";
 export default function AdminInfo() {
   const [isLogin, setIsLogin] = useState(false);
   const [admin, setAdmin] = useState<User>();
-
   useEffect(() => {
     adminLoginState().then((res) => {
-      console.log("admin state", res);
-
       if (!res.data) {
         message.info(res.msg);
         return;

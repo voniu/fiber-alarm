@@ -2,6 +2,7 @@
 import { message } from "antd";
 import type { RequestConfig } from "umi";
 import { baseUrl } from "./constant";
+
 const errorHandler = (error: any) => {
   const { response, data } = error;
   console.log(response, data);
@@ -34,3 +35,7 @@ export const request: RequestConfig = {
     },
   ],
 };
+
+export async function getInitialState(): Promise<{ type?: number }> {
+  return {};
+}

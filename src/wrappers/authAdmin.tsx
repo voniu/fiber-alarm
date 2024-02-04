@@ -2,11 +2,11 @@ import { useEffect } from "react";
 import { useModel, history, useLocation } from "umi";
 
 export default (Component: () => JSX.Element) => () => {
-  const { isLogin } = useModel("useAdminInfo");
+  const { isLogin, admin } = useModel("useAdminInfo");
+  const { setInitialState } = useModel("@@initialState");
   const location = useLocation();
   useEffect(() => {
-    console.log("admin", isLogin);
-
+    setInitialState({ type: admin?.type });
     if (isLogin) {
       if (location.pathname === "/manage/login") {
         history.push("/manage/currentAlarm");

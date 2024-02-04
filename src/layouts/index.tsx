@@ -6,6 +6,7 @@ import {
   useLocation,
   useModel,
   history,
+  useAccess,
 } from "umi";
 import MenuHeader from "./HeaderTitle";
 import { Badge, Dropdown, Popover } from "antd";
@@ -17,12 +18,13 @@ import styles from "./index.less";
 import ChangeModal from "./changeModal";
 import { useState } from "react";
 import WithAuth from "@/wrappers/authAdmin";
+import AuthError from "./AuthError";
 const Layout = () => {
   const { clientRoutes } = useAppData();
   const location = useLocation();
   const { admin } = useModel("useAdminInfo");
   const { alarmList } = useModel("useAlarms");
-
+  const access = useAccess();
   const [open, setIsOpen] = useState(false);
   const handleClick = (e: any) => {
     if (e.key === "change password") {
@@ -118,6 +120,16 @@ const Layout = () => {
         },
       }}
       headerTitleRender={MenuHeader}
+      menuDataRender={(menuData) => {
+        const F = menuData.map((item: any) => {
+          //@ts-ignore
+          if (!access[item.access]) {
+            return null;
+          }
+          return item;
+        });
+        return F.filter((item) => item !== null);
+      }}
       menuItemRender={(menuItemProps, defaultDom) => {
         if (menuItemProps.isUrl || menuItemProps.children) {
           return defaultDom;
@@ -146,7 +158,10 @@ const Layout = () => {
         );
       }}
     >
-      <Outlet />
+      <AuthError>
+        <Outlet />
+      </AuthError>
+
       <ChangeModal open={open} onCancel={() => setIsOpen(false)} />
     </ProLayout>
   );

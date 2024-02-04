@@ -47,7 +47,11 @@ const DeviceManage = () => {
     });
   };
   const onClose = () => {
-    setDevice({ isModalOpen: false, operator: "", type: listType });
+    setDevice({
+      isModalOpen: false,
+      operator: device.operator,
+      type: device.type,
+    });
     if (draw) map.removeInteraction(draw);
     if (layer) map.removeLayer(layer);
   };

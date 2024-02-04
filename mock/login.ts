@@ -23,7 +23,7 @@ export default {
           // 只在 isLogined = true 时存在
           id: 1,
           name: "user name",
-          type: 0,
+          type: 1,
         },
         isOnDuty: true, // 当前登录态是否处于值班状态
         guard: {
