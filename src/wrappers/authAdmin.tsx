@@ -9,7 +9,7 @@ export default (Component: () => JSX.Element) => () => {
     setInitialState({ type: admin?.type });
     if (isLogin) {
       if (location.pathname === "/manage/login") {
-        history.push("/manage/currentAlarm");
+        history.push("/manage/alarm");
         return;
       }
       history.push(location.pathname);

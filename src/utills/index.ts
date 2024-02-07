@@ -26,3 +26,7 @@ export const matrixData = (obj: any): MonitorSetting[] => {
   }
   return result;
 };
+
+export const isHome = () => {
+  return location.pathname.includes("home");
+};

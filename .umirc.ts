@@ -75,6 +75,12 @@ export default defineConfig({
           component: "@/pages/manage/sensitivity",
         },
         {
+          name: "Fiber Level",
+          path: "fiberLevel",
+          access: "fiberLevel",
+          component: "@/pages/manage/fiberLevel",
+        },
+        {
           name: "Log Information",
           access: "log",
           path: "log",

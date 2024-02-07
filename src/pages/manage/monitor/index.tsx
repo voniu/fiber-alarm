@@ -1,9 +1,6 @@
 import WithAuth from "@/wrappers/authAdmin";
 import styles from "./index.less";
-import video1 from "@/assets/video/1.png";
-import video2 from "@/assets/video/2.png";
-import video3 from "@/assets/video/3.png";
-import video4 from "@/assets/video/4.png";
+import RtspVideo from "@/components/map/videoModal/video";
 import { Button, Form, Select, message } from "antd";
 import { useEffect, useState } from "react";
 import { getCamera } from "@/services/admin";
@@ -12,6 +9,9 @@ import { MonitorSetting } from "@/type";
 import { matrixData } from "@/utills";
 const Monitor = () => {
   const [cameraOptions, setCameraOp] = useState([]);
+  const [currentCameras, setCurrentCameras] = useState<{
+    [key: string]: any;
+  }>();
   const [form] = Form.useForm();
   const fetchOptions = async () => {
     const { data: allCamera } = await getCamera("");
@@ -30,6 +30,9 @@ const Monitor = () => {
       camerasSetting[`${item.row - 1}-${item.column - 1}`] = item.cameraId;
     });
     setCameraOp(options);
+    setCurrentCameras(camerasSetting);
+    console.log(camerasSetting);
+
     form.setFieldsValue(camerasSetting);
   };
   const onFinsh = (value: any) => {
@@ -46,14 +49,14 @@ const Monitor = () => {
         Monitor Setting
       </p>
       <div className={styles["main"]}>
-        <div>
+        <div style={{ flexShrink: 0, width: 600 }}>
           <div style={{ display: "flex", marginTop: 2, marginLeft: 4 }}>
-            <img className={styles["video"]} src={video1}></img>
-            <img className={styles["video"]} src={video2}></img>
+            {currentCameras && <RtspVideo id={currentCameras["0-0"]} />}
+            {currentCameras && <RtspVideo id={currentCameras["0-1"]} />}
           </div>
           <div style={{ display: "flex", marginTop: 2, marginLeft: 4 }}>
-            <img className={styles["video"]} src={video3}></img>
-            <img className={styles["video"]} src={video4}></img>
+            {currentCameras && <RtspVideo id={currentCameras["1-1"]} />}
+            {currentCameras && <RtspVideo id={currentCameras["1-2"]} />}
           </div>
         </div>
         <div className={styles["right-form"]}>

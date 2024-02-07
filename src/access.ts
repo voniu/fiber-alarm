@@ -9,6 +9,7 @@ export default function (initialState: { type: number }) {
     device: [0, 1].includes(type),
     monitor: [0, 1].includes(type),
     sensitivity: [0, 1].includes(type),
+    fiberLevel: [0, 1].includes(type),
     log: [0, 1].includes(type),
     user: [0, 1].includes(type),
   };

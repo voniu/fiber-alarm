@@ -11,12 +11,12 @@ export default (props: IProps) => {
   const [loading, setLoading] = useState(false);
   const { open, onCancel } = props;
   const { admin } = useModel("useAdminInfo");
-  const onFinish = (values: any) => {
+  const onFinish = async (values: any) => {
     console.log(values);
 
     const { newPassword } = values;
     setLoading(true);
-    if (admin) updateUser(admin.id!, { ...admin, password: newPassword });
+    if (admin) await updateUser(admin.id!, { ...admin, password: newPassword });
     setLoading(false);
     form.resetFields();
     onCancel();
@@ -81,7 +81,7 @@ export default (props: IProps) => {
 
         <Form.Item>
           <Button type="primary" htmlType="submit" loading={loading}>
-            提交
+            Submit
           </Button>
         </Form.Item>
       </Form>

@@ -7,6 +7,8 @@ import {
   getFiber as getAdminFiber,
   getCamera as getAdminCamera,
 } from "@/services/admin";
+import { isHome } from "@/utills";
+import { message } from "antd";
 
 const colors = [
   "#8cc540",
@@ -54,8 +56,8 @@ export default function ItemsModel() {
     setCameraList(camerData);
   };
   useEffect(() => {
-    if (userLogin) fetchGuardItem();
-    if (adminLogin) fetchAdminItem();
+    if (userLogin && isHome()) fetchGuardItem();
+    if (adminLogin && !isHome()) fetchAdminItem();
   }, [userLogin, adminLogin]);
 
   const { addPoint, addLine, toCenter, setClickPosition } = useModel("useMap");
@@ -90,10 +92,14 @@ export default function ItemsModel() {
 
   function centerTo(id: number, type: string) {
     let location;
-    if (type === CAMERA) {
-      location = cameras.get(id)?.location;
-    } else if (type === FIBER) {
-      location = fibers.get(id)?.location[0][0];
+    try {
+      if (type === CAMERA) {
+        location = cameras.get(id)?.location;
+      } else if (type === FIBER) {
+        location = fibers.get(id)?.location[0][0];
+      }
+    } catch (e) {
+      message.info("Part of the device information is missing");
     }
 
     if (location) {

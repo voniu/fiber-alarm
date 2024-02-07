@@ -43,8 +43,8 @@ export default function AdminInfo() {
     setIsLogin(true);
     setAdmin(data.user);
   };
-  const logout = () => {
-    adminLogout();
+  const logout = async () => {
+    await adminLogout();
     setIsLogin(false);
     setAdmin(undefined);
   };

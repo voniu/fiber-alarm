@@ -16,6 +16,7 @@ export default function ({
   setDraw,
   layer,
   setLayer,
+  target,
 }: {
   type: string;
   draw: any;
@@ -23,6 +24,7 @@ export default function ({
   layer: any;
   setLayer: (val: any) => void;
   setLocation: (l: any) => void;
+  target?: string;
 }) {
   const { map, setTarget } = useModel("useMap");
   // const [draw, setDraw] = useState<any>();
@@ -129,9 +131,11 @@ export default function ({
     setTarget("edit-map-container");
     addInteraction(type);
     return () => {
+      console.log(draw,layer);
+      
       if (draw) map.removeInteraction(draw);
       const dom = document.getElementById("edit-map-container");
-      setTarget("");
+      setTarget(target || "");
       if (dom) {
         dom.innerHTML = "";
       }
@@ -143,7 +147,7 @@ export default function ({
       {type === "Point" && (
         <div style={{ position: "absolute", top: 25 }}>
           <Button onClick={resetCamera}>reset</Button>
-          <span>(only allow draw a camera)</span>
+          <span>(only allow draw a Point)</span>
         </div>
       )}
       {type === "LineString" && (

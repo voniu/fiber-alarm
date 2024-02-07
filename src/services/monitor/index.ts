@@ -2,7 +2,8 @@ import { request } from "umi";
 const prefix = "/api/guard";
 
 function locationConverter<T>(item: any): T {
-  return { ...item, location: JSON.parse(item.location) };
+  if (item.location) return { ...item, location: JSON.parse(item.location) };
+  else return item;
 }
 // 主管登陆, 登出
 export const monitorLogin = async (username: string, password: string) => {

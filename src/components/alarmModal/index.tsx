@@ -16,6 +16,7 @@ import { Alarm, AlarmDetail } from "@/models/useAlarms";
 import dayjs from "@/utills/day";
 import trumpetOn from "@/assets/trumpet/trumpet_on_b.png";
 import trumpetOff from "@/assets/trumpet/trumpet_off_b.png";
+import SoundAlert from "../alarmAudio";
 const DescriptionText = ({
   label,
   content,
@@ -137,9 +138,15 @@ const TabContent = (props: { id: number }) => {
 };
 export default function () {
   const { alarmList } = useModel("useAlarms");
-  const isModalOpen = (alarmList?.length === 0);
+  const open = (alarmList?.length === 0);
   const [isTrumpetOn, setTrumpetOn] = useState(true);
-
+  useEffect(() => {
+    if (open) {
+      setTrumpetOn(true);
+    } else {
+      setTrumpetOn(false);
+    }
+  }, [open]);
   return (
     <>
       <Modal
@@ -149,9 +156,10 @@ export default function () {
         footer={null}
         keyboard={false}
         maskClosable={false}
-        open={isModalOpen}
+        open={open}
         width={1100}
       >
+        <SoundAlert alert={isTrumpetOn} />
         <ConfigProvider
           theme={{
             token: {

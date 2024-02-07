@@ -1,4 +1,5 @@
 import { wsUrl } from "@/constant";
+import { isHome } from "@/utills";
 import { useEffect, useState } from "react";
 import { useModel } from "umi";
 
@@ -47,7 +48,10 @@ export default function Alarms() {
     { id: 4 },
     { id: 5 },
   ]);
-  const [manageAlarm, setManageAlarm] = useState<Alarm[]>();
+  const [manageAlarm, setManageAlarm] = useState<Alarm[]>([
+    { id: 1 },
+    { id: 2 },
+  ]);
 
   const [guardSocekt, setGuardSocket] = useState<WebSocket>();
   const [manageSocekt, setManageSocket] = useState<WebSocket>();
@@ -105,10 +109,10 @@ export default function Alarms() {
     setGuardSocket(socket1);
   };
   useEffect(() => {
-    if (adminLogin) {
+    if (adminLogin && !isHome()) {
       getMangerAlarm();
     }
-    if (userLogin) {
+    if (userLogin && isHome()) {
       getGuardAlarm();
     }
 

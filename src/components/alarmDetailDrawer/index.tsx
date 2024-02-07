@@ -1,14 +1,16 @@
-import { Button, Col, Drawer, Input, Row, Tag } from "antd";
+import { Button, Col, Drawer, Input, Row, Tag, message } from "antd";
 import styles from "./index.less";
 import { useEffect, useRef, useState } from "react";
 import { getAlarmDetail } from "@/services/admin";
 import { AlarmDetail } from "@/models/useAlarms";
 import dayjs from "@/utills/day";
+import { useModel } from "@/.umi/plugin-model";
 interface IProps {
   open: boolean;
   onClose: () => void;
   alarmID: number;
   isHistory?: boolean;
+  flush?: () => void;
 }
 const DescriptionText = ({
   label,
@@ -41,9 +43,9 @@ const DescriptionText = ({
 };
 
 export default (props: IProps) => {
-  const { open, onClose, alarmID, isHistory } = props;
+  const { open, onClose, alarmID, isHistory, flush } = props;
   const [detail, setDetail] = useState<AlarmDetail>();
-
+  const { handleManage } = useModel("useAlarms");
   const processInfo = useRef();
   useEffect(() => {
     console.log("dddddd");
@@ -63,7 +65,16 @@ export default (props: IProps) => {
     processInfo.current = e.target.value;
   };
   const handleSubmit = () => {
-    console.log(processInfo.current);
+    const log = processInfo.current;
+    console.log(log);
+    if (!log) {
+      message.info("please input the log");
+      return;
+    }
+    handleManage(log);
+    message.success("success");
+    if (flush) flush();
+    onClose();
   };
   const renderInfo = (status: number, info: string) => {
     return status === 1 && !isHistory ? (

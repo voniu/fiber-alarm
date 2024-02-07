@@ -15,7 +15,7 @@ import CameraList from "@/components/cameraList";
 // import video2 from "@/assets/video/2.png";
 // import video3 from "@/assets/video/3.png";
 // import video4 from "@/assets/video/4.png";
-import RtspVideo from "../../components/map/videoModal/video"
+import RtspVideo from "@/components/map/videoModal/video";
 
 function HomePage() {
   const [listType, setListType] = useState("fiber");
@@ -40,15 +40,14 @@ function HomePage() {
               />
             </div> */}
             <div className="dataAllBorder01 cage_cl" style={{ height: "48%" }}>
-              <RtspVideo id={1}/>
-              {/* <div style={{ display: "flex", marginTop: 2, marginLeft: 4 }}>
-                <img style={{ height: 140, width: 330 }} src={video1}></img>
-                <img style={{ height: 140, width: 330 }} src={video2}></img>
+              <div style={{ display: "flex", justifyContent: "center" }}>
+                <RtspVideo id={1} />
+                <RtspVideo id={2} />
               </div>
-              <div style={{ display: "flex", marginTop: 2, marginLeft: 4 }}>
-                <img style={{ height: 140, width: 330 }} src={video3}></img>
-                <img style={{ height: 140, width: 330 }} src={video4}></img>
-              </div> */}
+              <div style={{ display: "flex", justifyContent: "center" }}>
+                <RtspVideo id={3} />
+                <RtspVideo id={4} />
+              </div>
             </div>
             <div
               className="dataAllBorder01 cage_cl"

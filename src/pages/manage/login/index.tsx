@@ -14,7 +14,7 @@ const Login = () => {
     setLoading(true);
     await login(username, password);
     setLoading(false);
-    history.push("/manage/monitor");
+    history.push("/manage/alarm");
   };
   useEffect(() => {
     console.log(isLogin);

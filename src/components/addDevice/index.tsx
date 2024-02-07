@@ -133,7 +133,6 @@ export default (props: IProps) => {
     <Modal
       style={{ top: 20 }}
       destroyOnClose
-      forceRender
       title={null}
       footer={null}
       keyboard={false}

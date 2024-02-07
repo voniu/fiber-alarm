@@ -22,13 +22,16 @@ import AuthError from "./AuthError";
 const Layout = () => {
   const { clientRoutes } = useAppData();
   const location = useLocation();
-  const { admin } = useModel("useAdminInfo");
+  const { admin, logout } = useModel("useAdminInfo");
   const { alarmList } = useModel("useAlarms");
   const access = useAccess();
   const [open, setIsOpen] = useState(false);
-  const handleClick = (e: any) => {
+  const handleClick = async (e: any) => {
     if (e.key === "change password") {
       setIsOpen(true);
+    } else if (e.key === "logout") {
+      await logout();
+      history.push("/manage/login");
     }
   };
   return (
@@ -63,9 +66,8 @@ const Layout = () => {
         },
       }}
       siderWidth={220}
-      actionsRender={(props) => {
-        if (props.isMobile) return [];
-        if (typeof window === "undefined") return [];
+      actionsRender={() => {
+        if (admin?.type !== 2) return [];
         return [
           <Popover
             key={"d"}

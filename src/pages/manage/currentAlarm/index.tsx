@@ -7,12 +7,26 @@ import styles from "./index.less";
 import AlarmDetailDrawer from "@/components/alarmDetailDrawer";
 import dayjs from "@/utills/day";
 import { AlarmDetail } from "@/models/useAlarms";
+import { useModel } from "umi";
 
 const Alarm = () => {
   const [data, setData] = useState();
   const [open, setOpen] = useState(false);
   const [dealId, setDealId] = useState<number>(-1);
+  const [loading, setLoading] = useState(false);
   const onClose = () => setOpen(false);
+  const { manageAlarm } = useModel("useAlarms");
+  const fetchList = () => {
+    setLoading(true);
+    getAlarmList({ fiberId: manageAlarm?.map((item) => item.id) }).then(
+      (res) => {
+        console.log(res);
+        const { data } = res;
+        setData(data);
+        setLoading(false);
+      }
+    );
+  };
   const columns: ColumnsType<AlarmDetail> = [
     {
       title: "ID",
@@ -60,12 +74,8 @@ const Alarm = () => {
     },
   ];
   useEffect(() => {
-    getAlarmList({}).then((res) => {
-      console.log(res);
-      const { data } = res;
-      setData(data);
-    });
-  }, []);
+    fetchList();
+  }, [manageAlarm]);
 
   return (
     <div className={styles["container"]}>
@@ -73,15 +83,21 @@ const Alarm = () => {
         Current Alarm
       </p>
       <Table
+        loading={loading}
         rowKey={"id"}
         pagination={{
           pageSize: 7,
         }}
         columns={columns}
-        dataSource={data}
+        dataSource={data || []}
         bordered
       />
-      <AlarmDetailDrawer open={open} onClose={onClose} alarmID={dealId} />
+      <AlarmDetailDrawer
+        open={open}
+        onClose={onClose}
+        alarmID={dealId}
+        flush={fetchList}
+      />
     </div>
   );
 };

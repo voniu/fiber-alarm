@@ -4,7 +4,8 @@ import { CameraDetail, FiberDetail, Guard, User } from "@/type";
 const prefix = "/api/admin";
 
 function locationConverter<T>(item: any): T {
-  return { ...item, location: JSON.parse(item.location) };
+  if (item.location) return { ...item, location: JSON.parse(item.location) };
+  else return item;
 }
 
 // admin后台 登陆, 登出
@@ -134,11 +135,22 @@ export const delCamera = (cameraId: number) => {
 
 // 报警事件
 export const getAlarmList = (props: {
-  fiberId?: number;
+  fiberId?: number | number[];
   page?: number;
   pageSize?: number;
 }) => {
-  if (props.fiberId === 0) delete props.fiberId;
+  if (Array.isArray(props.fiberId)) {
+    let url = "";
+    props.fiberId.forEach((item, index) => {
+      if (index !== 0) {
+        url += "&";
+      }
+      url += `fiberId=${item}`;
+    });
+    return request(`${prefix}/alarm?${url}`, {
+      params: { ...props, fiberId: undefined },
+    });
+  }
   return request(`${prefix}/alarm`, { params: props });
 };
 

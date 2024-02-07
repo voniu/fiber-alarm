@@ -1,7 +1,7 @@
 import WithAuth from "@/wrappers/authAdmin";
 import { useEffect, useState } from "react";
 import styles from "./index.less";
-import { Button, Radio } from "antd";
+import { Button, Input, Radio } from "antd";
 import AddDevice from "@/components/addDevice";
 import { useModel } from "umi";
 import FiberManage from "./list/fiberManage";
@@ -84,10 +84,6 @@ const DeviceManage = () => {
 
       <div className={styles["main"]}>
         <div className={styles["list-operator"]}>
-          {/* <div style={{ display: "flex" }}>
-            <Input className={styles["list-search"]} />
-            <Button>Search</Button>
-          </div> */}
           <div className={styles["list-type"]}>
             <Radio.Group value={listType} onChange={handleChange} size="middle">
               <Radio.Button value="fiber-control">fiberControl</Radio.Button>
@@ -97,6 +93,10 @@ const DeviceManage = () => {
           </div>
         </div>
         <div className={styles["operator"]}>
+          <div className={styles["search"]}>
+            <Input />
+            <Button>Search</Button>
+          </div>
           <Button
             type="primary"
             onClick={() => {

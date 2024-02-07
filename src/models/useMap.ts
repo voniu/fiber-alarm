@@ -42,7 +42,7 @@ export default function MapModel() {
             zoom: 14,
             projection: 'EPSG:4326',
         }),
-        controls: defaults().extend([
+        controls: defaults({rotate: false}).extend([
             new FullScreen(), // 全屏
         ])
     });
@@ -82,6 +82,9 @@ export default function MapModel() {
                 hidenPopup();
             }
         })
+        map.on('error', (event) =>{
+            console.log(`An error occurred in the map:${event}`);
+        });
     }, [])
 
     const setTarget = (id: string) => {
@@ -167,6 +170,10 @@ export default function MapModel() {
         setCurrentItem({})
     }
 
+    function setMapCenterZoom(center: Coordinate, newZoomLevel: number) {
+        toCenter(center)
+        map.getView().setZoom(newZoomLevel);
+    }
     function selectFeature(feature: Feature) {
         clearSelected()
         singleClickSelect.getFeatures().push(feature);
@@ -181,6 +188,7 @@ export default function MapModel() {
         addLine,
         setTarget,
         toCenter,
+        setMapCenterZoom,
         currentItem,
         clickPosition,
         setClickPosition,

@@ -2,7 +2,7 @@ import { User } from "@/type";
 import { Button, Popconfirm, Table, TableColumnsType, Typography } from "antd";
 import dayjs from "@/utills/day";
 import { delUser, updateUser } from "@/services/admin";
-
+import { useModel } from "umi";
 interface IProps {
   data: User[];
   flush: () => void;
@@ -11,6 +11,7 @@ interface IProps {
 export default (props: IProps) => {
   const { data, flush, loading } = props;
   const identity = ["super admin", "admin", "manager"];
+  const { admin } = useModel("useAdminInfo");
   const deleteUser = async (id: number) => {
     await delUser(id);
     flush();
@@ -65,17 +66,19 @@ export default (props: IProps) => {
       render: (_, record) => {
         return (
           <div style={{ display: "flex", gap: 10 }}>
-            <Popconfirm
-              title="reset the password"
-              description="Are you sure to reset the password?"
-              okText="Yes"
-              cancelText="No"
-              onConfirm={() => resetPassword(record)}
-            >
-              <Button danger size="small">
-                Reset Password
-              </Button>
-            </Popconfirm>
+            {admin?.type === 0 && (
+              <Popconfirm
+                title="reset the password"
+                description="Are you sure to reset the password?"
+                okText="Yes"
+                cancelText="No"
+                onConfirm={() => resetPassword(record)}
+              >
+                <Button danger size="small">
+                  Reset Password
+                </Button>
+              </Popconfirm>
+            )}
             <Popconfirm
               title="reset the password"
               description="Are you sure to reset the password?"

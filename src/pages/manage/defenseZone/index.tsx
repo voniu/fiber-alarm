@@ -2,10 +2,11 @@ import FiberList from "./list/fiberList";
 import WithAuth from "@/wrappers/authAdmin";
 import { useEffect, useState } from "react";
 import styles from "./index.less";
-import { Radio } from "antd";
+import { Button, Radio } from "antd";
 import CameraList from "./list/cameraList";
 import { useModel } from "umi";
 import Popup from "@/components/map/popup";
+import MapCenter from "./map";
 
 const DefenseZone = () => {
   const { setTarget } = useModel("useMap");
@@ -13,6 +14,7 @@ const DefenseZone = () => {
   const handleChange = (e: any) => {
     setListType(e.target.value);
   };
+  const [open, setOpen] = useState(false);
   useEffect(() => {
     setTarget("manage-zone-map");
     return () => {
@@ -28,6 +30,12 @@ const DefenseZone = () => {
       <p style={{ fontSize: 20, fontWeight: "bold", height: 20 }}>
         DefenseZone
       </p>
+      <div className={styles["map-setting"]}>
+        <Button type="primary" onClick={() => setOpen(true)}>
+          Map Setting
+        </Button>
+      </div>
+      <MapCenter open={open} onClose={() => setOpen(false)} />
       <div style={{ display: "flex" }}>
         <div className={styles["left"]}>
           <div style={{}}>

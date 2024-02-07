@@ -1,11 +1,30 @@
-import { getAlarmList, getFiber, getGuard, getUser } from "@/services/admin";
+import {
+  delAlarmDetail,
+  getAlarmList,
+  getFiber,
+  getGuard,
+  getUser,
+} from "@/services/admin";
 import WithAuth from "@/wrappers/authAdmin";
-import { DatePicker, Form, Select, Table, Tag, Row, Col, Button } from "antd";
+import {
+  DatePicker,
+  Form,
+  Select,
+  Table,
+  Tag,
+  Row,
+  Col,
+  Button,
+  Popconfirm,
+  message,
+} from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useEffect, useState } from "react";
 import styles from "./index.less";
 import AlarmDetailDrawer from "@/components/alarmDetailDrawer";
 import locale from "antd/es/date-picker/locale/en_GB";
+import dayjs from "@/utills/day";
+import { useModel } from "umi";
 interface AlarmDetail {
   key?: string;
   id: number;
@@ -33,7 +52,40 @@ const HistoryAlarm = () => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [dealId, setDealId] = useState<number>(-1);
+  const { admin } = useModel("useAdminInfo");
+  const fetchList = (values?: any) => {
+    let params = {
+      fiberId: undefined,
+      guardId: undefined,
+      managerId: undefined,
+      status: undefined,
+      time: undefined,
+      timeType: undefined,
+    };
+    if (values)
+      params = {
+        ...values,
+        status: values.status !== -1 ? values.status : undefined,
+        timeType: values.timeType !== "all" ? values.timeType : undefined,
+        startTime: values.time ? dayjs(values.time[0]).valueOf() : undefined,
+        endTime: values.time ? dayjs(values.time[1]).valueOf() : undefined,
+      };
+    console.log(params);
 
+    setLoading(true);
+    getAlarmList(params).then((res) => {
+      console.log(res);
+      setLoading(false);
+      const { data } = res;
+      setData(data);
+    });
+  };
+  const deleteAlarm = async (id: number) => {
+    console.log(id);
+    await delAlarmDetail(id);
+    message.success("success");
+    fetchList();
+  };
   const statusMap = ["pending", "processing", "solved"];
   const colorMap = ["default", "processing", "success"];
 
@@ -75,15 +127,30 @@ const HistoryAlarm = () => {
       title: "Operator",
       render: (_, record) => {
         return (
-          <a
-            style={{ color: "blue" }}
-            onClick={() => {
-              setOpen(true);
-              setDealId(record.id);
-            }}
-          >
-            {"Detail"}
-          </a>
+          <>
+            <a
+              style={{ color: "blue", marginRight: 10 }}
+              onClick={() => {
+                setOpen(true);
+                setDealId(record.id);
+              }}
+            >
+              {"Detail"}
+            </a>
+            {admin?.type === 0 && (
+              <Popconfirm
+                title="reset the password"
+                description="Are you sure to reset the password?"
+                okText="Yes"
+                cancelText="No"
+                onConfirm={() => deleteAlarm(record.id)}
+              >
+                <Button danger size="small">
+                  Delete
+                </Button>
+              </Popconfirm>
+            )}
+          </>
         );
       },
     },
@@ -118,18 +185,13 @@ const HistoryAlarm = () => {
   };
   useEffect(() => {
     fetchFormValue();
-    setLoading(true);
-    getAlarmList({}).then((res) => {
-      console.log(res);
-      setLoading(false);
-      const { data } = res;
-      setData(data);
-    });
+    fetchList();
   }, []);
 
   const handleSearch = (values: any) => {
     // setLoading(true);
     console.log(values);
+    fetchList(values);
   };
   return (
     <div className={styles["container"]}>
@@ -139,10 +201,14 @@ const HistoryAlarm = () => {
         name="advanced_search"
         onFinish={handleSearch}
         labelAlign="right"
+        initialValues={{
+          status: -1,
+          timeType: "all",
+        }}
       >
         <Row gutter={24}>
           <Col>
-            <Form.Item name={`fiber`} label={`fiber`}>
+            <Form.Item name={`fiberId`} label={`fiber`}>
               <Select
                 mode="multiple"
                 size={"middle"}
@@ -158,10 +224,10 @@ const HistoryAlarm = () => {
               <Select
                 style={{ width: 150 }}
                 options={[
-                  { value: "all", label: "all" },
-                  { value: "happen", label: "happen" },
-                  { value: "guard process", label: "guard process" },
-                  { value: "manager process", label: "manager process" },
+                  { value: -1, label: "all" },
+                  { value: 0, label: "happen" },
+                  { value: 1, label: "guard processed" },
+                  { value: 2, label: "manager processed" },
                 ]}
               />
             </Form.Item>
@@ -192,9 +258,9 @@ const HistoryAlarm = () => {
         </Row>
         <Row gutter={24}>
           <Col>
-            <Form.Item name={`manager`} label={`manager`}>
+            <Form.Item name={`managerId`} label={`manager`}>
               <Select
-                mode="multiple"
+                // mode="multiple"
                 size={"middle"}
                 placeholder="Please select"
                 style={{ width: "230px" }}
@@ -204,9 +270,9 @@ const HistoryAlarm = () => {
             </Form.Item>
           </Col>
           <Col>
-            <Form.Item name={`guard`} label={`guard`}>
+            <Form.Item name={`guardId`} label={`guard`}>
               <Select
-                mode="multiple"
+                // mode="multiple"
                 size={"middle"}
                 placeholder="Please select"
                 style={{ width: "230px" }}
@@ -230,7 +296,7 @@ const HistoryAlarm = () => {
         rowKey={"id"}
         pagination={{ pageSize: 6 }}
         columns={columns}
-        dataSource={data}
+        dataSource={data || []}
         bordered
       />
       <AlarmDetailDrawer
