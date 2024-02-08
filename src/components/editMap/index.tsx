@@ -26,7 +26,7 @@ export default function ({
   setLocation: (l: any) => void;
   target?: string;
 }) {
-  const { map, setTarget } = useModel("useMap");
+  const { map, setTarget, clearSelected } = useModel("useMap");
   // const [draw, setDraw] = useState<any>();
   const [camera, setCamera] = useState<Feature<Geometry>>();
   const [fiber, setFiber] = useState<Feature<Geometry>>();
@@ -129,9 +129,10 @@ export default function ({
     setLocation("");
     console.log("EDIT MAP");
     setTarget("edit-map-container");
+    clearSelected();
     addInteraction(type);
     return () => {
-      console.log(draw,layer);
+      console.log(draw, layer);
       
       if (draw) map.removeInteraction(draw);
       const dom = document.getElementById("edit-map-container");

@@ -8,7 +8,7 @@ interface IProps {
   flush: () => void;
   data: Camera[];
   loading: boolean;
-  edit: (device: number, type: string) => void;
+  edit: (device: number, type: string, extra?: any) => void;
 }
 export default function (props: IProps) {
   const { edit, data, flush, loading } = props;

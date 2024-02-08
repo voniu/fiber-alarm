@@ -5,7 +5,7 @@ import { FiberControl } from "@/type";
 interface IProps {
   flush: () => void;
   data: FiberControl[];
-  edit: (device: number, type: string) => void;
+  edit: (device: number, type: string, extra?: any) => void;
   loading: boolean;
 }
 export default function (props: IProps) {
@@ -22,14 +22,19 @@ export default function (props: IProps) {
       render: (text, record) => <a>{record.name}</a>,
     },
     {
+      title: "Host",
+      dataIndex: "host",
+      render: (text, record) => <a>{record.host}</a>,
+    },
+    {
+      title: "Port",
+      dataIndex: "port",
+      render: (text, record) => <a>{record.port}</a>,
+    },
+    {
       title: "Type",
       dataIndex: "type",
       render: (text, record) => <a>{record.name}</a>,
-    },
-    {
-      title: "Fiber Number",
-      dataIndex: "fiberNum",
-      render: (text, record) => <a>{record.fiberNum}</a>,
     },
     {
       title: "Operator",
@@ -41,7 +46,7 @@ export default function (props: IProps) {
                 type="primary"
                 size="small"
                 onClick={() => {
-                  edit(record.id, "fiber-control");
+                  edit(record.id, "fiber-control", record);
                 }}
               >
                 {"Edit"}
@@ -57,7 +62,10 @@ export default function (props: IProps) {
                 <Button
                   danger
                   size="small"
-                  onClick={() => delControl(record.id)}
+                  onClick={() => {
+                    delControl(record.id);
+                    flush();
+                  }}
                 >
                   Delete
                 </Button>

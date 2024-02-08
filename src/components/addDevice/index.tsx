@@ -4,11 +4,13 @@ import styles from "./index.less";
 import { useEffect, useState } from "react";
 import {
   addCamera,
+  addControl,
   addFiber,
   getCameraDetail,
   getFiberDetail,
   setFiberDetail,
   updateCamera,
+  updateControl,
 } from "@/services/admin";
 import { ArrayItemToFixed, generateLines } from "@/utills";
 interface IProps {
@@ -16,6 +18,7 @@ interface IProps {
   isModalOpen: boolean;
   type: string;
   deviceId?: number;
+  device?: any;
   onClose: () => void;
   draw: any;
   setDraw: (val: any) => void;
@@ -24,6 +27,7 @@ interface IProps {
 }
 export default (props: IProps) => {
   const {
+    device,
     operator,
     deviceId,
     isModalOpen,
@@ -50,17 +54,46 @@ export default (props: IProps) => {
   const getFiberForm = async () => {
     const { data } = await getFiberDetail(deviceId!);
     console.log(data);
-    const { name, ip, zone, subzone, location } = data;
-
-    form.setFieldsValue({
-      name,
-      ip,
-      zone,
-      subzone,
-      location: location.map((line: any) =>
-        line.map((point: any) => ArrayItemToFixed(point, 8))
-      ),
-    });
+    const { name, ip, location, identitfier } = data;
+    if (!identitfier) {
+      form.setFieldsValue({
+        name,
+        ip,
+        type: "",
+        zone: "",
+        subzone: "",
+        location: location.map((line: any) =>
+          line.map((point: any) => ArrayItemToFixed(point, 8))
+        ),
+      });
+      return;
+    }
+    const type = identitfier.length === 1 ? 1 : 0;
+    console.log(identitfier.length,"llllsad");
+    
+    setFiberControlType(type);
+    if (type === 0) {
+      form.setFieldsValue({
+        name,
+        ip,
+        type,
+        zone: identitfier[0],
+        subzone: identitfier[1],
+        location: location.map((line: any) =>
+          line.map((point: any) => ArrayItemToFixed(point, 8))
+        ),
+      });
+    } else {
+      form.setFieldsValue({
+        name,
+        ip,
+        type,
+        zone: identitfier[0],
+        location: location.map((line: any) =>
+          line.map((point: any) => ArrayItemToFixed(point, 8))
+        ),
+      });
+    }
   };
   const getCameraForm = async () => {
     console.log(deviceId);
@@ -90,6 +123,16 @@ export default (props: IProps) => {
       location: ArrayItemToFixed(location, 8),
     });
   };
+  const getControlForm = async () => {
+    const { name, host, port, type } = device;
+
+    form.setFieldsValue({
+      name,
+      host,
+      port,
+      type,
+    });
+  };
   const onFinish = async (value: any) => {
     console.log(value);
 
@@ -98,6 +141,8 @@ export default (props: IProps) => {
         await addCamera({ ...value, location: generateLines(value.location) });
       } else if (type === "fiber") {
         await addFiber({ ...value, location: generateLines(value.location) });
+      } else if (type === "fiber-control") {
+        await addControl(value);
       }
     } else {
       if (type === "camera") {
@@ -110,6 +155,8 @@ export default (props: IProps) => {
           ...value,
           location: generateLines(value.location),
         });
+      } else if (type === "fiber-control") {
+        await updateControl(deviceId!, value);
       }
     }
     onClose();
@@ -126,6 +173,8 @@ export default (props: IProps) => {
         getFiberForm();
       } else if (type === "camera") {
         getCameraForm();
+      } else if (type === "fiber-control") {
+        getControlForm();
       }
     }
   }, [isModalOpen]);
@@ -265,8 +314,8 @@ export default (props: IProps) => {
               </Form.Item>
               <Form.Item
                 className={styles["form-item"]}
-                label="control"
-                name={"fiberControl"}
+                label="Type"
+                name={"type"}
                 rules={[
                   { required: true, message: "Please select fiber control!" },
                 ]}
@@ -281,7 +330,7 @@ export default (props: IProps) => {
                   ]}
                 ></Select>
               </Form.Item>
-              {fiberControlType === 1 && (
+              {fiberControlType === 0 && (
                 <>
                   <Form.Item
                     className={styles["form-item"]}
@@ -305,24 +354,14 @@ export default (props: IProps) => {
                   </Form.Item>
                 </>
               )}
-              {fiberControlType === 2 && (
+              {fiberControlType === 1 && (
                 <>
                   <Form.Item
                     className={styles["form-item"]}
-                    label="Zone2"
+                    label="Zone"
                     name={"zone"}
                     rules={[
                       { required: true, message: "Please input the zone!" },
-                    ]}
-                  >
-                    <Input placeholder="input" />
-                  </Form.Item>
-                  <Form.Item
-                    className={styles["form-item"]}
-                    label="Sub Zone2"
-                    name={"subzone"}
-                    rules={[
-                      { required: true, message: "Please input the sub zone!" },
                     ]}
                   >
                     <Input placeholder="input" />
@@ -373,7 +412,7 @@ export default (props: IProps) => {
               <Form.Item
                 className={styles["form-item"]}
                 label="Host Name"
-                name={"ip"}
+                name={"host"}
                 rules={[
                   { required: true, message: "Please input the host name!" },
                 ]}
@@ -397,8 +436,8 @@ export default (props: IProps) => {
                 <Select
                   disabled={operator === "edit"}
                   options={[
-                    { label: "1", value: 1 },
-                    { label: "2", value: 2 },
+                    { label: "1", value: 0 },
+                    { label: "2", value: 1 },
                   ]}
                 ></Select>
               </Form.Item>

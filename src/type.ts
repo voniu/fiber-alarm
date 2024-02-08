@@ -9,6 +9,7 @@ export interface FiberDetail {
   name: string;
   location: string;
   triggerCameras: Camera[];
+  identifier: number[];
 }
 export interface CameraDetail {
   name: string;
@@ -43,5 +44,7 @@ export interface FiberControl {
   id: number;
   name: string;
   type: number;
-  fiberNum: number;
+  host: string;
+  port: number;
+  fiberNum?: number;
 }

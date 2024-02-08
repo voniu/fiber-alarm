@@ -48,7 +48,7 @@ export default function MapModel() {
     });
     const [map, setMap] = useState<OlMap>(instance);
     const [currentItem, setCurrentItem] = useState<{ [key: string]: any }>({});
-    const [clickPosition, setClickPosition] = useState<Coordinate>([48.206151, 40.027136])
+    const [clickPosition, setClickPosition] = useState<Coordinate | undefined>([48.206151, 40.027136])
     const [singleClickSelect] = useState(new Select({}))
 
     const { showPopup, hidenPopup } = useModel('useModel')
@@ -168,6 +168,7 @@ export default function MapModel() {
     function clearSelected() {
         singleClickSelect.getFeatures().clear();
         setCurrentItem({})
+        setClickPosition(undefined)
     }
 
     function setMapCenterZoom(center: Coordinate, newZoomLevel: number) {

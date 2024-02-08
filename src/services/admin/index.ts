@@ -31,12 +31,24 @@ export const adminLogout = () => {
 };
 //
 export const getFiberControl = (nameKw?: string) => {
-  return request(`${prefix}/fiberControl`, {
+  return request(`${prefix}/fiberDevice`, {
     params: { nameKw },
   });
 };
+export const addControl = (fiberDevice: any) => {
+  return request(`${prefix}/fiberDevice`, {
+    method: "POST",
+    data: fiberDevice,
+  });
+};
+export const updateControl = (id: number, fiberDevice: any) => {
+  return request(`${prefix}/fiberDevice/${id}`, {
+    method: "PUT",
+    data: fiberDevice,
+  });
+};
 export const delControl = (id: number) => {
-  return request(`${prefix}/fiberControl/${id}`, { method: "DELETE" });
+  return request(`${prefix}/fiberDevice/${id}`, { method: "DELETE" });
 };
 // 光纤查询
 export const getFiber = (nameKw?: string) => {

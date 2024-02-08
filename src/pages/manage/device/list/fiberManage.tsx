@@ -10,7 +10,7 @@ interface IProps {
   loading: boolean;
   flush: () => void;
   data: Fiber[];
-  edit: (device: number, type: string) => void;
+  edit: (device: number, type: string, extra?: any) => void;
   setRelation: (
     isModalOpen: boolean,
     fiber: {

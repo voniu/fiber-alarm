@@ -1,7 +1,7 @@
 import WithAuth from "@/wrappers/authAdmin";
 import { useEffect, useState } from "react";
 import styles from "./index.less";
-import { Button, Input, Radio } from "antd";
+import { Button, Form, Input, Radio } from "antd";
 import AddDevice from "@/components/addDevice";
 import { useModel } from "umi";
 import FiberManage from "./list/fiberManage";
@@ -14,6 +14,7 @@ interface DeviceModal {
   type: string;
   isModalOpen: boolean;
   deviceId?: number;
+  deviceContent?: any;
 }
 const DeviceManage = () => {
   const { map } = useModel("useMap");
@@ -38,7 +39,17 @@ const DeviceManage = () => {
   const handleChange = (e: any) => {
     setListType(e.target.value);
   };
-  const edit = (device: number, type: string) => {
+  const edit = (device: number, type: string, extra?: any) => {
+    if (type === "fiber-control") {
+      setDevice({
+        operator: "edit",
+        type: type,
+        isModalOpen: true,
+        deviceId: device,
+        deviceContent: extra,
+      });
+      return;
+    }
     setDevice({
       operator: "edit",
       type: type,
@@ -56,22 +67,33 @@ const DeviceManage = () => {
     if (layer) map.removeLayer(layer);
   };
   const fetchList = async () => {
+    setLoading(true);
     if (listType === "fiber-control") {
-      setLoading(true);
       const { data: fiberControlData } = await getFiberControl("");
       setListData(fiberControlData);
-      setLoading(false);
     } else if (listType === "fiber") {
-      setLoading(true);
       const { data: fiberData } = await getFiber("");
       setListData(fiberData);
-      setLoading(false);
     } else if (listType === "camera") {
-      setLoading(true);
       const { data: cameraData } = await getCamera("");
       setListData(cameraData);
-      setLoading(false);
     }
+    setLoading(false);
+  };
+  const handleSearch = async (value: { search: string }) => {
+    setLoading(true);
+
+    if (listType === "fiber-control") {
+      const { data } = await getFiberControl(value.search);
+      setListData(data);
+    } else if (listType === "fiber") {
+      const { data } = await getFiber(value.search);
+      setListData(data);
+    } else if (listType === "camera") {
+      const { data } = await getCamera(value.search);
+      setListData(data);
+    }
+    setLoading(false);
   };
   useEffect(() => {
     fetchList();
@@ -94,8 +116,16 @@ const DeviceManage = () => {
         </div>
         <div className={styles["operator"]}>
           <div className={styles["search"]}>
-            <Input />
-            <Button>Search</Button>
+            <Form onFinish={handleSearch}>
+              <Form.Item name={"search"}>
+                <Input />
+              </Form.Item>
+            </Form>
+            <Form.Item>
+              <Button type="primary" htmlType="submit" loading={loading}>
+                Search
+              </Button>
+            </Form.Item>
           </div>
           <Button
             type="primary"
@@ -152,6 +182,7 @@ const DeviceManage = () => {
         setDraw={(val: any) => setDraw(val)}
         layer={layer}
         setLayer={(val: any) => setLayer(val)}
+        device={device}
       />
       <AddRelation
         isModalOpen={realtion.isModalOpen}
