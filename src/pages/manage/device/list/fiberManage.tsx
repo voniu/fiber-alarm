@@ -2,7 +2,7 @@ import { Button, Popconfirm, Table } from "antd";
 import type { TableColumnsType } from "antd";
 import type { Fiber } from "@/models/useItems";
 import TriggerCameraList from "./triggerCameraList";
-import { delFiber } from "@/services/admin";
+import { delFiber, setFiberArchive } from "@/services/admin";
 import MapModal from "@/components/mapModal";
 import { useState } from "react";
 
@@ -26,6 +26,10 @@ export default function (props: IProps) {
     type: "",
     isModalOpen: false,
   });
+  const setArchive = async (id: number, archived: boolean) => {
+    await setFiberArchive(id, archived);
+    flush();
+  };
   const deleteFiber = async (id: number) => {
     await delFiber(id);
     flush();
@@ -69,30 +73,52 @@ export default function (props: IProps) {
       key: "operator",
       render: (_, record) => {
         return (
-          <div>
-            <a style={{ color: "blue", marginRight: 20 }}>
-              <Button
-                type="primary"
-                size="small"
-                onClick={() => {
-                  edit(record.id, "fiber");
-                }}
+          <div style={{ display: "flex", gap: 10 }}>
+            <Button
+              type="primary"
+              size="small"
+              onClick={() => {
+                edit(record.id, "fiber");
+              }}
+            >
+              {"Edit"}
+            </Button>
+            <Button
+              type="primary"
+              size="small"
+              onClick={() => {
+                setRelation(true, { id: record.id, name: record.name });
+              }}
+            >
+              {"Relation"}
+            </Button>
+            {record.archived && (
+              <Popconfirm
+                title="Undo archive the fiber"
+                description="Are you sure to Undo archive the fiber?"
+                okText="Yes"
+                cancelText="No"
+                onConfirm={() => setArchive(record.id, false)}
               >
-                {"Edit"}
-              </Button>
-            </a>
-            <a style={{ color: "blue", marginRight: 20 }}>
-              <Button
-                type="primary"
-                size="small"
-                onClick={() => {
-                  setRelation(true, { id: record.id, name: record.name });
-                }}
+                <Button danger size="small">
+                  Undo archive
+                </Button>
+              </Popconfirm>
+            )}
+            {!record.archived && (
+              <Popconfirm
+                title="archive the fiber control"
+                description="Are you sure to archive the fiber?"
+                okText="Yes"
+                cancelText="No"
+                onConfirm={() => setArchive(record.id, true)}
               >
-                {"Relation"}
-              </Button>
-            </a>
-            <a style={{ color: "blue" }}>
+                <Button type="primary" size="small">
+                  Archive
+                </Button>
+              </Popconfirm>
+            )}
+            {record.archived && (
               <Popconfirm
                 title="Delete the Fiber"
                 description="Are you sure to delete this Fiber?"
@@ -102,12 +128,15 @@ export default function (props: IProps) {
                 <Button
                   danger
                   size="small"
-                  onClick={() => deleteFiber(record.id)}
+                  onClick={() => {
+                    deleteFiber(record.id);
+                    flush();
+                  }}
                 >
                   Delete
                 </Button>
               </Popconfirm>
-            </a>
+            )}
           </div>
         );
       },

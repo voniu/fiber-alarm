@@ -2,7 +2,7 @@ import { getGuard, getUser } from "@/services/admin";
 import WithAuth from "@/wrappers/authAdmin";
 import { useEffect, useState } from "react";
 import styles from "./index.less";
-import { Button, Radio } from "antd";
+import { Button, Radio, Checkbox } from "antd";
 import { User } from "@/type";
 import UserList from "./list/userList";
 import GuardList from "./list/guardList";
@@ -14,6 +14,7 @@ const UserManage = () => {
   const [listType, setList] = useState("user");
   const [loading1, setLoading1] = useState(false);
   const [loading2, setLoading2] = useState(false);
+  const [isArchived, setArchived] = useState(false);
   const onCancel = () => {
     setIsOpen(false);
   };
@@ -21,25 +22,30 @@ const UserManage = () => {
     setList(e.target.value);
   };
   const fetchUser = async () => {
-    setLoading2(true)
-    const { data } = await getUser(0, "");
-    setLoading2(false)
+    setLoading2(true);
+    const { data } = await getUser(0, "", isArchived);
+    setLoading2(false);
     setData(data);
   };
   const fetchGuard = async () => {
     setLoading1(true);
-    const { data } = await getGuard();
-    setLoading1(false)
+    const { data } = await getGuard(isArchived);
+    setLoading1(false);
     setData(data);
   };
   useEffect(() => {
+    console.log("flush");
+
     if (listType === "user") {
       fetchUser();
     } else {
       fetchGuard();
     }
-  }, [listType]);
-
+  }, [listType, isArchived]);
+  const handleArchive = (e: any) => {
+    console.log(`checked = ${e.target.checked}`);
+    setArchived(e.target.checked);
+  };
   return (
     <div>
       <p style={{ fontSize: 20, fontWeight: "bold", height: 20 }}>
@@ -51,10 +57,17 @@ const UserManage = () => {
             <Radio.Button value="user">user</Radio.Button>
             <Radio.Button value="guard">guard</Radio.Button>
           </Radio.Group>
-          <div>
-            <Button type="primary" onClick={() => setIsOpen(true)}>
-              Add
-            </Button>
+          <div className={styles["operator"]}>
+            <div>
+              <Checkbox style={{ fontWeight: "bold" }} onChange={handleArchive}>
+                isArchived
+              </Checkbox>
+            </div>
+            <div>
+              <Button type="primary" onClick={() => setIsOpen(true)}>
+                Add
+              </Button>
+            </div>
           </div>
         </div>
         <div>
@@ -64,7 +77,11 @@ const UserManage = () => {
         </div>
         <div>
           {listType === "guard" && (
-            <GuardList loading={loading1} flush={fetchGuard} data={data || []} />
+            <GuardList
+              loading={loading1}
+              flush={fetchGuard}
+              data={data || []}
+            />
           )}
         </div>
       </div>

@@ -1,6 +1,6 @@
 import { Button, Popconfirm, Table } from "antd";
 import type { TableColumnsType } from "antd";
-import { delControl } from "@/services/admin";
+import { delControl, setControlArchive } from "@/services/admin";
 import { FiberControl } from "@/type";
 interface IProps {
   flush: () => void;
@@ -10,6 +10,10 @@ interface IProps {
 }
 export default function (props: IProps) {
   const { edit, data, flush, loading } = props;
+  const setArchive = async (id: number, archived: boolean) => {
+    await setControlArchive(id, archived);
+    flush();
+  };
   const columns: TableColumnsType<FiberControl> = [
     {
       title: "ID",
@@ -40,19 +44,43 @@ export default function (props: IProps) {
       title: "Operator",
       render: (_, record) => {
         return (
-          <div>
-            <a style={{ color: "blue", marginRight: 20 }}>
-              <Button
-                type="primary"
-                size="small"
-                onClick={() => {
-                  edit(record.id, "fiber-control", record);
-                }}
+          <div style={{ display: "flex", gap: 10 }}>
+            <Button
+              type="primary"
+              size="small"
+              onClick={() => {
+                edit(record.id, "fiber-control", record);
+              }}
+            >
+              {"Edit"}
+            </Button>
+            {record.archived && (
+              <Popconfirm
+                title="Undo archive the fiber control"
+                description="Are you sure to Undo archive the fiber control?"
+                okText="Yes"
+                cancelText="No"
+                onConfirm={() => setArchive(record.id, false)}
               >
-                {"Edit"}
-              </Button>
-            </a>
-            <a style={{ color: "blue" }}>
+                <Button danger size="small">
+                  Undo archive
+                </Button>
+              </Popconfirm>
+            )}
+            {!record.archived && (
+              <Popconfirm
+                title="archive the fiber control"
+                description="Are you sure to archive the fiber control?"
+                okText="Yes"
+                cancelText="No"
+                onConfirm={() => setArchive(record.id, true)}
+              >
+                <Button type="primary" size="small">
+                  Archive
+                </Button>
+              </Popconfirm>
+            )}
+            {record.archived && (
               <Popconfirm
                 title="Delete the Fiber"
                 description="Are you sure to delete this Fiber?"
@@ -70,7 +98,7 @@ export default function (props: IProps) {
                   Delete
                 </Button>
               </Popconfirm>
-            </a>
+            )}
           </div>
         );
       },

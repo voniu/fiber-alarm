@@ -1,7 +1,7 @@
 import { Button, Popconfirm, Table } from "antd";
 import type { TableColumnsType } from "antd";
 import type { Camera } from "@/models/useItems";
-import { delCamera } from "@/services/admin";
+import { delCamera, setCameraArchive } from "@/services/admin";
 import MapModal from "@/components/mapModal";
 import { useState } from "react";
 interface IProps {
@@ -17,6 +17,10 @@ export default function (props: IProps) {
     type: "",
     isModalOpen: false,
   });
+  const setArchive = async (id: number, archived: boolean) => {
+    await setCameraArchive(id, archived);
+    flush();
+  };
   const deleteCamera = async (id: number) => {
     await delCamera(id);
     flush();
@@ -59,34 +63,61 @@ export default function (props: IProps) {
       title: "Operator",
       render: (_, record) => {
         return (
-          <div>
-            <a style={{ color: "blue", marginRight: 20 }}>
-              <Button
-                type="primary"
-                size="small"
-                onClick={() => {
-                  edit(record.id, "camera");
-                }}
-              >
-                {"Edit"}
-              </Button>
-            </a>
-            <a style={{ color: "blue" }}>
+          <div style={{ display: "flex", gap: 10 }}>
+            <Button
+              type="primary"
+              size="small"
+              onClick={() => {
+                edit(record.id, "camera");
+              }}
+            >
+              {"Edit"}
+            </Button>
+            {record.archived && (
               <Popconfirm
-                title="Delete the Fiber"
-                description="Are you sure to delete this Fiber?"
+                title="Undo archive the camera"
+                description="Are you sure to Undo archive the camera?"
+                okText="Yes"
+                cancelText="No"
+                onConfirm={() => setArchive(record.id, false)}
+              >
+                <Button danger size="small">
+                  Undo archive
+                </Button>
+              </Popconfirm>
+            )}
+            {!record.archived && (
+              <Popconfirm
+                title="archive the camera"
+                description="Are you sure to archive the camera?"
+                okText="Yes"
+                cancelText="No"
+                onConfirm={() => setArchive(record.id, true)}
+              >
+                <Button type="primary" size="small">
+                  Archive
+                </Button>
+              </Popconfirm>
+            )}
+            {record.archived && (
+              <Popconfirm
+                title="Delete the camera"
+                description="Are you sure to delete this camera?"
                 okText="Yes"
                 cancelText="No"
               >
                 <Button
                   danger
                   size="small"
-                  onClick={() => deleteCamera(record.id)}
+                  onClick={() => {
+                    deleteCamera(record.id);
+                    flush();
+                  }}
                 >
                   Delete
                 </Button>
               </Popconfirm>
-            </a>
+            )}
           </div>
         );
       },

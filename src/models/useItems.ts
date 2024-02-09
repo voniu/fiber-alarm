@@ -27,12 +27,14 @@ const colors = [
 export interface Camera {
   id: number;
   name: string;
+  archived: boolean;
   location: Coordinate;
 }
 
 export interface Fiber {
   id: number;
   name: string;
+  archived: boolean;
   location: Array<Coordinate[]>;
 }
 
@@ -50,8 +52,8 @@ export default function ItemsModel() {
     setCameraList(camerData);
   };
   const fetchAdminItem = async () => {
-    const { data: fiberData } = await getAdminFiber("");
-    const { data: camerData } = await getAdminCamera("");
+    const { data: fiberData } = await getAdminFiber("", false);
+    const { data: camerData } = await getAdminCamera("", false);
     setFiberList(fiberData);
     setCameraList(camerData);
   };

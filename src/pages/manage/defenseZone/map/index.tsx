@@ -14,7 +14,9 @@ const MapCenter = (props: IProps) => {
   const [draw, setDraw] = useState<any>();
   const [layer, setLayer] = useState<any>();
   const zoomOption = (n: number) => {
-   return new Array(n).fill(0).map((_, key) => ({ label: String(key), value: key }));
+    return new Array(n)
+      .fill(0)
+      .map((_, key) => ({ label: String(key), value: key }));
   };
   const afterClose = () => {
     if (draw) map.removeInteraction(draw);
@@ -33,6 +35,9 @@ const MapCenter = (props: IProps) => {
   };
   const setLocation = (location: any) => {
     form.setFieldValue("location", location);
+  };
+  const zoomChange = (val: any) => {
+    map.getView().setZoom(val);
   };
   useEffect(() => {
     console.log("CENTER");
@@ -70,9 +75,7 @@ const MapCenter = (props: IProps) => {
                   { required: true, message: "Please select zoom level!" },
                 ]}
               >
-                <Select
-                  options={zoomOption(18)}
-                ></Select>
+                <Select onChange={zoomChange} options={zoomOption(18)}></Select>
               </Form.Item>
 
               <Form.Item

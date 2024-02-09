@@ -9,10 +9,12 @@ export interface FiberDetail {
   name: string;
   location: string;
   triggerCameras: Camera[];
+  archived: boolean;
   identifier: number[];
 }
 export interface CameraDetail {
   name: string;
+  archived: boolean;
   location: string;
 }
 export interface UserDetail {
@@ -28,11 +30,13 @@ export interface User {
   type: number;
   createTime: number;
   password: string;
+  archived: boolean;
 }
 export interface Guard {
   id: number;
   name: string;
   nickname: string;
+  archived: boolean;
   createTime: number;
 }
 
@@ -46,5 +50,6 @@ export interface FiberControl {
   type: number;
   host: string;
   port: number;
+  archived: boolean;
   fiberNum?: number;
 }

@@ -1,7 +1,7 @@
 import WithAuth from "@/wrappers/authAdmin";
 import { useEffect, useState } from "react";
 import styles from "./index.less";
-import { Button, Form, Input, Radio } from "antd";
+import { Button, Form, Input, Radio, Checkbox } from "antd";
 import AddDevice from "@/components/addDevice";
 import { useModel } from "umi";
 import FiberManage from "./list/fiberManage";
@@ -35,6 +35,7 @@ const DeviceManage = () => {
 
   const [listData, setListData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [isArchived, setArchived] = useState(false);
 
   const handleChange = (e: any) => {
     setListType(e.target.value);
@@ -69,13 +70,13 @@ const DeviceManage = () => {
   const fetchList = async () => {
     setLoading(true);
     if (listType === "fiber-control") {
-      const { data: fiberControlData } = await getFiberControl("");
+      const { data: fiberControlData } = await getFiberControl("", isArchived);
       setListData(fiberControlData);
     } else if (listType === "fiber") {
-      const { data: fiberData } = await getFiber("");
+      const { data: fiberData } = await getFiber("", isArchived);
       setListData(fiberData);
     } else if (listType === "camera") {
-      const { data: cameraData } = await getCamera("");
+      const { data: cameraData } = await getCamera("", isArchived);
       setListData(cameraData);
     }
     setLoading(false);
@@ -84,20 +85,24 @@ const DeviceManage = () => {
     setLoading(true);
 
     if (listType === "fiber-control") {
-      const { data } = await getFiberControl(value.search);
+      const { data } = await getFiberControl(value.search, isArchived);
       setListData(data);
     } else if (listType === "fiber") {
-      const { data } = await getFiber(value.search);
+      const { data } = await getFiber(value.search, isArchived);
       setListData(data);
     } else if (listType === "camera") {
-      const { data } = await getCamera(value.search);
+      const { data } = await getCamera(value.search, isArchived);
       setListData(data);
     }
     setLoading(false);
   };
+  const handleArchive = (e: any) => {
+    console.log(`checked = ${e.target.checked}`);
+    setArchived(e.target.checked);
+  };
   useEffect(() => {
     fetchList();
-  }, [listType]);
+  }, [listType, isArchived]);
   return (
     <div className={styles["container"]}>
       <p style={{ fontSize: 20, fontWeight: "bold", height: 20 }}>
@@ -116,16 +121,21 @@ const DeviceManage = () => {
         </div>
         <div className={styles["operator"]}>
           <div className={styles["search"]}>
-            <Form onFinish={handleSearch}>
+            <div>
+              <Checkbox style={{ fontWeight: "bold" }} onChange={handleArchive}>
+                isArchived
+              </Checkbox>
+            </div>
+            <Form layout={"inline"} onFinish={handleSearch}>
               <Form.Item name={"search"}>
                 <Input />
               </Form.Item>
+              <Form.Item>
+                <Button type="primary" htmlType="submit" loading={loading}>
+                  Search
+                </Button>
+              </Form.Item>
             </Form>
-            <Form.Item>
-              <Button type="primary" htmlType="submit" loading={loading}>
-                Search
-              </Button>
-            </Form.Item>
           </div>
           <Button
             type="primary"

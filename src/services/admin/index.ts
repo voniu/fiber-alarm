@@ -30,9 +30,9 @@ export const adminLogout = () => {
   });
 };
 //
-export const getFiberControl = (nameKw?: string) => {
+export const getFiberControl = (nameKw: string, archived: boolean) => {
   return request(`${prefix}/fiberDevice`, {
-    params: { nameKw },
+    params: { nameKw, archived },
   });
 };
 export const addControl = (fiberDevice: any) => {
@@ -47,13 +47,19 @@ export const updateControl = (id: number, fiberDevice: any) => {
     data: fiberDevice,
   });
 };
+export const setControlArchive = (id: number, archived: boolean) => {
+  return request(`${prefix}/fiberDevice/${id}`, {
+    method: "PUT",
+    data: { archived },
+  });
+};
 export const delControl = (id: number) => {
   return request(`${prefix}/fiberDevice/${id}`, { method: "DELETE" });
 };
 // 光纤查询
-export const getFiber = (nameKw?: string) => {
+export const getFiber = (nameKw: string, archived: boolean) => {
   return request(`${prefix}/fiber`, {
-    params: { nameKw },
+    params: { nameKw, archived },
   }).then((res) => {
     if (!res.success) return res;
     res.data = res.data.map(locationConverter);
@@ -77,6 +83,12 @@ export const addFiber = (fiber: FiberDetail) => {
 export const setFiberDetail = (id: number, fiber: Partial<FiberDetail>) => {
   return request(`${prefix}/fiber/${id}`, { method: "PUT", data: fiber });
 };
+export const setFiberArchive = (id: number, archived: boolean) => {
+  return request(`${prefix}/fiber/${id}`, {
+    method: "PUT",
+    data: { archived },
+  });
+};
 
 // 删除光纤
 export const delFiber = (id: number) => {
@@ -98,10 +110,11 @@ export const delFiberCamera = (fiberId: number, cameraId: number) => {
 };
 
 // 摄像头
-export const getCamera = (nameKw: string) => {
+export const getCamera = (nameKw: string, archived: boolean) => {
   return request(`${prefix}/camera`, {
     params: {
       nameKw,
+      archived,
     },
   }).then((res) => {
     if (!res.success) return res;
@@ -135,6 +148,12 @@ export const updateCamera = (
   return request(`${prefix}/camera/${cameraId}`, {
     method: "POST",
     data: camera,
+  });
+};
+export const setCameraArchive = (cameraId: number, archived: boolean) => {
+  return request(`${prefix}/camera/${cameraId}`, {
+    method: "POST",
+    data: { archived },
   });
 };
 
@@ -174,13 +193,23 @@ export const delAlarmDetail = (id: number) => {
   return request(`${prefix}/alarm/${id}`, { method: "DELETE" });
 };
 
-export const getGuard = () => {
-  return request(`${prefix}/guard`);
+export const getGuard = (archived: boolean) => {
+  return request(`${prefix}/guard`, {
+    params: {
+      archived,
+    },
+  });
 };
 export const updateGuard = (id: number, user: Guard) => {
   return request(`${prefix}/guard/${id}`, {
     method: "PUT",
     data: user,
+  });
+};
+export const setGuardArchived = (id: number, archived: boolean) => {
+  return request(`${prefix}/guard/${id}`, {
+    method: "PUT",
+    data: { archived },
   });
 };
 export const addGuard = (user: { name: string; nickname: string }) => {
@@ -196,11 +225,12 @@ export const delGuard = (id: number) => {
 };
 // 用户信息(不包括保安)
 // type 0 = 超级管理员 1 = 管理员 2 = 主管
-export const getUser = (type: number, nameKw: string) => {
+export const getUser = (type: number, nameKw: string, archived: boolean) => {
   return request(`${prefix}/user`, {
     params: {
       type,
       nameKw,
+      archived,
     },
   });
 };
@@ -214,6 +244,12 @@ export const updateUser = (id: number, user: User) => {
   return request(`${prefix}/user/${id}`, {
     method: "PUT",
     data: user,
+  });
+};
+export const setUserArchive = (id: number, archived: boolean) => {
+  return request(`${prefix}/user/${id}`, {
+    method: "PUT",
+    data: { archived },
   });
 };
 export const delUser = (id: number) => {

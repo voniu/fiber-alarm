@@ -1,7 +1,7 @@
 import { User } from "@/type";
 import { Button, Popconfirm, Table, TableColumnsType, Typography } from "antd";
 import dayjs from "@/utills/day";
-import { delUser, updateUser } from "@/services/admin";
+import { delUser, setUserArchive, updateUser } from "@/services/admin";
 import { useModel } from "umi";
 interface IProps {
   data: User[];
@@ -22,6 +22,10 @@ export default (props: IProps) => {
   };
   const resetPassword = async (user: User) => {
     await updateUser(user.id, { ...user, password: "666666" });
+  };
+  const setArchive = async (id: number, archived: boolean) => {
+    await setUserArchive(id, archived);
+    flush();
   };
   const columns: TableColumnsType<User> = [
     {
@@ -66,6 +70,32 @@ export default (props: IProps) => {
       render: (_, record) => {
         return (
           <div style={{ display: "flex", gap: 10 }}>
+            {record.archived && (
+              <Popconfirm
+                title="Undo archive the user"
+                description="Are you sure to Undo archive the user?"
+                okText="Yes"
+                cancelText="No"
+                onConfirm={() => setArchive(record.id, false)}
+              >
+                <Button danger size="small">
+                  Undo archive
+                </Button>
+              </Popconfirm>
+            )}
+            {!record.archived && (
+              <Popconfirm
+                title="archive the user"
+                description="Are you sure to archive the user?"
+                okText="Yes"
+                cancelText="No"
+                onConfirm={() => setArchive(record.id, true)}
+              >
+                <Button type="primary" size="small">
+                  Archive
+                </Button>
+              </Popconfirm>
+            )}
             {admin?.type === 0 && (
               <Popconfirm
                 title="reset the password"
@@ -79,17 +109,19 @@ export default (props: IProps) => {
                 </Button>
               </Popconfirm>
             )}
-            <Popconfirm
-              title="reset the password"
-              description="Are you sure to reset the password?"
-              okText="Yes"
-              cancelText="No"
-              onConfirm={() => deleteUser(record.id)}
-            >
-              <Button danger size="small">
-                Delete
-              </Button>
-            </Popconfirm>
+            {record.archived && (
+              <Popconfirm
+                title="delete the user"
+                description="Are you sure to delete the user?"
+                okText="Yes"
+                cancelText="No"
+                onConfirm={() => deleteUser(record.id)}
+              >
+                <Button danger size="small">
+                  Delete
+                </Button>
+              </Popconfirm>
+            )}
           </div>
         );
       },
