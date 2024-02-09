@@ -225,15 +225,25 @@ export const delUser = (id: number) => {
 export const getTask = () => {
   return request(`${prefix}/task`);
 };
+export const getTaskDetail = (id: number) => {
+  return request(`${prefix}/task/${id}`);
+};
 
 export const addTask = (
+  name: string,
   time: { hour: number; minute: number },
   fibers: number[],
-  level: number
+  configMap: { "0": any; "1": any }
 ) => {
-  return request(`${prefix}/task/`, {
+  return request(`${prefix}/task`, {
     method: "POST",
-    data: { hour: time.hour, minute: time.minute, fiberId: fibers, level },
+    data: {
+      name,
+      hour: time.hour,
+      minute: time.minute,
+      affectFiberIds: fibers,
+      configMap,
+    },
   });
 };
 export const delTask = (id: number) => {

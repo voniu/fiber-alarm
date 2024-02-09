@@ -1,25 +1,33 @@
 import WithAuth from "@/wrappers/authAdmin";
 import styles from "./index.less";
-import { Button, Col, Empty, List, Popconfirm, Row, Typography } from "antd";
-import { Fiber } from "@/models/useItems";
+import { Button, Col, Empty, List, Popconfirm, Row } from "antd";
 import CreateTask from "./createTask";
 import { useEffect, useState } from "react";
 import { delTask, getTask } from "@/services/admin";
 const rendertTskItem = (props: {
-  fibers: Fiber[];
+  // fibers: Fiber[];
   time: { hour: number; minute: number };
-  level: number;
+  name: string;
+  // level: number;
 }) => {
-  const { fibers, time, level } = props;
-  const getFibersName = (fibers: Fiber[]) => {
-    return fibers
-      .map((item) => {
-        return item.name;
-      })
-      .join("/");
-  };
+  const { time, name } = props;
+  // const getFibersName = (fibers: Fiber[]) => {
+  //   return fibers
+  //     .map((item) => {
+  //       return item.name;
+  //     })
+  //     .join("/");
+  // };
   return (
     <div className={styles["list-item"]}>
+      <Row>
+        <Col span={3}>
+          <span className={styles["item-label"]}>Name:</span>
+        </Col>
+        <Col span={12}>
+          <span className={styles["item-content"]}>{name}</span>
+        </Col>
+      </Row>
       <Row>
         <Col span={3}>
           <span className={styles["item-label"]}>Time:</span>
@@ -31,7 +39,7 @@ const rendertTskItem = (props: {
         </Col>
       </Row>
       <Row>
-        <Col span={3}>
+        {/* <Col span={3}>
           <span className={styles["item-label"]}>Fibers:</span>
         </Col>
         <Col span={12}>
@@ -42,21 +50,17 @@ const rendertTskItem = (props: {
             {getFibersName(fibers)}
           </Typography.Text>
           <span className={styles["item-content"]}></span>
-        </Col>
-      </Row>
-      <Row>
-        <Col span={3}>
-          <span className={styles["item-label"]}>Level:</span>
-        </Col>
-        <Col span={12}>
-          <span className={styles["item-content"]}>{level}</span>
-        </Col>
+        </Col> */}
       </Row>
     </div>
   );
 };
 const FiberSensitivity = () => {
   const [open, setIsOpen] = useState(false);
+  const [check, setCheck] = useState<{
+    type: string;
+    taskId: number | null;
+  }>({ type: "Create", taskId: null });
   const onCancel = () => setIsOpen(false);
   const [tasks, setTasks] = useState([]);
   const fetchTask = async () => {
@@ -69,6 +73,10 @@ const FiberSensitivity = () => {
     await delTask(id);
     fetchTask();
   };
+  const handleCheck = (id: number) => {
+    setCheck({ type: "Check", taskId: id });
+    setIsOpen(true);
+  };
   useEffect(() => {
     fetchTask();
   }, []);
@@ -80,7 +88,16 @@ const FiberSensitivity = () => {
       <div className={styles["container"]}>
         <div className={styles["list-container"]}>
           <div className={styles["create-con"]}>
-            <Button type="primary" onClick={() => setIsOpen(true)}>
+            <Button
+              type="primary"
+              onClick={() => {
+                setIsOpen(true);
+                setCheck({
+                  type: "Create",
+                  taskId: null,
+                });
+              }}
+            >
               Create
             </Button>
           </div>
@@ -109,6 +126,13 @@ const FiberSensitivity = () => {
                 ) : (
                   <List.Item
                     actions={[
+                      <Button
+                        key="check-task"
+                        type="primary"
+                        onClick={() => handleCheck(item.id)}
+                      >
+                        check
+                      </Button>,
                       <Popconfirm
                         key="delete-task"
                         title={"Delete the task?"}
@@ -119,12 +143,11 @@ const FiberSensitivity = () => {
                     ]}
                   >
                     {rendertTskItem({
+                      name: item.name,
                       time: {
                         hour: item.hour,
                         minute: item.minute,
                       },
-                      fibers: item.fibers,
-                      level: item.level,
                     })}
                   </List.Item>
                 )
@@ -134,6 +157,7 @@ const FiberSensitivity = () => {
         </div>
       </div>
       <CreateTask
+        check={check}
         isModalOpen={open}
         onCancel={onCancel}
         fetchTask={fetchTask}
