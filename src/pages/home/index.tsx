@@ -60,7 +60,7 @@ function HomePage() {
                   display: "flex",
                   flexDirection: "column",
                   position: "relative",
-                  overflow: "auto",
+                  overflow: "hidden",
                 }}
               >
                 <div className="map_title_box">

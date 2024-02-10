@@ -25,27 +25,7 @@ import AlarmDetailDrawer from "@/components/alarmDetailDrawer";
 import locale from "antd/es/date-picker/locale/en_GB";
 import dayjs from "@/utills/day";
 import { useModel } from "umi";
-interface AlarmDetail {
-  key?: string;
-  id: number;
-  name: string;
-  fiber: {
-    id: number;
-    name: string;
-  };
-  description: string;
-  status: number;
-  guard?: {
-    id: number;
-    name: string;
-    log: string;
-  };
-  manager?: {
-    id: number;
-    name: string;
-    log: string;
-  };
-}
+import { AlarmDetail } from "@/models/useAlarms";
 
 const HistoryAlarm = () => {
   const [data, setData] = useState();
@@ -65,6 +45,7 @@ const HistoryAlarm = () => {
     if (values)
       params = {
         ...values,
+        type: values.type !== "all" ? values.type : undefined,
         status: values.status !== -1 ? values.status : undefined,
         timeType: values.timeType !== "all" ? values.timeType : undefined,
         startTime: values.time ? dayjs(values.time[0]).valueOf() : undefined,
@@ -88,7 +69,7 @@ const HistoryAlarm = () => {
   };
   const statusMap = ["pending", "processing", "solved"];
   const colorMap = ["default", "processing", "success"];
-
+  const typeMap = ["intrusion", "tamper", "wire Disconnect", "Disconnect"];
   const onClose = () => setOpen(false);
 
   const [form] = Form.useForm();
@@ -109,8 +90,17 @@ const HistoryAlarm = () => {
     {
       title: "Status",
       dataIndex: "status",
+      width: 150,
       render: (_, record) => (
         <Tag color={colorMap[record.status]}>{statusMap[record.status]}</Tag>
+      ),
+    },
+    {
+      title: "Type",
+      dataIndex: "type",
+      width: 150,
+      render: (_, record) => (
+        <Tag color="#f50">{typeMap[record.type] || "none"}</Tag>
       ),
     },
     {
@@ -139,8 +129,8 @@ const HistoryAlarm = () => {
             </a>
             {admin?.type === 0 && (
               <Popconfirm
-                title="reset the password"
-                description="Are you sure to reset the password?"
+                title="delete the alarm"
+                description="Are you sure to delete the alarm?"
                 okText="Yes"
                 cancelText="No"
                 onConfirm={() => deleteAlarm(record.id)}
@@ -157,21 +147,21 @@ const HistoryAlarm = () => {
   ];
 
   const fetchFormValue = async () => {
-    const { data: allFiber } = await getFiber("");
+    const { data: allFiber } = await getFiber("", false);
     const f = allFiber.map((item: any) => {
       return {
         value: item.id,
         label: item.name,
       };
     });
-    const { data: allGuard } = await getGuard();
+    const { data: allGuard } = await getGuard(false);
     const g = allGuard.map((item: any) => {
       return {
         value: item.id,
         label: item.name,
       };
     });
-    const { data: allManager } = await getUser(1, "");
+    const { data: allManager } = await getUser(1, "", true);
     const m = allManager.map((item: any) => {
       return {
         value: item.id,
@@ -257,6 +247,24 @@ const HistoryAlarm = () => {
           </Col>
         </Row>
         <Row gutter={24}>
+          <Col>
+            <Form.Item name={`type`} label={`type`}>
+              <Select
+                // mode="multiple"
+                size={"middle"}
+                placeholder="Please select"
+                style={{ width: "230px" }}
+                maxTagCount={1}
+                options={[
+                  { value: "all", label: "all" },
+                  { value: 0, label: "intrusion" },
+                  { value: 1, label: "tamper" },
+                  { value: 2, label: "wire Disconnect" },
+                  { value: 3, label: "Disconnect" },
+                ]}
+              />
+            </Form.Item>
+          </Col>
           <Col>
             <Form.Item name={`managerId`} label={`manager`}>
               <Select

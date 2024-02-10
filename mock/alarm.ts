@@ -11,7 +11,7 @@ export default {
             id: 456,
             name: "asdads",
           },
-          description: "alarm type 1",
+          type: 0,
           previewUrl: "/snapshot/1.jpg",
           status: 2,
           guard: {
@@ -34,7 +34,7 @@ export default {
             id: 456,
             name: "asdads",
           },
-          description: "alarm type 2",
+          type: 1,
           previewUrl: "/snapshot/1.jpg",
           status: 1,
           guard: {
@@ -51,7 +51,7 @@ export default {
             id: 456,
             name: "asdads",
           },
-          description: "alarm type 1",
+          type: 2,
           previewUrl: "/snapshot/1.jpg",
           status: 2,
           guard: {
@@ -74,7 +74,7 @@ export default {
             id: 456,
             name: "asdads",
           },
-          description: "alarm type 1",
+          type: 3,
           previewUrl: "/snapshot/1.jpg",
           status: 2,
           guard: {
@@ -97,7 +97,7 @@ export default {
             id: 456,
             name: "asdads",
           },
-          description: "alarm type 1",
+          type: 0,
           previewUrl: "/snapshot/1.jpg",
           status: 2,
           guard: {
@@ -120,7 +120,7 @@ export default {
             id: 456,
             name: "asdads",
           },
-          description: "alarm type 1",
+          type: 0,
           previewUrl: "/snapshot/1.jpg",
           status: 2,
           guard: {
@@ -143,7 +143,7 @@ export default {
             id: 456,
             name: "asdads",
           },
-          description: "alarm type 1",
+          type: 0,
           previewUrl: "/snapshot/1.jpg",
           status: 2,
           guard: {
@@ -166,7 +166,7 @@ export default {
             id: 456,
             name: "asdads",
           },
-          description: "alarm type 1",
+          type: 0,
           previewUrl: "/snapshot/1.jpg",
           status: 2,
           guard: {
@@ -225,7 +225,7 @@ export default {
           name: "guard1",
           log: "info 1",
         },
-        description: "alarm type 1",
+        type: 0,
         status: 1,
         previewUrl: "https://s2.loli.net/2024/01/27/QptsZvwNoeqfr4O.png",
         snapshots: [

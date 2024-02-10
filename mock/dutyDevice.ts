@@ -20,6 +20,26 @@ export default {
         name: "fiber test1",
         location: "",
       },
+      {
+        id: 1,
+        name: "fiber test11",
+        location: "",
+      },
+      {
+        id: 2,
+        name: "fiber test111",
+        location: "",
+      },
+      {
+        id: 3,
+        name: "fiber test3",
+        location: "",
+      },
+      {
+        id: 4,
+        name: "fiber test14",
+        location: "",
+      },
     ],
   },
   "GET  /api/guard/fiber/234321": {

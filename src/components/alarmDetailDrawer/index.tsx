@@ -47,6 +47,7 @@ export default (props: IProps) => {
   const [detail, setDetail] = useState<AlarmDetail>();
   const { handleManage } = useModel("useAlarms");
   const processInfo = useRef();
+  const typeMap = ["intrusion", "tamper", "wire Disconnect", "Disconnect"];
   useEffect(() => {
     console.log("dddddd");
     if (alarmID === -1) return;
@@ -101,7 +102,12 @@ export default (props: IProps) => {
       <div>
         <DescriptionText label="ID" content={detail?.id.toString()} />
         <DescriptionText label="FiberName" content={detail?.fiber.name} />
-        <DescriptionText label="description" content={detail?.description} />
+        <DescriptionText
+          label="Type"
+          content={
+            typeof detail?.type === "number" ? typeMap[detail?.type] : ""
+          }
+        />
         <DescriptionText
           label="Alarm Time"
           content={dayjs(detail?.createTime).format("MMMM D, YYYY h:mm A")}

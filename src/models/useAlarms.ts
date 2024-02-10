@@ -13,7 +13,7 @@ export interface AlarmDetail extends Alarm {
     id: number;
     name: string;
   };
-  description: string;
+  type: number;
   previewUrl: string;
   status: number;
   guard?: {
