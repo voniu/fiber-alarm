@@ -17,7 +17,7 @@ export default function (props: IProps) {
     setValue(value);
   };
   const fetchData = async () => {
-    const { data: allCamera } = await getCamera("");
+    const { data: allCamera } = await getCamera("", false);
     const { data: fiberDetail } = await getFiberDetail(fiber.id);
     const defaultCamera = fiberDetail?.triggerCameras.map((item: Camera) => {
       return item.id;
@@ -78,6 +78,7 @@ export default function (props: IProps) {
             <Col span={12}>
               <Select
                 mode="multiple"
+                optionFilterProp="label"
                 placeholder="Please select"
                 defaultValue={[]}
                 value={value}

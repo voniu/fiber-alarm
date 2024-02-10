@@ -32,7 +32,7 @@ const HistoryAlarm = () => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [dealId, setDealId] = useState<number>(-1);
-  const { admin } = useModel("useAdminInfo");
+  const { admin, isLogin } = useModel("useAdminInfo");
   const fetchList = (values?: any) => {
     let params = {
       fiberId: undefined,
@@ -148,20 +148,22 @@ const HistoryAlarm = () => {
 
   const fetchFormValue = async () => {
     const { data: allFiber } = await getFiber("", false);
+    const { data: allGuard } = await getGuard(false);
+    const { data: allManager } = await getUser(1, "", true);
+
+    if (!allFiber || !allGuard || !allManager) return;
     const f = allFiber.map((item: any) => {
       return {
         value: item.id,
         label: item.name,
       };
     });
-    const { data: allGuard } = await getGuard(false);
     const g = allGuard.map((item: any) => {
       return {
         value: item.id,
         label: item.name,
       };
     });
-    const { data: allManager } = await getUser(1, "", true);
     const m = allManager.map((item: any) => {
       return {
         value: item.id,
@@ -174,9 +176,10 @@ const HistoryAlarm = () => {
     console.log(allFiber, allManager, allGuard);
   };
   useEffect(() => {
+    if (!isLogin) return;
     fetchFormValue();
     fetchList();
-  }, []);
+  }, [isLogin]);
 
   const handleSearch = (values: any) => {
     // setLoading(true);
@@ -194,12 +197,14 @@ const HistoryAlarm = () => {
         initialValues={{
           status: -1,
           timeType: "all",
+          type: "all",
         }}
       >
-        <Row gutter={24}>
+        <Row gutter={24} style={{ height: 45 }}>
           <Col>
             <Form.Item name={`fiberId`} label={`fiber`}>
               <Select
+                optionFilterProp="label"
                 mode="multiple"
                 size={"middle"}
                 placeholder="Please select"
@@ -271,6 +276,8 @@ const HistoryAlarm = () => {
                 // mode="multiple"
                 size={"middle"}
                 placeholder="Please select"
+                showSearch
+                optionFilterProp="label"
                 style={{ width: "230px" }}
                 maxTagCount={1}
                 options={managerOptions}
@@ -282,6 +289,8 @@ const HistoryAlarm = () => {
               <Select
                 // mode="multiple"
                 size={"middle"}
+                showSearch
+                optionFilterProp="label"
                 placeholder="Please select"
                 style={{ width: "230px" }}
                 maxTagCount={1}

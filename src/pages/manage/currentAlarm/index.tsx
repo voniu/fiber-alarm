@@ -1,6 +1,6 @@
 import { getAlarmList } from "@/services/admin";
 import WithAuth from "@/wrappers/authAdmin";
-import { Table } from "antd";
+import { Table, Tag } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useEffect, useState } from "react";
 import styles from "./index.less";
@@ -15,6 +15,7 @@ const Alarm = () => {
   const [dealId, setDealId] = useState<number>(-1);
   const [loading, setLoading] = useState(false);
   const onClose = () => setOpen(false);
+  const typeMap = ["intrusion", "tamper", "wire Disconnect", "Disconnect"];
   const { manageAlarm } = useModel("useAlarms");
   const fetchList = () => {
     setLoading(true);
@@ -37,6 +38,14 @@ const Alarm = () => {
       title: "Fiber",
       dataIndex: "fiber",
       render: (text, record) => <a>{record.fiber.name}</a>,
+    },
+    {
+      title: "Type",
+      dataIndex: "type",
+      width: 150,
+      render: (_, record) => (
+        <Tag color="#f50">{typeMap[record.type] || "none"}</Tag>
+      ),
     },
     {
       title: "manager",

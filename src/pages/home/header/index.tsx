@@ -2,7 +2,7 @@ import { useState } from "react";
 import { AuthModal } from "../authModal";
 import styles from "./index.less";
 import { Button } from "antd";
-import { useModel } from "@/.umi/plugin-model";
+import { useModel } from "umi";
 
 export default () => {
   const { guard, monitor } = useModel("useUserInfo");

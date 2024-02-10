@@ -76,6 +76,7 @@ export default function () {
           }
           className={styles["table"]}
           sticky
+          rowKey={"id"}
           dataSource={cameraList}
           columns={columns}
           onRow={(record) => {

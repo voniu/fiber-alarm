@@ -1,4 +1,4 @@
-import { useModel } from "@/.umi/plugin-model";
+import { useModel } from "umi";
 import { updateUser } from "@/services/admin";
 import { Form, Input, Button, message, Modal } from "antd";
 import { useState } from "react";

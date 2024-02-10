@@ -45,7 +45,7 @@ export default (props: IProps) => {
     return op;
   };
   const getFiberOptions = async () => {
-    const { data: allFiber } = await getFiber("");
+    const { data: allFiber } = await getFiber("", false);
     const f = allFiber.map((item: any) => {
       return {
         value: item.id,

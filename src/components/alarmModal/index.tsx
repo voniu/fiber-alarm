@@ -7,9 +7,10 @@ import {
   Row,
   Col,
   Popover,
+  message,
 } from "antd";
 import { useModel } from "umi";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import styles from "./index.less";
 import { getAlarmDetail } from "@/services/monitor";
 import { Alarm, AlarmDetail } from "@/models/useAlarms";
@@ -46,16 +47,20 @@ const DescriptionText = ({
     </div>
   );
 };
-const TabContent = (props: { id: number }) => {
+const TabContent = (props: { id: number; remove: () => void }) => {
   const { setTarget } = useModel("useMap");
-  const { alarmList } = useModel("useAlarms");
+  const { alarmList, handleGuard } = useModel("useAlarms");
   const { monitor } = useModel("useUserInfo");
   const { centerTo } = useModel("useItems");
   const [alarmDetail, setDetail] = useState<AlarmDetail>();
-  const [ProcessInfo, setProcess] = useState("");
-  const { id } = props;
-  const onSubmit = () => {
-    // TODO: 触发提交处理事件
+  const [processInfo, setProcess] = useState("");
+  const { id, remove } = props;
+  const typeMap = ["intrusion", "tamper", "wire Disconnect", "Disconnect"];
+
+  const onSubmit = async () => {
+    handleGuard(processInfo);
+    remove();
+    message.success("success");
   };
   useEffect(() => {
     setTarget("alarm-map-container");
@@ -94,7 +99,11 @@ const TabContent = (props: { id: number }) => {
           />
           <DescriptionText
             label="Alarm Type"
-            content={alarmDetail?.description}
+            content={
+              typeof alarmDetail?.type === "number"
+                ? typeMap[alarmDetail?.type]
+                : ""
+            }
           />
           <DescriptionText
             label="Camera Info"
@@ -117,7 +126,7 @@ const TabContent = (props: { id: number }) => {
           <Input.TextArea
             showCount
             maxLength={200}
-            value={ProcessInfo}
+            value={processInfo}
             onChange={(e) => setProcess(e.target.value)}
             placeholder="input info"
             style={{ height: 100, resize: "none" }}
@@ -138,8 +147,13 @@ const TabContent = (props: { id: number }) => {
 };
 export default function () {
   const { alarmList } = useModel("useAlarms");
-  const open = (alarmList?.length === 0);
+  const open = alarmList?.length !== 0;
+  const tabData = useMemo(() => alarmList, [alarmList]);
+  const [items, setItems] = useState(tabData);
   const [isTrumpetOn, setTrumpetOn] = useState(true);
+  const remove = (id: number) => {
+    setItems(items.filter((item) => item.id !== id));
+  };
   useEffect(() => {
     if (open) {
       setTrumpetOn(true);
@@ -176,7 +190,9 @@ export default function () {
               return {
                 label: `alarm ${id}`,
                 key: id,
-                children: <TabContent id={item.id} />,
+                children: (
+                  <TabContent remove={() => remove(item.id)} id={item.id} />
+                ),
               };
             })}
             tabBarExtraContent={{

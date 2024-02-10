@@ -78,6 +78,7 @@ export default function () {
           }
           className={styles["table"]}
           sticky
+          rowKey={"id"}
           dataSource={fiberList}
           columns={columns}
           onRow={(record) => {

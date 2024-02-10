@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { getAlarmDetail } from "@/services/admin";
 import { AlarmDetail } from "@/models/useAlarms";
 import dayjs from "@/utills/day";
-import { useModel } from "@/.umi/plugin-model";
+import { useModel } from "umi";
 interface IProps {
   open: boolean;
   onClose: () => void;

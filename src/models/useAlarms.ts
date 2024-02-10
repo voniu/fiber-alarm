@@ -39,18 +39,18 @@ export interface AlarmDetail extends Alarm {
 const alarms = new Map<number, AlarmDetail>();
 
 export default function Alarms() {
-  const { isLogin: userLogin } = useModel("useUserInfo");
+  const { isLogin: userLogin, isOnDuty } = useModel("useUserInfo");
   const { isLogin: adminLogin } = useModel("useAdminInfo");
   const [alarmList, setAlarmList] = useState<Alarm[]>([
-    { id: 1 },
-    { id: 2 },
-    { id: 3 },
-    { id: 4 },
-    { id: 5 },
+    // { id: 1 },
+    // { id: 2 },
+    // { id: 3 },
+    // { id: 4 },
+    // { id: 5 },
   ]);
   const [manageAlarm, setManageAlarm] = useState<Alarm[]>([
-    { id: 1 },
-    { id: 2 },
+    // { id: 1 },
+    // { id: 2 },
   ]);
 
   const [guardSocekt, setGuardSocket] = useState<WebSocket>();
@@ -112,7 +112,7 @@ export default function Alarms() {
     if (adminLogin && !isHome()) {
       getMangerAlarm();
     }
-    if (userLogin && isHome()) {
+    if (userLogin && isHome() && isOnDuty) {
       getGuardAlarm();
     }
 
@@ -120,7 +120,7 @@ export default function Alarms() {
       manageSocekt?.close();
       guardSocekt?.close();
     };
-  }, [userLogin, adminLogin]);
+  }, [userLogin, adminLogin, isOnDuty]);
 
   return {
     alarms,
