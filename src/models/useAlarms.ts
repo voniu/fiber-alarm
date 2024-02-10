@@ -109,6 +109,8 @@ export default function Alarms() {
     setGuardSocket(socket1);
   };
   useEffect(() => {
+    if (manageSocekt) manageSocekt.close();
+    if (guardSocekt) guardSocekt.close();
     if (adminLogin && !isHome()) {
       getMangerAlarm();
     }

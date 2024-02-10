@@ -10,6 +10,7 @@ const errorHandler = (error: any) => {
     const errorText = "An error occurred and try again later.";
 
     message.error(errorText);
+    return;
   }
 
   if (!response && !data) {
@@ -20,7 +21,7 @@ const errorHandler = (error: any) => {
 };
 export const request: RequestConfig = {
   baseURL: process.env.mock ? `http://${baseUrl}` : "",
-  timeout: 1000,
+  // timeout: 1000,
   errorConfig: { errorHandler },
   requestInterceptors: [],
   responseInterceptors: [
