@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { RtspStream } from "@/libs/rtspStream";
 import defaultImg from "@/assets/video/defaultVideo.webp";
+import styles from "./index.less";
 interface IProps {
   id: number;
   style?: Partial<React.CSSProperties>;
@@ -27,19 +28,25 @@ export default (props: IProps) => {
     };
   }, []);
   return (
-    <div
-      style={{
-        height: 140,
-        width: 300,
-      }}
-    >
-      <video
-        style={style || { height: 140, margin: "2px 5px", width: 280 }}
-        id={`rtsp-video-${prefix}-${id}`}
-        autoPlay
-        muted
-        poster={defaultImg}
-      ></video>
+    <div>
+      <div
+        style={
+          style || {
+            margin: 2,
+            height: 140,
+            width: 280,
+            backgroundColor: "#000",
+          }
+        }
+      >
+        <video
+          className={styles["video-around"]}
+          id={`rtsp-video-${prefix}-${id}`}
+          autoPlay
+          muted
+          poster={defaultImg}
+        ></video>
+      </div>
     </div>
   );
 };

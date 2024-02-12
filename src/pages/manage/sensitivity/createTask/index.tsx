@@ -222,7 +222,7 @@ export default (props: IProps) => {
                       >
                         <Select
                           style={{ width: 100 }}
-                          options={levelOptions(100)}
+                          options={levelOptions(99)}
                         />
                       </Form.Item>
                       <Form.Item
@@ -235,7 +235,7 @@ export default (props: IProps) => {
                       >
                         <Select
                           style={{ width: 100 }}
-                          options={levelOptions(100)}
+                          options={levelOptions(99)}
                         />
                       </Form.Item>
                       <Form.Item
@@ -248,7 +248,7 @@ export default (props: IProps) => {
                       >
                         <Select
                           style={{ width: 100 }}
-                          options={levelOptions(100)}
+                          options={levelOptions(99)}
                         />
                       </Form.Item>
                       <Form.Item
@@ -261,7 +261,7 @@ export default (props: IProps) => {
                       >
                         <Select
                           style={{ width: 100 }}
-                          options={levelOptions(100)}
+                          options={levelOptions(99)}
                         />
                       </Form.Item>
                     </Tabs.TabPane>
@@ -278,7 +278,7 @@ export default (props: IProps) => {
                       >
                         <Select
                           style={{ width: 100 }}
-                          options={levelOptions(100)}
+                          options={levelOptions(50)}
                         />
                       </Form.Item>
                       <Form.Item
@@ -291,7 +291,7 @@ export default (props: IProps) => {
                       >
                         <Select
                           style={{ width: 100 }}
-                          options={levelOptions(100)}
+                          options={levelOptions(10)}
                         />
                       </Form.Item>
                       <Form.Item
@@ -304,7 +304,7 @@ export default (props: IProps) => {
                       >
                         <Select
                           style={{ width: 100 }}
-                          options={levelOptions(100)}
+                          options={levelOptions(50)}
                         />
                       </Form.Item>
                       <Form.Item
@@ -317,7 +317,7 @@ export default (props: IProps) => {
                       >
                         <Select
                           style={{ width: 100 }}
-                          options={levelOptions(100)}
+                          options={levelOptions(50)}
                         />
                       </Form.Item>
                       <Form.Item
@@ -330,7 +330,7 @@ export default (props: IProps) => {
                       >
                         <Select
                           style={{ width: 100 }}
-                          options={levelOptions(100)}
+                          options={levelOptions(50)}
                         />
                       </Form.Item>
                     </Tabs.TabPane>
