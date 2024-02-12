@@ -39,7 +39,7 @@ const Monitor = () => {
     console.log(value, matrixData(value));
     await setMatrix(matrixData(value));
     message.success("Success");
-    fetchMartix();
+    window.location.reload();
   };
   useEffect(() => {
     fetchOptions();

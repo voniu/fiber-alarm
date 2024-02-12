@@ -50,9 +50,7 @@ export default (props: IProps) => {
                 cancelText="No"
                 onConfirm={() => setArchive(record.id, false)}
               >
-                <Button danger size="small">
-                  Undo archive
-                </Button>
+                <Button size="small">Undo archive</Button>
               </Popconfirm>
             )}
             {!isArchived && (

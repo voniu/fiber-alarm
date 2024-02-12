@@ -75,7 +75,12 @@ export const getFiberDetail = (id: number) => {
     return res;
   });
 };
-export const addFiber = (fiber: FiberDetail) => {
+export const addFiber = (fiber: {
+  name: string;
+  deviceId: number;
+  location: string;
+  identifier: number[];
+}) => {
   return request(`${prefix}/fiber`, { method: "POST", data: fiber });
 };
 
@@ -135,7 +140,7 @@ export const getCameraDetail = (id: number) => {
 // 创建摄像头
 export const addCamera = (camera: CameraDetail) => {
   return request(`${prefix}/camera`, {
-    method: "PUT",
+    method: "POST",
     data: camera,
   });
 };
@@ -146,13 +151,13 @@ export const updateCamera = (
   camera: Partial<CameraDetail>
 ) => {
   return request(`${prefix}/camera/${cameraId}`, {
-    method: "POST",
+    method: "PUT",
     data: camera,
   });
 };
 export const setCameraArchive = (cameraId: number, archived: boolean) => {
   return request(`${prefix}/camera/${cameraId}`, {
-    method: "POST",
+    method: "PUT",
     data: { archived },
   });
 };

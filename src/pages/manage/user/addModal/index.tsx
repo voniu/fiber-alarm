@@ -9,7 +9,7 @@ interface IProps {
   flush: () => void;
 }
 export default (props: IProps) => {
-  const { isModalOpen, onCancel, type } = props;
+  const { isModalOpen, onCancel, type, flush } = props;
   const [form] = Form.useForm();
   const onClose = () => {
     onCancel();
@@ -17,8 +17,8 @@ export default (props: IProps) => {
   };
   const onFinish = async (value: any) => {
     console.log(value);
-    const { name, nickname, type, flush, password } = value;
-    if (type === 3) {
+    const { name, nickname, password } = value;
+    if (type === "guard") {
       await addGuard({ name, nickname });
     } else {
       await addUser({ name, nickname, type: 1, password });

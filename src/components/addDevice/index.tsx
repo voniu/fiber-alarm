@@ -7,6 +7,7 @@ import {
   addControl,
   addFiber,
   getCameraDetail,
+  getFiberControl,
   getFiberDetail,
   setFiberDetail,
   updateCamera,
@@ -48,19 +49,45 @@ export default (props: IProps) => {
     "edit-fiber-control": "Edit Fiber Control",
   };
   const [form] = Form.useForm();
-  const [fiberControlType, setFiberControlType] = useState(1);
+  const [fiberControl, setFiberControl] = useState<{
+    id: number;
+    name: string;
+    type: number;
+  }>({
+    id: -1,
+    name: "",
+    type: -1,
+  });
+  const [contorlOptions, setContorlOptions] = useState([]);
   const setLocation = (location: any) => {
     form.setFieldValue("location", location);
+  };
+  const getFiberControlOp = async () => {
+    const { data } = await getFiberControl("", false);
+    const c = data.map((item: any) => {
+      return {
+        value: item.id,
+        label: item.name,
+        type: item.type,
+      };
+    });
+    setContorlOptions(c);
+  };
+  const onSelectChange = (value: any, option: any) => {
+    console.log(value, option);
+    setFiberControl({
+      name: option.label,
+      type: option.type,
+      id: option.value,
+    });
   };
   const getFiberForm = async () => {
     const { data } = await getFiberDetail(deviceId!);
     console.log(data);
-    const { name, ip, location, identifier } = data;
+    const { name, device, location, identifier } = data;
     if (!identifier) {
       form.setFieldsValue({
         name,
-        ip,
-        type: "",
         zone: "",
         subzone: "",
         location: JSON.stringify(location),
@@ -70,12 +97,11 @@ export default (props: IProps) => {
     const type = identifier.length === 1 ? 1 : 0;
     console.log(identifier.length, "llllsad");
 
-    setFiberControlType(type);
+    setFiberControl(device);
     if (type === 0) {
       form.setFieldsValue({
         name,
-        ip,
-        type,
+        fiberControl: device.id,
         zone: identifier[0],
         subzone: identifier[1],
         location: JSON.stringify(location),
@@ -83,8 +109,7 @@ export default (props: IProps) => {
     } else {
       form.setFieldsValue({
         name,
-        ip,
-        type,
+        fiberControl: device.id,
         zone: identifier[0],
         location: JSON.stringify(location),
       });
@@ -136,7 +161,13 @@ export default (props: IProps) => {
       if (type === "camera") {
         await addCamera({ ...value, location: value.location });
       } else if (type === "fiber") {
-        await addFiber({ ...value, location: value.location });
+        const { fiberControl, name, zone, subzone } = value;
+        await addFiber({
+          deviceId: fiberControl,
+          name,
+          identifier: [Number(zone), Number(subzone)],
+          location: value.location,
+        });
       } else if (type === "fiber-control") {
         await addControl(value);
       }
@@ -166,6 +197,9 @@ export default (props: IProps) => {
       return;
     }
     if (operator === "add") {
+      if (type === "fiber") {
+        getFiberControlOp();
+      }
       form.setFieldValue(location, "");
     } else {
       if (type === "fiber") {
@@ -333,7 +367,23 @@ export default (props: IProps) => {
               >
                 <Input placeholder="input" />
               </Form.Item>
-              {fiberControlType === 0 && (
+              <Form.Item
+                className={styles["form-item"]}
+                label="control"
+                name={"fiberControl"}
+                rules={[
+                  { required: true, message: "Please select fiber control!" },
+                ]}
+              >
+                <Select
+                  optionLabelProp="label"
+                  optionFilterProp="label"
+                  onChange={onSelectChange}
+                  disabled={operator === "edit"}
+                  options={contorlOptions}
+                ></Select>
+              </Form.Item>
+              {fiberControl.type === 0 && (
                 <>
                   <Form.Item
                     className={styles["form-item"]}
@@ -375,7 +425,7 @@ export default (props: IProps) => {
                   </Form.Item>
                 </>
               )}
-              {fiberControlType === 1 && (
+              {fiberControl.type === 1 && (
                 <>
                   <Form.Item
                     className={styles["form-item"]}

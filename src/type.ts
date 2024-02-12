@@ -7,6 +7,7 @@ export interface MonitorSetting {
 }
 export interface FiberDetail {
   name: string;
+  deviceId?: number;
   location: string;
   triggerCameras: Camera[];
   archived: boolean;

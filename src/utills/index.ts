@@ -4,7 +4,7 @@ export const ArrayItemToFixed = (arr: number[], length: number) => {
   return arr.map((i) => Number(i.toFixed(length)));
 };
 export const generateLines = (pointsArray: number[][]) => {
-  if (pointsArray.length === 2) return pointsArray;
+  if (pointsArray.length === 2) return [[...pointsArray]];
 
   const lines = [];
   for (let i = 0; i < pointsArray.length - 1; i++) {

@@ -8,9 +8,11 @@ interface IProps {
 }
 export default (props: IProps) => {
   const [list, setList] = useState<Camera[]>();
+  const [isChange, setIsChange] = useState(false);
   const { id, flush } = props;
   const dissolve = (cameraId: number) => {
     delFiberCamera(id, cameraId);
+    setIsChange(!isChange);
     flush();
   };
   useEffect(() => {
@@ -18,7 +20,7 @@ export default (props: IProps) => {
       console.log(res);
       setList(res.data.triggerCameras);
     });
-  }, []);
+  }, [isChange]);
   return (
     <div>
       <List
@@ -34,13 +36,9 @@ export default (props: IProps) => {
                 description="Are you sure to delete this Fiber?"
                 okText="Yes"
                 cancelText="No"
+                onConfirm={() => dissolve(item.id)}
               >
-                <Button
-                  type="link"
-                  size="small"
-                  danger
-                  onClick={() => dissolve(item.id)}
-                >
+                <Button type="link" size="small" danger>
                   Dissolve
                 </Button>
               </Popconfirm>,

@@ -101,9 +101,7 @@ export default function (props: IProps) {
                 cancelText="No"
                 onConfirm={() => setArchive(record.id, false)}
               >
-                <Button danger size="small">
-                  Undo archive
-                </Button>
+                <Button size="small">Undo archive</Button>
               </Popconfirm>
             )}
             {!isArchived && (
@@ -125,14 +123,11 @@ export default function (props: IProps) {
                 description="Are you sure to delete this Fiber?"
                 okText="Yes"
                 cancelText="No"
+                onConfirm={() => {
+                  deleteFiber(record.id);
+                }}
               >
-                <Button
-                  danger
-                  size="small"
-                  onClick={() => {
-                    deleteFiber(record.id);
-                  }}
-                >
+                <Button danger size="small">
                   Delete
                 </Button>
               </Popconfirm>

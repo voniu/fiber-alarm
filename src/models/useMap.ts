@@ -234,7 +234,23 @@ export default function MapModel() {
       console.log(`An error occurred in the map:${event}`);
     });
   }, []);
+  function clearMap() {
+    // 获取地图的所有图层
+    const layers = map.getLayers();
+    // 遍历图层并移除
+    layers.forEach(function (layer) {
+      if (layer instanceof VectorLayer) {
+        // 获取图层中的所有特征
+        const source = layer.getSource();
+        const features = source.getFeatures();
 
+        // 遍历并移除每个特征
+        features.forEach(function (feature: any) {
+          source.removeFeature(feature);
+        });
+      }
+    });
+  }
   return {
     map,
     setMap,
@@ -252,5 +268,6 @@ export default function MapModel() {
     highLightTrigger,
     mapui,
     setMapUi,
+    clearMap,
   };
 }

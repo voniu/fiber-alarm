@@ -82,9 +82,7 @@ export default function (props: IProps) {
                 cancelText="No"
                 onConfirm={() => setArchive(record.id, false)}
               >
-                <Button danger size="small">
-                  Undo archive
-                </Button>
+                <Button size="small">Undo archive</Button>
               </Popconfirm>
             )}
             {!isArchived && (
@@ -106,15 +104,12 @@ export default function (props: IProps) {
                 description="Are you sure to delete this camera?"
                 okText="Yes"
                 cancelText="No"
+                onConfirm={() => {
+                  deleteCamera(record.id);
+                  flush();
+                }}
               >
-                <Button
-                  danger
-                  size="small"
-                  onClick={() => {
-                    deleteCamera(record.id);
-                    flush();
-                  }}
-                >
+                <Button danger size="small">
                   Delete
                 </Button>
               </Popconfirm>

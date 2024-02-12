@@ -71,6 +71,8 @@ export default function () {
   const [overlayer] = useState(new Overlay({}));
 
   useEffect(() => {
+    console.log(clickPosition);
+
     overlayer.setPosition(clickPosition);
     overlayer.setElement(document.getElementById("map-popup")!);
     map.addOverlay(overlayer);

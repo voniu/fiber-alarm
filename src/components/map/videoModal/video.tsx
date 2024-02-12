@@ -34,7 +34,7 @@ export default (props: IProps) => {
       }}
     >
       <video
-        style={style || { height: 140, margin: "2px 5px" }}
+        style={style || { height: 140, margin: "2px 5px", width: 280 }}
         id={`rtsp-video-${prefix}-${id}`}
         autoPlay
         muted

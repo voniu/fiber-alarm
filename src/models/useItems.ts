@@ -66,7 +66,8 @@ export default function ItemsModel() {
     if (adminLogin && !isHome()) fetchAdminItem();
   }, [userLogin, adminLogin]);
 
-  const { addPoint, addLine, toCenter, setClickPosition } = useModel("useMap");
+  const { addPoint, addLine, toCenter, setClickPosition, clearMap } =
+    useModel("useMap");
 
   useEffect(() => {
     if (!fiberList?.length) return;
@@ -115,11 +116,10 @@ export default function ItemsModel() {
   }
 
   useEffect(() => {
+    clearMap();
     cameras.forEach(addCamera);
-  }, [cameras]);
-  useEffect(() => {
     fibers.forEach(addFiber);
-  }, [fibers]);
+  }, [cameras, fibers]);
 
   return {
     cameras,
