@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 // import "dayjs/locale/en";
 // dayjs.extend(utc);
 // dayjs.extend(timezone);
-// dayjs.locale("en");
+dayjs.locale("en");
 console.log(dayjs.locale());
 
 export default dayjs;

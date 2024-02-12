@@ -57,6 +57,10 @@ export default function ItemsModel() {
     setFiberList(fiberData);
     setCameraList(camerData);
   };
+  const flush = ({ fiber, camera }: any) => {
+    if (fiber) setFiberList(fiber);
+    if (camera) setCameraList(camera);
+  };
   useEffect(() => {
     if (userLogin && isHome()) fetchGuardItem();
     if (adminLogin && !isHome()) fetchAdminItem();
@@ -125,5 +129,6 @@ export default function ItemsModel() {
     addCamera,
     addFiber,
     centerTo,
+    flush,
   };
 }

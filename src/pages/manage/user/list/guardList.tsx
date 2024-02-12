@@ -1,21 +1,18 @@
 import { Guard } from "@/type";
-import { Button, Popconfirm, Table, TableColumnsType, Typography } from "antd";
+import { Button, Popconfirm, Table, TableColumnsType } from "antd";
 import dayjs from "@/utills/day";
-import { delGuard, setGuardArchived, updateGuard } from "@/services/admin";
+import { delGuard, setGuardArchived } from "@/services/admin";
 
 interface IProps {
   data: Guard[];
   flush: () => void;
   loading: boolean;
+  isArchived: boolean;
 }
 export default (props: IProps) => {
-  const { data, flush, loading } = props;
+  const { data, flush, loading, isArchived } = props;
   const deleteUser = async (id: number) => {
     await delGuard(id);
-    flush();
-  };
-  const changeNickname = async (val: string, user: Guard) => {
-    await updateGuard(user.id, { ...user, nickname: val });
     flush();
   };
   const setArchive = async (id: number, archived: boolean) => {
@@ -34,21 +31,6 @@ export default (props: IProps) => {
       render: (text, record) => <a>{record.name}</a>,
     },
     {
-      title: "NickName",
-      dataIndex: "nickname",
-      width: 200,
-      render: (text, record) => (
-        <Typography.Text
-          style={{ width: "100px" }}
-          editable={{
-            onChange: (val) => changeNickname(val, record),
-          }}
-        >
-          {record.nickname}
-        </Typography.Text>
-      ),
-    },
-    {
       title: "CreateTime",
       dataIndex: "createTime",
       render: (_, record) => (
@@ -56,11 +38,11 @@ export default (props: IProps) => {
       ),
     },
     {
-      title: "Rest Password",
+      title: "Operator",
       render: (_, record) => {
         return (
           <div style={{ display: "flex", gap: 10 }}>
-            {record.archived && (
+            {isArchived && (
               <Popconfirm
                 title="Undo archive the guard"
                 description="Are you sure to Undo archive the guard?"
@@ -73,7 +55,7 @@ export default (props: IProps) => {
                 </Button>
               </Popconfirm>
             )}
-            {!record.archived && (
+            {!isArchived && (
               <Popconfirm
                 title="archive the guard"
                 description="Are you sure to archive the user?"
@@ -86,7 +68,7 @@ export default (props: IProps) => {
                 </Button>
               </Popconfirm>
             )}
-            {record.archived && (
+            {isArchived && (
               <Popconfirm
                 title="delete the guard"
                 description="Are you sure to delete the guard?"
@@ -109,7 +91,7 @@ export default (props: IProps) => {
       <Table
         loading={loading}
         rowKey={"id"}
-        pagination={{ pageSize: 7 }}
+        pagination={{ pageSize: 6 }}
         columns={columns}
         dataSource={data}
         bordered

@@ -1,5 +1,6 @@
 import { adminLogin, adminLoginState, adminLogout } from "@/services/admin";
 import { User } from "@/type";
+import { isHome } from "@/utills";
 import { message } from "antd";
 import { useEffect, useState } from "react";
 // interface LoginState {
@@ -19,19 +20,24 @@ import { useEffect, useState } from "react";
 
 export default function AdminInfo() {
   const [isLogin, setIsLogin] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [admin, setAdmin] = useState<User>();
   useEffect(() => {
-    adminLoginState().then((res) => {
-      if (!res.data) {
-        message.info(res.msg);
-        return;
-      }
-      const { isLogined, user } = res.data;
-      setIsLogin(isLogined);
-      if (isLogined) {
-        setAdmin(user);
-      }
-    });
+    setLoading(true);
+    if (!isHome()) {
+      adminLoginState().then((res) => {
+        if (!res.data) {
+          message.info(res.msg);
+          return;
+        }
+        const { isLogined, user } = res.data;
+        setIsLogin(isLogined);
+        if (isLogined) {
+          setAdmin(user);
+        }
+        setLoading(false);
+      });
+    }
   }, []);
 
   const login = async (username: string, password: string) => {
@@ -49,6 +55,7 @@ export default function AdminInfo() {
     setAdmin(undefined);
   };
   return {
+    loading,
     isLogin,
     admin,
     login,

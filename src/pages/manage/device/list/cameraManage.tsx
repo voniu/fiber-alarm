@@ -5,13 +5,14 @@ import { delCamera, setCameraArchive } from "@/services/admin";
 import MapModal from "@/components/mapModal";
 import { useState } from "react";
 interface IProps {
+  isArchived: boolean;
   flush: () => void;
   data: Camera[];
   loading: boolean;
   edit: (device: number, type: string, extra?: any) => void;
 }
 export default function (props: IProps) {
-  const { edit, data, flush, loading } = props;
+  const { edit, data, flush, loading, isArchived } = props;
   const [mapModal, setMapModal] = useState({
     id: -1,
     type: "",
@@ -73,7 +74,7 @@ export default function (props: IProps) {
             >
               {"Edit"}
             </Button>
-            {record.archived && (
+            {isArchived && (
               <Popconfirm
                 title="Undo archive the camera"
                 description="Are you sure to Undo archive the camera?"
@@ -86,7 +87,7 @@ export default function (props: IProps) {
                 </Button>
               </Popconfirm>
             )}
-            {!record.archived && (
+            {!isArchived && (
               <Popconfirm
                 title="archive the camera"
                 description="Are you sure to archive the camera?"
@@ -99,7 +100,7 @@ export default function (props: IProps) {
                 </Button>
               </Popconfirm>
             )}
-            {record.archived && (
+            {isArchived && (
               <Popconfirm
                 title="Delete the camera"
                 description="Are you sure to delete this camera?"

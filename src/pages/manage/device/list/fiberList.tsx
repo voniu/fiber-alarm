@@ -3,13 +3,14 @@ import type { TableColumnsType } from "antd";
 import { delControl, setControlArchive } from "@/services/admin";
 import { FiberControl } from "@/type";
 interface IProps {
+  isArchived: boolean;
   flush: () => void;
   data: FiberControl[];
   edit: (device: number, type: string, extra?: any) => void;
   loading: boolean;
 }
 export default function (props: IProps) {
-  const { edit, data, flush, loading } = props;
+  const { edit, data, flush, loading, isArchived } = props;
   const setArchive = async (id: number, archived: boolean) => {
     await setControlArchive(id, archived);
     flush();
@@ -54,7 +55,7 @@ export default function (props: IProps) {
             >
               {"Edit"}
             </Button>
-            {record.archived && (
+            {isArchived && (
               <Popconfirm
                 title="Undo archive the fiber control"
                 description="Are you sure to Undo archive the fiber control?"
@@ -67,7 +68,7 @@ export default function (props: IProps) {
                 </Button>
               </Popconfirm>
             )}
-            {!record.archived && (
+            {!isArchived && (
               <Popconfirm
                 title="archive the fiber control"
                 description="Are you sure to archive the fiber control?"
@@ -80,7 +81,7 @@ export default function (props: IProps) {
                 </Button>
               </Popconfirm>
             )}
-            {record.archived && (
+            {isArchived && (
               <Popconfirm
                 title="Delete the Fiber"
                 description="Are you sure to delete this Fiber?"

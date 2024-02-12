@@ -2,26 +2,38 @@ import firstTitlePng from "@/assets/first_title.png";
 import secondTitlePng from "@/assets//second_title.png";
 import Map from "@/components/map";
 import FiberList from "@/components/fiberList";
-import SingleRTV from "@/components/singleRTV";
 import "./bigData.css";
 import "./index.less";
 import AlarmModal from "@/components/alarmModal";
 import WithAuth from "@/wrappers/authDuty";
 import Header from "./header";
 import { Radio } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CameraList from "@/components/cameraList";
-// import video1 from "@/assets/video/1.png";
-// import video2 from "@/assets/video/2.png";
-// import video3 from "@/assets/video/3.png";
-// import video4 from "@/assets/video/4.png";
 import RtspVideo from "@/components/map/videoModal/video";
+import { getMatrix } from "@/services/common";
+import { MonitorSetting } from "@/type";
 
 function HomePage() {
   const [listType, setListType] = useState("fiber");
+  const [currentCameras, setCurrentCameras] = useState<{
+    [key: string]: any;
+  }>();
   const handleChange = (e: any) => {
     setListType(e.target.value);
   };
+  const fetchMartix = async () => {
+    const { data: matrix } = await getMatrix();
+    const camerasSetting: any = {};
+
+    matrix.forEach((item: MonitorSetting) => {
+      camerasSetting[`${item.row - 1}-${item.column - 1}`] = item.cameraId;
+    });
+    setCurrentCameras(camerasSetting);
+  };
+  useEffect(() => {
+    fetchMartix();
+  }, []);
   return (
     <div className="data_body">
       <div style={{ height: "10vh", color: "#ccc", paddingTop: 12 }}>
@@ -30,23 +42,22 @@ function HomePage() {
       <div className="index_tabs">
         <div className="inner" style={{ height: "100%" }}>
           <div className="left_cage">
-            {/* <div className="dataAllBorder01 cage_cl" style={{ height: "24%" }}>
-              <video
-                muted
-                autoPlay
-                loop
-                src={blueVideo}
-                className="dataAllBorder01 video_cage"
-              />
-            </div> */}
             <div className="dataAllBorder01 cage_cl" style={{ height: "48%" }}>
               <div style={{ display: "flex", justifyContent: "center" }}>
-                <RtspVideo id={1} />
-                <RtspVideo id={2} />
+                {currentCameras && (
+                  <RtspVideo prefix="home1" id={currentCameras["0-0"]} />
+                )}
+                {currentCameras && (
+                  <RtspVideo prefix="home2" id={currentCameras["0-1"]} />
+                )}
               </div>
               <div style={{ display: "flex", justifyContent: "center" }}>
-                <RtspVideo id={3} />
-                <RtspVideo id={4} />
+                {currentCameras && (
+                  <RtspVideo prefix="home3" id={currentCameras["1-1"]} />
+                )}
+                {currentCameras && (
+                  <RtspVideo prefix="home4" id={currentCameras["1-2"]} />
+                )}
               </div>
             </div>
             <div
@@ -132,7 +143,6 @@ function HomePage() {
           </div>
         </div>
       </div>
-      <SingleRTV />
       <AlarmModal />
     </div>
   );

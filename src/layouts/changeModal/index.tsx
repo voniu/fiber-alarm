@@ -1,5 +1,5 @@
 import { useModel } from "umi";
-import { updateUser } from "@/services/admin";
+import { changeSelfPass } from "@/services/admin";
 import { Form, Input, Button, message, Modal } from "antd";
 import { useState } from "react";
 interface IProps {
@@ -14,9 +14,9 @@ export default (props: IProps) => {
   const onFinish = async (values: any) => {
     console.log(values);
 
-    const { newPassword } = values;
+    const { currentPassword, newPassword } = values;
     setLoading(true);
-    if (admin) await updateUser(admin.id!, { ...admin, password: newPassword });
+    if (admin) await changeSelfPass(currentPassword, newPassword);
     setLoading(false);
     form.resetFields();
     onCancel();

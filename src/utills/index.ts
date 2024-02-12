@@ -1,11 +1,11 @@
 import { MonitorSetting } from "@/type";
 
 export const ArrayItemToFixed = (arr: number[], length: number) => {
-  console.log(arr);
-
-  return `[${arr.map((i) => i.toFixed(length)).toString()}]`;
+  return arr.map((i) => Number(i.toFixed(length)));
 };
 export const generateLines = (pointsArray: number[][]) => {
+  if (pointsArray.length === 2) return pointsArray;
+
   const lines = [];
   for (let i = 0; i < pointsArray.length - 1; i++) {
     const line = [pointsArray[i], pointsArray[i + 1]];
@@ -13,7 +13,10 @@ export const generateLines = (pointsArray: number[][]) => {
   }
   return lines;
 };
-
+export const pointToLocation = (point: number[][]) => {
+  console.log(point, generateLines(point));
+  return JSON.stringify(generateLines(point));
+};
 export const matrixData = (obj: any): MonitorSetting[] => {
   const result = [];
 

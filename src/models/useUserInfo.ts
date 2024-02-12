@@ -6,6 +6,7 @@ import {
   onDuty,
   resumeDuty,
 } from "@/services/monitor";
+import { isHome } from "@/utills";
 import { useEffect, useState } from "react";
 interface LoginState {
   isLogined: boolean;
@@ -25,19 +26,24 @@ interface LoginState {
 export default function UserInfo() {
   const [isLogin, setIsLogin] = useState(false);
   const [isOnDuty, setDuty] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [guard, setGuard] = useState<LoginState["guard"]>();
   const [monitor, setMonitor] = useState<LoginState["user"]>();
   useEffect(() => {
-    monitorLoginState().then((res: LoginState) => {
-      const { isLogined, user, isOnDuty, guard } = res;
-      setIsLogin(isLogined);
-      if (isLogined) {
-        setMonitor(user);
-        setDuty(isOnDuty);
-        if (isOnDuty) setGuard(guard);
-      }
-    });
-  }, [isOnDuty]);
+    if (isHome()) {
+      setLoading(true);
+      monitorLoginState().then((res: LoginState) => {
+        const { isLogined, user, isOnDuty, guard } = res;
+        setIsLogin(isLogined);
+        if (isLogined) {
+          setMonitor(user);
+          setDuty(isOnDuty);
+          if (isOnDuty) setGuard(guard);
+        }
+        setLoading(false);
+      });
+    }
+  }, []);
 
   const login = async (username: string, password: string) => {
     const { success, data, msg } = await monitorLogin(username, password);
@@ -72,8 +78,10 @@ export default function UserInfo() {
   };
   const resumeGuards = async () => {
     await resumeDuty();
+    setDuty(true);
   };
   return {
+    loading,
     isLogin,
     monitor,
     isOnDuty,

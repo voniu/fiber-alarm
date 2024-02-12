@@ -34,17 +34,12 @@ const HistoryAlarm = () => {
   const [dealId, setDealId] = useState<number>(-1);
   const { admin, isLogin } = useModel("useAdminInfo");
   const fetchList = (values?: any) => {
-    let params = {
-      fiberId: undefined,
-      guardId: undefined,
-      managerId: undefined,
-      status: undefined,
-      time: undefined,
-      timeType: undefined,
-    };
+    let params = {};
     if (values)
       params = {
-        ...values,
+        fiberId: values.fiberId,
+        guardId: values.guardId,
+        managerId: values.managerId,
         type: values.type !== "all" ? values.type : undefined,
         status: values.status !== -1 ? values.status : undefined,
         timeType: values.timeType !== "all" ? values.timeType : undefined,
@@ -149,8 +144,7 @@ const HistoryAlarm = () => {
   const fetchFormValue = async () => {
     const { data: allFiber } = await getFiber("", false);
     const { data: allGuard } = await getGuard(false);
-    const { data: allManager } = await getUser(1, "", true);
-
+    const { data: allManager } = await getUser(1, "", false);
     if (!allFiber || !allGuard || !allManager) return;
     const f = allFiber.map((item: any) => {
       return {
@@ -173,7 +167,6 @@ const HistoryAlarm = () => {
     setFiberOp(f);
     setGuardOp(g);
     setManagerOp(m);
-    console.log(allFiber, allManager, allGuard);
   };
   useEffect(() => {
     if (!isLogin) return;

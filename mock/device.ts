@@ -37,9 +37,7 @@ export default {
       id: 234321,
       name: "fiber test1",
       ip: "192.168.31.200",
-      zone: "zone 1",
-      subzone: "subzone 1",
-      identitfier: [1, 1],
+      identifier: [1, 1],
       location:
         "[[[48.206151, 40.027136], [49.206151, 41.027136]], [[49.206151, 41.027136], [42.206151, 43.027136]]]",
       triggerCameras: [
@@ -76,7 +74,7 @@ export default {
           location: "[42.206151, 43.027136]",
         },
       ],
-      identitfier: [0],
+      identifier: [0],
     },
   },
   "GET  /api/admin/fiber/2213": {

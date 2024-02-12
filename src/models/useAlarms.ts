@@ -40,15 +40,15 @@ const alarms = new Map<number, AlarmDetail>();
 
 export default function Alarms() {
   const { isLogin: userLogin, isOnDuty } = useModel("useUserInfo");
-  const { isLogin: adminLogin } = useModel("useAdminInfo");
-  const [alarmList, setAlarmList] = useState<Alarm[]>([
+  const { isLogin: adminLogin, admin } = useModel("useAdminInfo");
+  const [alarmList, setAlarmList] = useState<AlarmDetail[]>([
     // { id: 1 },
     // { id: 2 },
     // { id: 3 },
     // { id: 4 },
     // { id: 5 },
   ]);
-  const [manageAlarm, setManageAlarm] = useState<Alarm[]>([
+  const [manageAlarm, setManageAlarm] = useState<AlarmDetail[]>([
     // { id: 1 },
     // { id: 2 },
   ]);
@@ -56,23 +56,23 @@ export default function Alarms() {
   const [guardSocekt, setGuardSocket] = useState<WebSocket>();
   const [manageSocekt, setManageSocket] = useState<WebSocket>();
 
-  const handleGuard = (log: string) => {
+  const handleGuard = (id: number, log: string) => {
     guardSocekt?.send(
       JSON.stringify({
         type: "RESOLVE",
         content: {
-          alarmId: 1,
+          alarmId: id,
           log,
         },
       })
     );
   };
-  const handleManage = (log: string) => {
+  const handleManage = (id: number, log: string) => {
     manageSocekt?.send(
       JSON.stringify({
         type: "RESOLVE",
         content: {
-          alarmId: 1,
+          alarmId: id,
           log,
         },
       })
@@ -111,7 +111,7 @@ export default function Alarms() {
   useEffect(() => {
     if (manageSocekt) manageSocekt.close();
     if (guardSocekt) guardSocekt.close();
-    if (adminLogin && !isHome()) {
+    if (adminLogin && !isHome() && admin?.type === 1) {
       getMangerAlarm();
     }
     if (userLogin && isHome() && isOnDuty) {

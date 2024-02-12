@@ -1,17 +1,29 @@
 import { User } from "@/type";
 import { Button, Popconfirm, Table, TableColumnsType, Typography } from "antd";
 import dayjs from "@/utills/day";
-import { delUser, setUserArchive, updateUser } from "@/services/admin";
+import {
+  delUser,
+  setUserArchive,
+  updateUser,
+  updateUserPassword,
+} from "@/services/admin";
 import { useModel } from "umi";
+import { useState } from "react";
+import RestPassword from "../restPassword";
 interface IProps {
   data: User[];
   flush: () => void;
   loading: boolean;
+  isArchived: boolean;
 }
 export default (props: IProps) => {
-  const { data, flush, loading } = props;
+  const { data, flush, loading, isArchived } = props;
   const identity = ["super admin", "admin", "manager"];
   const { admin } = useModel("useAdminInfo");
+  const [reset, setRest] = useState<{ open: boolean; id: number }>({
+    open: false,
+    id: -1,
+  });
   const deleteUser = async (id: number) => {
     await delUser(id);
     flush();
@@ -20,8 +32,8 @@ export default (props: IProps) => {
     await updateUser(user.id, { ...user, nickname: val });
     flush();
   };
-  const resetPassword = async (user: User) => {
-    await updateUser(user.id, { ...user, password: "666666" });
+  const resetPassword = async (id: number, password: string) => {
+    await updateUserPassword(id, password);
   };
   const setArchive = async (id: number, archived: boolean) => {
     await setUserArchive(id, archived);
@@ -70,7 +82,7 @@ export default (props: IProps) => {
       render: (_, record) => {
         return (
           <div style={{ display: "flex", gap: 10 }}>
-            {record.archived && (
+            {isArchived && (
               <Popconfirm
                 title="Undo archive the user"
                 description="Are you sure to Undo archive the user?"
@@ -83,7 +95,7 @@ export default (props: IProps) => {
                 </Button>
               </Popconfirm>
             )}
-            {!record.archived && (
+            {!isArchived && (
               <Popconfirm
                 title="archive the user"
                 description="Are you sure to archive the user?"
@@ -97,19 +109,15 @@ export default (props: IProps) => {
               </Popconfirm>
             )}
             {admin?.type === 0 && (
-              <Popconfirm
-                title="reset the password"
-                description="Are you sure to reset the password?"
-                okText="Yes"
-                cancelText="No"
-                onConfirm={() => resetPassword(record)}
+              <Button
+                danger
+                size="small"
+                onClick={() => setRest({ open: true, id: record.id })}
               >
-                <Button danger size="small">
-                  Reset Password
-                </Button>
-              </Popconfirm>
+                Reset Password
+              </Button>
             )}
-            {record.archived && (
+            {isArchived && (
               <Popconfirm
                 title="delete the user"
                 description="Are you sure to delete the user?"
@@ -132,10 +140,17 @@ export default (props: IProps) => {
       <Table
         loading={loading}
         rowKey={"id"}
-        pagination={{ pageSize: 7 }}
+        pagination={{ pageSize: 6 }}
         columns={columns}
         dataSource={data}
         bordered
+      />
+      <RestPassword
+        id={reset.id}
+        isModalOpen={reset.open}
+        reset={resetPassword}
+        flush={flush}
+        onCancel={() => setRest({ open: false, id: -1 })}
       />
     </>
   );

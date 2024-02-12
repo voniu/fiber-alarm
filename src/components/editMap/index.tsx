@@ -4,7 +4,7 @@ import VectorSource from "ol/source/Vector";
 import Draw, { DrawEvent } from "ol/interaction/Draw";
 import VectorLayer from "ol/layer/Vector";
 import { Style, Circle, Fill, Stroke } from "ol/style";
-import { ArrayItemToFixed } from "@/utills";
+import { pointToLocation } from "@/utills";
 import { Feature } from "ol";
 import { Geometry } from "ol/geom";
 import { Button } from "antd";
@@ -88,11 +88,11 @@ export default function ({
         const coordinates = geometry.getCoordinates();
         if (isPoint) {
           setCamera(e.feature);
-          setLocation(ArrayItemToFixed(coordinates, 8));
+          setLocation(JSON.stringify(coordinates));
           newDraw.setActive(false);
         } else {
           console.log(coordinates);
-          const location = coordinates.map((i: any) => ArrayItemToFixed(i, 8));
+          const location = pointToLocation(coordinates);
           setLocation(location);
           setFiber(e.feature);
           newDraw.setActive(false);
@@ -133,7 +133,7 @@ export default function ({
     addInteraction(type);
     return () => {
       console.log(draw, layer);
-      
+
       if (draw) map.removeInteraction(draw);
       const dom = document.getElementById("edit-map-container");
       setTarget(target || "");

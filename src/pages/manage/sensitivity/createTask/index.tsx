@@ -13,6 +13,7 @@ import { addTask, getFiber, getTaskDetail } from "@/services/admin";
 import { useEffect, useState } from "react";
 import { InfoCircleOutlined } from "@ant-design/icons";
 import dayjs from "@/utills/day";
+import locale from "antd/es/date-picker/locale/en_GB";
 
 interface IProps {
   isModalOpen: boolean;
@@ -200,7 +201,7 @@ export default (props: IProps) => {
               name={"time"}
               rules={[{ required: true, message: "Please set the time!" }]}
             >
-              <TimePicker minuteStep={30} format={"HH:mm"} />
+              <TimePicker locale={locale} minuteStep={30} format={"HH:mm"} />
             </Form.Item>
             {
               <Form.Item label={"config"} name={"config"}>

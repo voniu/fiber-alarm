@@ -10,7 +10,7 @@ import {
   message,
 } from "antd";
 import { useModel } from "umi";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./index.less";
 import { getAlarmDetail } from "@/services/monitor";
 import { Alarm, AlarmDetail } from "@/models/useAlarms";
@@ -47,19 +47,19 @@ const DescriptionText = ({
     </div>
   );
 };
-const TabContent = (props: { id: number; remove: () => void }) => {
+const TabContent = (props: { id: number }) => {
   const { setTarget } = useModel("useMap");
   const { alarmList, handleGuard } = useModel("useAlarms");
   const { monitor } = useModel("useUserInfo");
   const { centerTo } = useModel("useItems");
   const [alarmDetail, setDetail] = useState<AlarmDetail>();
   const [processInfo, setProcess] = useState("");
-  const { id, remove } = props;
+  const { id } = props;
   const typeMap = ["intrusion", "tamper", "wire Disconnect", "Disconnect"];
 
   const onSubmit = async () => {
-    handleGuard(processInfo);
-    remove();
+    handleGuard(id, processInfo);
+    setProcess("");
     message.success("success");
   };
   useEffect(() => {
@@ -67,7 +67,7 @@ const TabContent = (props: { id: number; remove: () => void }) => {
 
     getAlarmDetail(id).then((res: any) => {
       console.log(res);
-
+      if (!res.data) return;
       setDetail(res.data);
       centerTo(res.data.fiber.id, "fiber");
     });
@@ -148,12 +148,7 @@ const TabContent = (props: { id: number; remove: () => void }) => {
 export default function () {
   const { alarmList } = useModel("useAlarms");
   const open = alarmList?.length !== 0;
-  const tabData = useMemo(() => alarmList, [alarmList]);
-  const [items, setItems] = useState(tabData);
   const [isTrumpetOn, setTrumpetOn] = useState(true);
-  const remove = (id: number) => {
-    setItems(items.filter((item) => item.id !== id));
-  };
   useEffect(() => {
     if (open) {
       setTrumpetOn(true);
@@ -190,9 +185,7 @@ export default function () {
               return {
                 label: `alarm ${id}`,
                 key: id,
-                children: (
-                  <TabContent remove={() => remove(item.id)} id={item.id} />
-                ),
+                children: <TabContent id={item.id} />,
               };
             })}
             tabBarExtraContent={{

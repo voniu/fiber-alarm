@@ -8,13 +8,23 @@ import { getMatrix, setMatrix } from "@/services/common";
 import { MonitorSetting } from "@/type";
 import { matrixData } from "@/utills";
 const Monitor = () => {
-  const [cameraOptions, setCameraOp] = useState([]);
+  const [cameraOptions, setCameraOp] = useState<any[]>([]);
   const [currentCameras, setCurrentCameras] = useState<{
     [key: string]: any;
   }>();
   const [form] = Form.useForm();
+  const fetchMartix = async () => {
+    const { data: matrix } = await getMatrix();
+    const camerasSetting: any = {};
+
+    matrix.forEach((item: MonitorSetting) => {
+      camerasSetting[`${item.row - 1}-${item.column - 1}`] = item.cameraId;
+    });
+    setCurrentCameras(camerasSetting);
+    form.setFieldsValue(camerasSetting);
+  };
   const fetchOptions = async () => {
-    const { data: allCamera } = await getCamera("");
+    const { data: allCamera } = await getCamera("", false);
     console.log(allCamera);
 
     const options = allCamera.map((item: any) => {
@@ -23,25 +33,17 @@ const Monitor = () => {
         label: item.name,
       };
     });
-    const { data: matrix } = await getMatrix();
-    const camerasSetting: any = {};
-
-    matrix.forEach((item: MonitorSetting) => {
-      camerasSetting[`${item.row - 1}-${item.column - 1}`] = item.cameraId;
-    });
-    setCameraOp(options);
-    setCurrentCameras(camerasSetting);
-    console.log(camerasSetting);
-
-    form.setFieldsValue(camerasSetting);
+    setCameraOp([{ value: "", label: "none" }, ...options]);
   };
-  const onFinsh = (value: any) => {
+  const onFinsh = async (value: any) => {
     console.log(value, matrixData(value));
-    setMatrix(matrixData(value));
+    await setMatrix(matrixData(value));
     message.success("Success");
+    fetchMartix();
   };
   useEffect(() => {
     fetchOptions();
+    fetchMartix();
   }, []);
   return (
     <div>
@@ -51,12 +53,20 @@ const Monitor = () => {
       <div className={styles["main"]}>
         <div style={{ flexShrink: 0, width: 600 }}>
           <div style={{ display: "flex", marginTop: 2, marginLeft: 4 }}>
-            {currentCameras && <RtspVideo id={currentCameras["0-0"]} />}
-            {currentCameras && <RtspVideo id={currentCameras["0-1"]} />}
+            {currentCameras && (
+              <RtspVideo prefix="manage1" id={currentCameras["0-0"]} />
+            )}
+            {currentCameras && (
+              <RtspVideo prefix="manage2" id={currentCameras["0-1"]} />
+            )}
           </div>
           <div style={{ display: "flex", marginTop: 2, marginLeft: 4 }}>
-            {currentCameras && <RtspVideo id={currentCameras["1-1"]} />}
-            {currentCameras && <RtspVideo id={currentCameras["1-2"]} />}
+            {currentCameras && (
+              <RtspVideo prefix="manage3" id={currentCameras["1-1"]} />
+            )}
+            {currentCameras && (
+              <RtspVideo prefix="manage4" id={currentCameras["1-2"]} />
+            )}
           </div>
         </div>
         <div className={styles["right-form"]}>

@@ -7,6 +7,7 @@ import MapModal from "@/components/mapModal";
 import { useState } from "react";
 
 interface IProps {
+  isArchived: boolean;
   loading: boolean;
   flush: () => void;
   data: Fiber[];
@@ -20,7 +21,7 @@ interface IProps {
   ) => void;
 }
 export default function (props: IProps) {
-  const { edit, setRelation, data, flush, loading } = props;
+  const { edit, setRelation, data, flush, loading, isArchived } = props;
   const [mapModal, setMapModal] = useState({
     id: -1,
     type: "",
@@ -92,7 +93,7 @@ export default function (props: IProps) {
             >
               {"Relation"}
             </Button>
-            {record.archived && (
+            {isArchived && (
               <Popconfirm
                 title="Undo archive the fiber"
                 description="Are you sure to Undo archive the fiber?"
@@ -105,7 +106,7 @@ export default function (props: IProps) {
                 </Button>
               </Popconfirm>
             )}
-            {!record.archived && (
+            {!isArchived && (
               <Popconfirm
                 title="archive the fiber control"
                 description="Are you sure to archive the fiber?"
@@ -118,7 +119,7 @@ export default function (props: IProps) {
                 </Button>
               </Popconfirm>
             )}
-            {record.archived && (
+            {isArchived && (
               <Popconfirm
                 title="Delete the Fiber"
                 description="Are you sure to delete this Fiber?"
@@ -130,7 +131,6 @@ export default function (props: IProps) {
                   size="small"
                   onClick={() => {
                     deleteFiber(record.id);
-                    flush();
                   }}
                 >
                   Delete
@@ -153,7 +153,9 @@ export default function (props: IProps) {
         dataSource={data}
         bordered
         expandable={{
-          expandedRowRender: (record) => <TriggerCameraList id={record.id} />,
+          expandedRowRender: (record) => (
+            <TriggerCameraList id={record.id} flush={flush} />
+          ),
           rowExpandable: (record) => record.name !== "Not Expandable",
         }}
       />

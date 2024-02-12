@@ -12,7 +12,6 @@ import {
   updateCamera,
   updateControl,
 } from "@/services/admin";
-import { ArrayItemToFixed, generateLines } from "@/utills";
 interface IProps {
   operator: string;
   isModalOpen: boolean;
@@ -24,6 +23,7 @@ interface IProps {
   setDraw: (val: any) => void;
   layer: any;
   setLayer: (val: any) => void;
+  flush: () => void;
 }
 export default (props: IProps) => {
   const {
@@ -37,6 +37,7 @@ export default (props: IProps) => {
     setDraw,
     layer,
     setLayer,
+    flush,
   } = props;
   const titleMap: any = {
     "add-camera": "Add Camera",
@@ -54,44 +55,38 @@ export default (props: IProps) => {
   const getFiberForm = async () => {
     const { data } = await getFiberDetail(deviceId!);
     console.log(data);
-    const { name, ip, location, identitfier } = data;
-    if (!identitfier) {
+    const { name, ip, location, identifier } = data;
+    if (!identifier) {
       form.setFieldsValue({
         name,
         ip,
         type: "",
         zone: "",
         subzone: "",
-        location: location.map((line: any) =>
-          line.map((point: any) => ArrayItemToFixed(point, 8))
-        ),
+        location: JSON.stringify(location),
       });
       return;
     }
-    const type = identitfier.length === 1 ? 1 : 0;
-    console.log(identitfier.length,"llllsad");
-    
+    const type = identifier.length === 1 ? 1 : 0;
+    console.log(identifier.length, "llllsad");
+
     setFiberControlType(type);
     if (type === 0) {
       form.setFieldsValue({
         name,
         ip,
         type,
-        zone: identitfier[0],
-        subzone: identitfier[1],
-        location: location.map((line: any) =>
-          line.map((point: any) => ArrayItemToFixed(point, 8))
-        ),
+        zone: identifier[0],
+        subzone: identifier[1],
+        location: JSON.stringify(location),
       });
     } else {
       form.setFieldsValue({
         name,
         ip,
         type,
-        zone: identitfier[0],
-        location: location.map((line: any) =>
-          line.map((point: any) => ArrayItemToFixed(point, 8))
-        ),
+        zone: identifier[0],
+        location: JSON.stringify(location),
       });
     }
   };
@@ -102,30 +97,31 @@ export default (props: IProps) => {
     console.log(data);
     const {
       name,
-      ip,
+      host,
       username,
       password,
-      picurl,
-      picport,
-      videourl,
-      videoport,
+      snapshotPath,
+      snapshotPort,
+      streamPort,
+      streamPath,
       location,
     } = data;
     form.setFieldsValue({
       name,
-      ip,
+      host,
       username,
       password,
-      picurl,
-      picport,
-      videourl,
-      videoport,
-      location: ArrayItemToFixed(location, 8),
+      snapshotPath,
+      snapshotPort,
+      streamPort,
+      streamPath,
+      location: JSON.stringify(location),
     });
   };
   const getControlForm = async () => {
-    const { name, host, port, type } = device;
-
+    const { deviceContent } = device;
+    console.log(device, "device");
+    const { name, host, port, type } = deviceContent;
     form.setFieldsValue({
       name,
       host,
@@ -138,9 +134,9 @@ export default (props: IProps) => {
 
     if (operator === "add") {
       if (type === "camera") {
-        await addCamera({ ...value, location: generateLines(value.location) });
+        await addCamera({ ...value, location: value.location });
       } else if (type === "fiber") {
-        await addFiber({ ...value, location: generateLines(value.location) });
+        await addFiber({ ...value, location: value.location });
       } else if (type === "fiber-control") {
         await addControl(value);
       }
@@ -148,18 +144,21 @@ export default (props: IProps) => {
       if (type === "camera") {
         await updateCamera(deviceId!, {
           ...value,
-          location: generateLines(value.location),
+          location: value.location,
         });
       } else if (type === "fiber") {
+        const { name, zone, subzone } = value;
         await setFiberDetail(deviceId!, {
-          ...value,
-          location: generateLines(value.location),
+          name,
+          identifier: [zone, subzone],
+          location: value.location,
         });
       } else if (type === "fiber-control") {
         await updateControl(deviceId!, value);
       }
     }
     onClose();
+    flush();
   };
   useEffect(() => {
     if (!isModalOpen) {
@@ -208,17 +207,15 @@ export default (props: IProps) => {
                 className={styles["form-item"]}
                 label="Name"
                 name={"name"}
-                rules={[{ required: true, message: "Please input your name!" }]}
+                rules={[{ required: true, message: "Please input the name!" }]}
               >
                 <Input placeholder="input" />
               </Form.Item>
               <Form.Item
                 className={styles["form-item"]}
-                label="Ip"
-                name={"ip"}
-                rules={[
-                  { required: true, message: "Please input IP address!" },
-                ]}
+                label="Host"
+                name={"host"}
+                rules={[{ required: true, message: "Please input the Host" }]}
               >
                 <Input placeholder="input" />
               </Form.Item>
@@ -227,7 +224,7 @@ export default (props: IProps) => {
                 label="Username"
                 name={"username"}
                 rules={[
-                  { required: true, message: "Please input your username!" },
+                  { required: true, message: "Please input the username!" },
                 ]}
               >
                 <Input placeholder="input" />
@@ -237,41 +234,65 @@ export default (props: IProps) => {
                 label="Password"
                 name={"password"}
                 rules={[
-                  { required: true, message: "Please input your password!" },
+                  { required: true, message: "Please input the password!" },
                 ]}
               >
                 <Input.Password placeholder="input" />
               </Form.Item>
               <Form.Item
                 className={styles["form-item"]}
-                label="Pic URL"
-                name={"picurl"}
-                rules={[{ required: true, message: "Please input pic URL!" }]}
-              >
-                <Input placeholder="" />
-              </Form.Item>
-              <Form.Item
-                className={styles["form-item"]}
-                label="Pic Port"
-                name={"picport"}
-                rules={[{ required: true, message: "Please input pic port!" }]}
-              >
-                <Input placeholder="" />
-              </Form.Item>
-              <Form.Item
-                className={styles["form-item"]}
-                label="Video URL"
-                name={"videourl"}
-                rules={[{ required: true, message: "Please input video URL!" }]}
-              >
-                <Input placeholder="" />
-              </Form.Item>
-              <Form.Item
-                className={styles["form-item"]}
-                label="Video Port"
-                name={"videoport"}
+                label="SnapshotPath"
+                name={"snapshotPath"}
                 rules={[
-                  { required: true, message: "Please input video port!" },
+                  { required: true, message: "Please input the snapshotPath!" },
+                ]}
+              >
+                <Input placeholder="" />
+              </Form.Item>
+              <Form.Item
+                className={styles["form-item"]}
+                label="SnapshotPort"
+                name={"snapshotPort"}
+                rules={[
+                  { required: true, message: "Please input snapshotPort!" },
+                  {
+                    validator: async (_, value) => {
+                      const regex = /^\d+$/;
+                      if (!regex.test(value)) {
+                        return Promise.reject("Please input numbers only!");
+                      }
+                      return Promise.resolve();
+                    },
+                  },
+                ]}
+              >
+                <Input placeholder="" />
+              </Form.Item>
+              <Form.Item
+                className={styles["form-item"]}
+                label="StreamPath"
+                name={"streamPath"}
+                rules={[
+                  { required: true, message: "Please input streamPath!" },
+                ]}
+              >
+                <Input placeholder="" />
+              </Form.Item>
+              <Form.Item
+                className={styles["form-item"]}
+                label="StreamPort"
+                name={"streamPort"}
+                rules={[
+                  { required: true, message: "Please input streamPort!" },
+                  {
+                    validator: async (_, value) => {
+                      const regex = /^\d+$/;
+                      if (!regex.test(value)) {
+                        return Promise.reject("Please input numbers only!");
+                      }
+                      return Promise.resolve();
+                    },
+                  },
                 ]}
               >
                 <Input placeholder="" />
@@ -308,27 +329,9 @@ export default (props: IProps) => {
                 className={styles["form-item"]}
                 label="Name"
                 name={"name"}
-                rules={[{ required: true, message: "Please input your name!" }]}
+                rules={[{ required: true, message: "Please input the name!" }]}
               >
                 <Input placeholder="input" />
-              </Form.Item>
-              <Form.Item
-                className={styles["form-item"]}
-                label="Type"
-                name={"type"}
-                rules={[
-                  { required: true, message: "Please select fiber control!" },
-                ]}
-              >
-                <Select
-                  value={fiberControlType}
-                  onChange={(value) => setFiberControlType(value)}
-                  disabled={operator === "edit"}
-                  options={[
-                    { label: "1", value: 1 },
-                    { label: "2", value: 2 },
-                  ]}
-                ></Select>
               </Form.Item>
               {fiberControlType === 0 && (
                 <>
@@ -338,6 +341,15 @@ export default (props: IProps) => {
                     name={"zone"}
                     rules={[
                       { required: true, message: "Please input the zone!" },
+                      {
+                        validator: async (_, value) => {
+                          const regex = /^\d+$/;
+                          if (!regex.test(value)) {
+                            return Promise.reject("Please input numbers only!");
+                          }
+                          return Promise.resolve();
+                        },
+                      },
                     ]}
                   >
                     <Input placeholder="input" />
@@ -348,6 +360,15 @@ export default (props: IProps) => {
                     name={"subzone"}
                     rules={[
                       { required: true, message: "Please input the sub zone!" },
+                      {
+                        validator: async (_, value) => {
+                          const regex = /^\d+$/;
+                          if (!regex.test(value)) {
+                            return Promise.reject("Please input numbers only!");
+                          }
+                          return Promise.resolve();
+                        },
+                      },
                     ]}
                   >
                     <Input placeholder="input" />
@@ -423,7 +444,18 @@ export default (props: IProps) => {
                 className={styles["form-item"]}
                 label="Port"
                 name={"port"}
-                rules={[{ required: true, message: "Please input the port!" }]}
+                rules={[
+                  { required: true, message: "Please input the port!" },
+                  {
+                    validator: async (_, value) => {
+                      const regex = /^\d+$/;
+                      if (!regex.test(value)) {
+                        return Promise.reject("Please input numbers only!");
+                      }
+                      return Promise.resolve();
+                    },
+                  },
+                ]}
               >
                 <Input placeholder="input" />
               </Form.Item>
@@ -436,8 +468,8 @@ export default (props: IProps) => {
                 <Select
                   disabled={operator === "edit"}
                   options={[
-                    { label: "1", value: 0 },
-                    { label: "2", value: 1 },
+                    { label: "0", value: 0 },
+                    { label: "1", value: 1 },
                   ]}
                 ></Select>
               </Form.Item>

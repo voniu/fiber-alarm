@@ -32,7 +32,7 @@ export const adminLogout = () => {
 //
 export const getFiberControl = (nameKw: string, archived: boolean) => {
   return request(`${prefix}/fiberDevice`, {
-    params: { nameKw, archived },
+    params: { nameKw: nameKw ? nameKw : null, archived },
   });
 };
 export const addControl = (fiberDevice: any) => {
@@ -59,7 +59,7 @@ export const delControl = (id: number) => {
 // 光纤查询
 export const getFiber = (nameKw: string, archived: boolean) => {
   return request(`${prefix}/fiber`, {
-    params: { nameKw, archived },
+    params: { nameKw: nameKw ? nameKw : null, archived },
   }).then((res) => {
     if (!res.success) return res;
     res.data = res.data.map(locationConverter);
@@ -113,7 +113,7 @@ export const delFiberCamera = (fiberId: number, cameraId: number) => {
 export const getCamera = (nameKw: string, archived: boolean) => {
   return request(`${prefix}/camera`, {
     params: {
-      nameKw,
+      nameKw: nameKw ? nameKw : null,
       archived,
     },
   }).then((res) => {
@@ -229,12 +229,17 @@ export const getUser = (type: number, nameKw: string, archived: boolean) => {
   return request(`${prefix}/user`, {
     params: {
       type,
-      nameKw,
+      nameKw: nameKw ? nameKw : null,
       archived,
     },
   });
 };
-export const addUser = (user: { name: string; nickname: string }) => {
+export const addUser = (user: {
+  name: string;
+  nickname: string;
+  type: number;
+  password: number;
+}) => {
   return request(`${prefix}/user`, {
     method: "POST",
     data: user,
@@ -244,6 +249,18 @@ export const updateUser = (id: number, user: User) => {
   return request(`${prefix}/user/${id}`, {
     method: "PUT",
     data: user,
+  });
+};
+export const updateUserPassword = (id: number, password: string) => {
+  return request(`${prefix}/user/${id}`, {
+    method: "PUT",
+    data: { password },
+  });
+};
+export const changeSelfPass = (currentPass: string, newPass: string) => {
+  return request(`${prefix}/self`, {
+    method: "PUT",
+    data: { currentPass, newPass },
   });
 };
 export const setUserArchive = (id: number, archived: boolean) => {

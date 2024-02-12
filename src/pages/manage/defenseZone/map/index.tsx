@@ -3,12 +3,13 @@ import { Button, Form, Input, Modal, Select } from "antd";
 import { useEffect, useState } from "react";
 import { useModel } from "umi";
 import styles from "./index.less";
+import { setUiConfig } from "@/services/common";
 interface IProps {
   open: boolean;
   onClose: () => void;
 }
 const MapCenter = (props: IProps) => {
-  const { map, setMapCenterZoom } = useModel("useMap");
+  const { map, setMapCenterZoom, mapui, setMapUi } = useModel("useMap");
 
   const { open, onClose } = props;
   const [draw, setDraw] = useState<any>();
@@ -24,12 +25,18 @@ const MapCenter = (props: IProps) => {
     onClose();
   };
   const [form] = Form.useForm();
+  const getFormValue = () => {
+    const center = mapui.center || "[40.60328820848655, 49.67083191777059]";
+    const zoom = mapui.zoom || 14;
+    form.setFieldsValue({ zoom, location: center });
+  };
   const onFinish = (val: any) => {
     console.log(val);
     const { location, zoom } = val;
     if (location) {
-      const center = JSON.parse(location);
-      setMapCenterZoom(center, zoom);
+      setMapCenterZoom(location, zoom);
+      setUiConfig({ mapCenter: location, mapScale: zoom });
+      setMapUi({ zoom, center: location });
     }
     afterClose();
   };
@@ -41,6 +48,7 @@ const MapCenter = (props: IProps) => {
   };
   useEffect(() => {
     console.log("CENTER");
+    getFormValue();
     return () => {
       console.log("REMOVE");
     };

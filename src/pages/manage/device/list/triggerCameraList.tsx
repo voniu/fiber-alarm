@@ -1,13 +1,18 @@
 import { useEffect, useState } from "react";
-import { getFiberDetail } from "@/services/admin";
+import { delFiberCamera, getFiberDetail } from "@/services/admin";
 import { Button, List, Popconfirm } from "antd";
 import type { Camera } from "@/models/useItems";
 interface IProps {
   id: number;
+  flush: () => void;
 }
 export default (props: IProps) => {
   const [list, setList] = useState<Camera[]>();
-  const { id } = props;
+  const { id, flush } = props;
+  const dissolve = (cameraId: number) => {
+    delFiberCamera(id, cameraId);
+    flush();
+  };
   useEffect(() => {
     getFiberDetail(id).then((res) => {
       console.log(res);
@@ -30,7 +35,12 @@ export default (props: IProps) => {
                 okText="Yes"
                 cancelText="No"
               >
-                <Button type="link" size="small" danger>
+                <Button
+                  type="link"
+                  size="small"
+                  danger
+                  onClick={() => dissolve(item.id)}
+                >
                   Dissolve
                 </Button>
               </Popconfirm>,

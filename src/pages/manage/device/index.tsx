@@ -18,6 +18,7 @@ interface DeviceModal {
 }
 const DeviceManage = () => {
   const { map } = useModel("useMap");
+  const { flush } = useModel("useItems");
   const [device, setDevice] = useState<DeviceModal>({
     operator: "add",
     type: "fiber",
@@ -75,9 +76,11 @@ const DeviceManage = () => {
     } else if (listType === "fiber") {
       const { data: fiberData } = await getFiber("", isArchived);
       setListData(fiberData);
+      flush({ fiber: fiberData });
     } else if (listType === "camera") {
       const { data: cameraData } = await getCamera("", isArchived);
       setListData(cameraData);
+      flush({ camera: cameraData });
     }
     setLoading(false);
   };
@@ -149,6 +152,7 @@ const DeviceManage = () => {
         <div className={styles["list"]}>
           {listType === "fiber-control" && (
             <FiberList
+              isArchived={isArchived}
               loading={loading}
               flush={fetchList}
               data={listData || []}
@@ -157,6 +161,7 @@ const DeviceManage = () => {
           )}
           {listType === "fiber" && (
             <FiberManage
+              isArchived={isArchived}
               loading={loading}
               flush={fetchList}
               data={listData || []}
@@ -174,6 +179,7 @@ const DeviceManage = () => {
           )}
           {listType === "camera" && (
             <CameraManage
+              isArchived={isArchived}
               loading={loading}
               flush={fetchList}
               data={listData || []}
@@ -193,6 +199,7 @@ const DeviceManage = () => {
         layer={layer}
         setLayer={(val: any) => setLayer(val)}
         device={device}
+        flush={fetchList}
       />
       <AddRelation
         isModalOpen={realtion.isModalOpen}
@@ -206,6 +213,7 @@ const DeviceManage = () => {
         ) => {
           setRelation({ isModalOpen, fiber });
         }}
+        flush={fetchList}
       />
     </div>
   );

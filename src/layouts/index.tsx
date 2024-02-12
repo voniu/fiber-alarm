@@ -23,7 +23,7 @@ const Layout = () => {
   const { clientRoutes } = useAppData();
   const location = useLocation();
   const { admin, logout } = useModel("useAdminInfo");
-  const { alarmList } = useModel("useAlarms");
+  const { manageAlarm } = useModel("useAlarms");
   const access = useAccess();
   const [open, setIsOpen] = useState(false);
   const handleClick = async (e: any) => {
@@ -72,10 +72,10 @@ const Layout = () => {
           <Popover
             key={"d"}
             placement="left"
-            content={`There are ${alarmList.length} pending alarms`}
+            content={`There are ${manageAlarm.length} pending alarms`}
           >
             <Badge
-              count={alarmList.length}
+              count={manageAlarm.length}
               offset={[-5, 10]}
               size="small"
               key={"trumpet"}
@@ -86,8 +86,8 @@ const Layout = () => {
                 }}
                 className={styles["trumpet"]}
               >
-                {alarmList.length > 0 && <img src={trumpetOn} />}
-                {alarmList.length <= 0 && <img src={trumpetOff} />}
+                {manageAlarm.length > 0 && <img src={trumpetOn} />}
+                {manageAlarm.length <= 0 && <img src={trumpetOff} />}
               </div>
             </Badge>
           </Popover>,

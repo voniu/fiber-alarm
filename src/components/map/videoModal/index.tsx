@@ -18,8 +18,15 @@ export default (props: IProps) => {
         open={open}
         onCancel={onCancel}
         width={600}
+        destroyOnClose
       >
-        <RtspVideo id={id} style={{ height: 400, width: 550 }} />
+        <div>
+          <RtspVideo
+            prefix={"modal"}
+            id={id}
+            style={{ height: 400, width: 550 }}
+          />
+        </div>
       </Modal>
     </>
   );

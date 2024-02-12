@@ -33,14 +33,16 @@ const UserManage = () => {
     setLoading1(false);
     setData(data);
   };
-  useEffect(() => {
-    console.log("flush");
-
+  const flush = () => {
     if (listType === "user") {
       fetchUser();
     } else {
       fetchGuard();
     }
+  };
+  useEffect(() => {
+    console.log("flush");
+    flush();
   }, [listType, isArchived]);
   const handleArchive = (e: any) => {
     console.log(`checked = ${e.target.checked}`);
@@ -72,12 +74,18 @@ const UserManage = () => {
         </div>
         <div>
           {listType === "user" && (
-            <UserList loading={loading2} flush={fetchUser} data={data || []} />
+            <UserList
+              isArchived={isArchived}
+              loading={loading2}
+              flush={fetchUser}
+              data={data || []}
+            />
           )}
         </div>
         <div>
           {listType === "guard" && (
             <GuardList
+              isArchived={isArchived}
               loading={loading1}
               flush={fetchGuard}
               data={data || []}
@@ -85,7 +93,12 @@ const UserManage = () => {
           )}
         </div>
       </div>
-      <AddModal isModalOpen={open} onCancel={onCancel} />
+      <AddModal
+        flush={flush}
+        type={listType}
+        isModalOpen={open}
+        onCancel={onCancel}
+      />
     </div>
   );
 };

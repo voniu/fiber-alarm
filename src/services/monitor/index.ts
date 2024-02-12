@@ -70,7 +70,7 @@ export const offDuty = (password: string) => {
 
 export const getFiber = (nameKw: string) => {
   return request(`${prefix}/fiber`, {
-    params: { nameKw },
+    params: { nameKw: nameKw ? nameKw : null },
   }).then((res) => {
     if (!res.success) return res;
     res.data = res.data.map(locationConverter);
@@ -89,9 +89,7 @@ export const getFiberDetail = (id: number) => {
 // 摄像头
 export const getCamera = (nameKw: string) => {
   return request(`${prefix}/camera`, {
-    params: {
-      nameKw,
-    },
+    params: { nameKw: nameKw ? nameKw : null },
   }).then((res) => {
     if (!res.success) return res;
     res.data = res.data.map(locationConverter);

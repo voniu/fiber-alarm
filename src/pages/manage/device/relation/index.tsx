@@ -7,9 +7,10 @@ interface IProps {
   fiber: { id: number; name: string };
   isModalOpen: boolean;
   setRelation: (isModalOpen: boolean, fiber: IProps["fiber"]) => void;
+  flush: () => void;
 }
 export default function (props: IProps) {
-  const { fiber, isModalOpen, setRelation } = props;
+  const { fiber, isModalOpen, setRelation, flush } = props;
   const [value, setValue] = useState<string[]>([]);
   const [options, setOptions] = useState();
   const handleChange = (value: string[]) => {
@@ -43,6 +44,7 @@ export default function (props: IProps) {
     });
     message.success("success");
     setRelation(false, { id: -1, name: "" });
+    flush();
   };
   useEffect(() => {
     if (isModalOpen) fetchData();

@@ -1,4 +1,3 @@
-import { getAlarmList } from "@/services/admin";
 import WithAuth from "@/wrappers/authAdmin";
 import { Table, Tag } from "antd";
 import type { ColumnsType } from "antd/es/table";
@@ -10,24 +9,14 @@ import { AlarmDetail } from "@/models/useAlarms";
 import { useModel } from "umi";
 
 const Alarm = () => {
-  const [data, setData] = useState();
+  // const [data, setData] = useState();
   const [open, setOpen] = useState(false);
   const [dealId, setDealId] = useState<number>(-1);
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const onClose = () => setOpen(false);
   const typeMap = ["intrusion", "tamper", "wire Disconnect", "Disconnect"];
   const { manageAlarm } = useModel("useAlarms");
-  const fetchList = () => {
-    setLoading(true);
-    getAlarmList({ fiberId: manageAlarm?.map((item) => item.id) }).then(
-      (res) => {
-        console.log(res);
-        const { data } = res;
-        setData(data);
-        setLoading(false);
-      }
-    );
-  };
+
   const columns: ColumnsType<AlarmDetail> = [
     {
       title: "ID",
@@ -46,11 +35,6 @@ const Alarm = () => {
       render: (_, record) => (
         <Tag color="#f50">{typeMap[record.type] || "none"}</Tag>
       ),
-    },
-    {
-      title: "manager",
-      dataIndex: "manager",
-      render: (_, record) => <a>{record.manager?.name}</a>,
     },
     {
       title: "guard",
@@ -82,9 +66,7 @@ const Alarm = () => {
       },
     },
   ];
-  useEffect(() => {
-    fetchList();
-  }, [manageAlarm]);
+  useEffect(() => {}, [manageAlarm]);
 
   return (
     <div className={styles["container"]}>
@@ -92,21 +74,16 @@ const Alarm = () => {
         Current Alarm
       </p>
       <Table
-        loading={loading}
+        // loading={loading}
         rowKey={"id"}
         pagination={{
           pageSize: 7,
         }}
         columns={columns}
-        dataSource={data || []}
+        dataSource={manageAlarm || []}
         bordered
       />
-      <AlarmDetailDrawer
-        open={open}
-        onClose={onClose}
-        alarmID={dealId}
-        flush={fetchList}
-      />
+      <AlarmDetailDrawer open={open} onClose={onClose} alarmID={dealId} />
     </div>
   );
 };

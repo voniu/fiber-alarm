@@ -65,14 +65,14 @@ export default (props: IProps) => {
   const onChange = (e: any) => {
     processInfo.current = e.target.value;
   };
-  const handleSubmit = () => {
+  const handleSubmit = (id: number) => {
     const log = processInfo.current;
     console.log(log);
     if (!log) {
       message.info("please input the log");
       return;
     }
-    handleManage(log);
+    handleManage(id, log);
     message.success("success");
     if (flush) flush();
     onClose();
@@ -150,7 +150,7 @@ export default (props: IProps) => {
         {!isHistory && (
           <div className={styles["button-container"]}>
             {detail?.status === 1 && (
-              <Button onClick={handleSubmit}>submit</Button>
+              <Button onClick={() => handleSubmit(detail?.id)}>submit</Button>
             )}
           </div>
         )}
