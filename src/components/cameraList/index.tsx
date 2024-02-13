@@ -10,7 +10,6 @@ export default function () {
   const { selectFeature, getFeaturesByTypeAndId } = useModel("useMap");
   const { showPopup } = useModel("useModel");
   if (!cameraList.length) return <div>No Data</div>;
-  console.log("camera", cameraList);
   const columns: TableColumnsType<Camera> = [
     {
       title: "#",

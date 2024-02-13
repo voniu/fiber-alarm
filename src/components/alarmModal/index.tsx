@@ -66,7 +66,6 @@ const TabContent = (props: { id: number }) => {
     setTarget("alarm-map-container");
 
     getAlarmDetail(id).then((res: any) => {
-      console.log(res);
       if (!res.data) return;
       setDetail(res.data);
       centerTo(res.data.fiber.id, "fiber");

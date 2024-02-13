@@ -74,7 +74,6 @@ export default (props: IProps) => {
     setContorlOptions(c);
   };
   const onSelectChange = (value: any, option: any) => {
-    console.log(value, option);
     setFiberControl({
       name: option.label,
       type: option.type,
@@ -83,7 +82,6 @@ export default (props: IProps) => {
   };
   const getFiberForm = async () => {
     const { data } = await getFiberDetail(deviceId!);
-    console.log(data);
     const { name, device, location, identifier } = data;
     if (!identifier) {
       form.setFieldsValue({
@@ -95,7 +93,6 @@ export default (props: IProps) => {
       return;
     }
     const type = identifier.length === 1 ? 1 : 0;
-    console.log(identifier.length, "llllsad");
 
     setFiberControl(device);
     if (type === 0) {
@@ -116,10 +113,7 @@ export default (props: IProps) => {
     }
   };
   const getCameraForm = async () => {
-    console.log(deviceId);
-
     const { data } = await getCameraDetail(deviceId!);
-    console.log(data);
     const {
       name,
       host,
@@ -145,7 +139,6 @@ export default (props: IProps) => {
   };
   const getControlForm = async () => {
     const { deviceContent } = device;
-    console.log(device, "device");
     const { name, host, port, type } = deviceContent;
     form.setFieldsValue({
       name,
@@ -155,8 +148,6 @@ export default (props: IProps) => {
     });
   };
   const onFinish = async (value: any) => {
-    console.log(value);
-
     if (operator === "add") {
       if (type === "camera") {
         await addCamera({ ...value, location: value.location });

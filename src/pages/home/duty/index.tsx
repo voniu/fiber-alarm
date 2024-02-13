@@ -52,9 +52,13 @@ const Duty = () => {
     history.push("/home/login");
   };
   useEffect(() => {
-    getDuty().then((res) => {
-      setDutyState(res);
-    });
+    const interval = setInterval(() => {
+      getDuty().then((res) => {
+        setDutyState(res);
+      });
+    }, 4000);
+
+    return () => clearInterval(interval);
   }, []);
   useEffect(() => {
     setLoading(true);

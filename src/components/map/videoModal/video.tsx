@@ -15,7 +15,9 @@ export default (props: IProps) => {
       R.close();
       console.log("close");
     }
+    if (!id) return;
     if (!document.getElementById(`rtsp-video-${prefix}-${id}`)) return;
+
     const rtsp = new RtspStream(
       `ws://localhost:8090/api/common/stream?id=${id}`,
       `rtsp-video-${prefix}-${id}`

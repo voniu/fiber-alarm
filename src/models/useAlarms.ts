@@ -111,7 +111,7 @@ export default function Alarms() {
   useEffect(() => {
     if (manageSocekt) manageSocekt.close();
     if (guardSocekt) guardSocekt.close();
-    if (adminLogin && !isHome() && admin?.type === 1) {
+    if (adminLogin && !isHome() && admin?.type === 2) {
       getMangerAlarm();
     }
     if (userLogin && isHome() && isOnDuty) {
@@ -122,7 +122,7 @@ export default function Alarms() {
       manageSocekt?.close();
       guardSocekt?.close();
     };
-  }, [userLogin, adminLogin, isOnDuty]);
+  }, [userLogin, adminLogin, isOnDuty, admin]);
 
   return {
     alarms,

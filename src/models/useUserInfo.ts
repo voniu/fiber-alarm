@@ -43,7 +43,7 @@ export default function UserInfo() {
         setLoading(false);
       });
     }
-  }, []);
+  }, [isOnDuty]);
 
   const login = async (username: string, password: string) => {
     const { success, data, msg } = await monitorLogin(username, password);

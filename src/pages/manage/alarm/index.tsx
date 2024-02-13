@@ -38,11 +38,15 @@ const HistoryAlarm = () => {
     if (values)
       params = {
         fiberId: values.fiberId,
-        guardId: values.guardId,
-        managerId: values.managerId,
+        guardId: values.guardId !== "all" ? values.guardId : undefined,
+        managerId: values.managerId !== "all" ? values.managerId : undefined,
         type: values.type !== "all" ? values.type : undefined,
         status: values.status !== -1 ? values.status : undefined,
-        timeType: values.timeType !== "all" ? values.timeType : undefined,
+        timeType: values.time
+          ? values.timeType !== "all"
+            ? values.timeType
+            : undefined
+          : undefined,
         startTime: values.time ? dayjs(values.time[0]).valueOf() : undefined,
         endTime: values.time ? dayjs(values.time[1]).valueOf() : undefined,
       };
@@ -69,8 +73,8 @@ const HistoryAlarm = () => {
 
   const [form] = Form.useForm();
   const [fiberOptions, setFiberOp] = useState();
-  const [guardOptions, setGuardOp] = useState();
-  const [managerOptions, setManagerOp] = useState();
+  const [guardOptions, setGuardOp] = useState([]);
+  const [managerOptions, setManagerOp] = useState([]);
   const columns: ColumnsType<AlarmDetail> = [
     {
       title: "ID",
@@ -189,8 +193,9 @@ const HistoryAlarm = () => {
         labelAlign="right"
         initialValues={{
           status: -1,
-          timeType: "all",
           type: "all",
+          guardId: "all",
+          managerId: "all",
         }}
       >
         <Row gutter={24} style={{ height: 45 }}>
@@ -225,7 +230,6 @@ const HistoryAlarm = () => {
               <Select
                 style={{ width: 100 }}
                 options={[
-                  { value: "all", label: "all" },
                   { value: "CREATE", label: "CREATE" },
                   { value: "GUARD", label: "GUARD" },
                   { value: "MANAGER", label: "MANAGER" },
@@ -273,7 +277,7 @@ const HistoryAlarm = () => {
                 optionFilterProp="label"
                 style={{ width: "230px" }}
                 maxTagCount={1}
-                options={managerOptions}
+                options={[{ value: "all", label: "all" }, ...managerOptions]}
               />
             </Form.Item>
           </Col>
@@ -287,7 +291,7 @@ const HistoryAlarm = () => {
                 placeholder="Please select"
                 style={{ width: "230px" }}
                 maxTagCount={1}
-                options={guardOptions}
+                options={[{ value: "all", label: "all" }, ...guardOptions]}
               />
             </Form.Item>
           </Col>

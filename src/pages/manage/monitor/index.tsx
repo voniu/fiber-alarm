@@ -62,10 +62,10 @@ const Monitor = () => {
           </div>
           <div style={{ display: "flex", marginTop: 2, marginLeft: 4 }}>
             {currentCameras && (
-              <RtspVideo prefix="manage3" id={currentCameras["1-1"]} />
+              <RtspVideo prefix="manage3" id={currentCameras["1-0"]} />
             )}
             {currentCameras && (
-              <RtspVideo prefix="manage4" id={currentCameras["1-2"]} />
+              <RtspVideo prefix="manage4" id={currentCameras["1-1"]} />
             )}
           </div>
         </div>

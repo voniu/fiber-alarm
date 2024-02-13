@@ -44,6 +44,7 @@ export interface Guard {
 export interface LogInfo {
   id: number;
   detail: string;
+  createTime: number;
 }
 export interface FiberControl {
   id: number;

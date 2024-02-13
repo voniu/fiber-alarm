@@ -67,7 +67,6 @@ export default (props: IProps) => {
   };
   const handleSubmit = (id: number) => {
     const log = processInfo.current;
-    console.log(log);
     if (!log) {
       message.info("please input the log");
       return;

@@ -7,6 +7,7 @@ export default defineConfig({
   routes: [
     {
       path: "/",
+      name: "/",
       component: "@/pages/home/index",
       layout: false,
     },

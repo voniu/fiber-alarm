@@ -91,7 +91,6 @@ export default function ({
           setLocation(JSON.stringify(coordinates));
           newDraw.setActive(false);
         } else {
-          console.log(coordinates);
           const location = pointToLocation(coordinates);
           setLocation(location);
           setFiber(e.feature);
@@ -107,7 +106,6 @@ export default function ({
   };
   const resetCamera = () => {
     if (camera) {
-      console.log(camera);
       layer.getSource().clear();
       draw.setActive(true);
       setLocation("");
@@ -115,8 +113,6 @@ export default function ({
     }
   };
   const resetFiber = () => {
-    console.log(fiber, layer.getSource());
-
     if (fiber) {
       layer.getSource().clear();
       draw.setActive(true);
@@ -132,8 +128,6 @@ export default function ({
     clearSelected();
     addInteraction(type);
     return () => {
-      console.log(draw, layer);
-
       if (draw) map.removeInteraction(draw);
       const dom = document.getElementById("edit-map-container");
       setTarget(target || "");
@@ -147,13 +141,17 @@ export default function ({
     <>
       {type === "Point" && (
         <div style={{ position: "absolute", top: 25 }}>
-          <Button onClick={resetCamera}>reset</Button>
+          <Button type="primary" onClick={resetCamera}>
+            reset
+          </Button>
           <span>(only allow draw a Point)</span>
         </div>
       )}
       {type === "LineString" && (
         <div style={{ position: "absolute", top: 25 }}>
-          <Button onClick={resetFiber}>reset</Button>
+          <Button type="primary" onClick={resetFiber}>
+            reset
+          </Button>
           <span>(only allow draw a fiber)</span>
         </div>
       )}

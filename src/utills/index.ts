@@ -31,5 +31,5 @@ export const matrixData = (obj: any): MonitorSetting[] => {
 };
 
 export const isHome = () => {
-  return location.pathname.includes("home");
+  return location.pathname.includes("home") || location.pathname === "/";
 };

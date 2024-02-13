@@ -17,7 +17,7 @@ export default (props: IProps) => {
   };
   const onFinish = async (value: any) => {
     console.log(value);
-    await reset(id, value.password);
+    await reset(id, value.newpassword);
     message.success("success");
     onClose();
     flush();
@@ -64,7 +64,7 @@ export default (props: IProps) => {
               <Form.Item
                 className={styles["form-item"]}
                 label="Password"
-                name={"password"}
+                name={"newpassword"}
                 rules={[{ required: true, message: "Please input" }]}
               >
                 <Input.Password placeholder="input" />

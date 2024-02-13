@@ -1,4 +1,3 @@
-import { Spin } from "antd";
 import { useEffect, useState } from "react";
 import { useModel, history } from "umi";
 
@@ -7,6 +6,7 @@ export default (Component: () => JSX.Element) => () => {
   const [shouldRender, setShouldRender] = useState(false);
   useEffect(() => {
     if (!loading) {
+      setShouldRender(true);
       if (isLogin && isOnDuty) {
         history.push("/home");
       } else if (isLogin && !isOnDuty) {
@@ -14,8 +14,7 @@ export default (Component: () => JSX.Element) => () => {
       } else {
         history.push("/home/login");
       }
-      setShouldRender(true);
     }
   }, [isLogin, isOnDuty, loading]);
-  return shouldRender ? <Component /> : <Spin size="large" fullscreen />;
+  return shouldRender ? <Component /> : null;
 };

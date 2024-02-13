@@ -8,8 +8,6 @@ const SoundAlert = (props: IProps) => {
   const { alert } = props;
   const [audio] = useState(new Audio(alarmAudio));
   const playAlertSound = () => {
-    console.log(audio);
-
     // 播放声音警报
     audio.play().catch(() => {
       message.info("Error playing sound");
@@ -17,7 +15,6 @@ const SoundAlert = (props: IProps) => {
   };
   useEffect(() => {
     // 检查alert变量的变化
-    console.log(alert);
 
     if (alert) {
       playAlertSound();

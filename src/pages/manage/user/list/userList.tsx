@@ -82,7 +82,7 @@ export default (props: IProps) => {
       render: (_, record) => {
         return (
           <div style={{ display: "flex", gap: 10 }}>
-            {isArchived && (
+            {isArchived && record.type !== 0 && (
               <Popconfirm
                 title="Undo archive the user"
                 description="Are you sure to Undo archive the user?"
@@ -93,7 +93,7 @@ export default (props: IProps) => {
                 <Button size="small">Undo archive</Button>
               </Popconfirm>
             )}
-            {!isArchived && (
+            {!isArchived && record.type !== 0 && (
               <Popconfirm
                 title="archive the user"
                 description="Are you sure to archive the user?"
@@ -115,7 +115,7 @@ export default (props: IProps) => {
                 Reset Password
               </Button>
             )}
-            {isArchived && (
+            {isArchived && record.type !== 0 && (
               <Popconfirm
                 title="delete the user"
                 description="Are you sure to delete the user?"
