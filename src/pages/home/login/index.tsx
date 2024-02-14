@@ -63,7 +63,11 @@ const Login = () => {
             />
           </div>
           <div className={styles["input-container"]}>
-            <div className={styles["button"]} onClick={submit}>
+            <div
+              className={styles["button"]}
+              onClick={submit}
+              style={{ pointerEvents: `${loading ? "none" : "auto"}` }}
+            >
               {loading ? <span>loading...</span> : <span>Login</span>}
             </div>
           </div>

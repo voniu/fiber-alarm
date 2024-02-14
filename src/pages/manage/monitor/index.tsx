@@ -13,6 +13,7 @@ const Monitor = () => {
     [key: string]: any;
   }>();
   const [form] = Form.useForm();
+  const [loading, setLoading] = useState(false);
   const fetchMartix = async () => {
     const { data: matrix } = await getMatrix();
     const camerasSetting: any = {};
@@ -36,8 +37,11 @@ const Monitor = () => {
     setCameraOp([{ value: "", label: "none" }, ...options]);
   };
   const onFinsh = async (value: any) => {
+    setLoading(true);
     console.log(value, matrixData(value));
     await setMatrix(matrixData(value));
+    setLoading(false);
+
     message.success("Success");
     window.location.reload();
   };
@@ -113,7 +117,7 @@ const Monitor = () => {
                 />
               </Form.Item>
               <Form.Item wrapperCol={{ offset: 8 }}>
-                <Button type="primary" htmlType="submit">
+                <Button type="primary" htmlType="submit" loading={loading}>
                   Submit
                 </Button>
               </Form.Item>

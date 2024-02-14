@@ -196,10 +196,10 @@ export default function MapModel() {
   const getMapConfig = async () => {
     const { data } = await getUiConfig();
     const center = data.mapCenter
-      ? JSON.parse(data.mapCenter)
-      : [40.60328820848655, 49.67083191777059];
+      ? data.mapCenter
+      : "[40.60328820848655, 49.67083191777059]";
     const zoom = data.mapScale || 14;
-    setMapCenterZoom(center, zoom);
+    setMapCenterZoom(JSON.parse(center), zoom);
     setMapUi({ center, zoom });
   };
   useEffect(() => {

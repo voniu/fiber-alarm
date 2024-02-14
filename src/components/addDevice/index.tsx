@@ -59,6 +59,8 @@ export default (props: IProps) => {
     type: -1,
   });
   const [contorlOptions, setContorlOptions] = useState([]);
+
+  const [loading, setLoading] = useState(false);
   const setLocation = (location: any) => {
     form.setFieldValue("location", location);
   };
@@ -148,6 +150,7 @@ export default (props: IProps) => {
     });
   };
   const onFinish = async (value: any) => {
+    setLoading(true);
     if (operator === "add") {
       if (type === "camera") {
         await addCamera({ ...value, location: value.location });
@@ -179,6 +182,7 @@ export default (props: IProps) => {
         await updateControl(deviceId!, value);
       }
     }
+    setLoading(false);
     onClose();
     flush();
   };
@@ -335,7 +339,7 @@ export default (props: IProps) => {
                 className={styles["form-item"]}
                 wrapperCol={{ offset: 16 }}
               >
-                <Button type="primary" htmlType="submit">
+                <Button type="primary" htmlType="submit" loading={loading}>
                   Submit
                 </Button>
               </Form.Item>
@@ -448,7 +452,7 @@ export default (props: IProps) => {
                 className={styles["form-item"]}
                 wrapperCol={{ offset: 16 }}
               >
-                <Button type="primary" htmlType="submit">
+                <Button type="primary" htmlType="submit" loading={loading}>
                   Submit
                 </Button>
               </Form.Item>
@@ -518,7 +522,7 @@ export default (props: IProps) => {
                 className={styles["form-item"]}
                 wrapperCol={{ offset: 16 }}
               >
-                <Button type="primary" htmlType="submit">
+                <Button type="primary" htmlType="submit" loading={loading}>
                   Submit
                 </Button>
               </Form.Item>

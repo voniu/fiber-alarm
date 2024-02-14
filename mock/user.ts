@@ -22,7 +22,7 @@ export default {
             id: 3,
             name: "twist",
             nickname: "tw mo",
-            type: 1,
+            type: 2,
           },
           {
             id: 4,

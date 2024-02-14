@@ -1,5 +1,5 @@
 import { Button, ConfigProvider, Form, Modal, Input, message } from "antd";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import styles from "./index.less";
 interface IProps {
   id: number;
@@ -15,10 +15,14 @@ export default (props: IProps) => {
     onCancel();
     form.resetFields();
   };
+  const [loading, setLoading] = useState(false);
+
   const onFinish = async (value: any) => {
     console.log(value);
+    setLoading(true);
     await reset(id, value.newpassword);
     message.success("success");
+    setLoading(false);
     onClose();
     flush();
   };
@@ -71,7 +75,7 @@ export default (props: IProps) => {
               </Form.Item>
 
               <Form.Item style={{ display: "flex", justifyContent: "center" }}>
-                <Button type="primary" htmlType="submit">
+                <Button type="primary" htmlType="submit" loading={loading}>
                   submit
                 </Button>
               </Form.Item>

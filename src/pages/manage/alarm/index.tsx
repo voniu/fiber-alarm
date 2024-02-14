@@ -33,30 +33,35 @@ const HistoryAlarm = () => {
   const [loading, setLoading] = useState(false);
   const [dealId, setDealId] = useState<number>(-1);
   const { admin, isLogin } = useModel("useAdminInfo");
-  const fetchList = (values?: any) => {
+  const [page, setPage] = useState(1);
+  const [pageSize] = useState(6);
+  const [total, setTotal] = useState();
+  const [form] = Form.useForm();
+
+  const fetchList = (page: number, pageSize: number) => {
+    setPage(page);
+    const values = form.getFieldsValue();
     let params = {};
-    if (values)
-      params = {
-        fiberId: values.fiberId,
-        guardId: values.guardId !== "all" ? values.guardId : undefined,
-        managerId: values.managerId !== "all" ? values.managerId : undefined,
-        type: values.type !== "all" ? values.type : undefined,
-        status: values.status !== -1 ? values.status : undefined,
-        timeType: values.time
-          ? values.timeType !== "all"
-            ? values.timeType
-            : undefined
-          : undefined,
-        startTime: values.time ? dayjs(values.time[0]).valueOf() : undefined,
-        endTime: values.time ? dayjs(values.time[1]).valueOf() : undefined,
-      };
-    console.log(params);
+    params = {
+      fiberId: values.fiberId,
+      guardId: values.guardId !== "all" ? values.guardId : undefined,
+      managerId: values.managerId !== "all" ? values.managerId : undefined,
+      type: values.type !== "all" ? values.type : undefined,
+      status: values.status !== -1 ? values.status : undefined,
+      timeType: values.time
+        ? values.timeType !== "all"
+          ? values.timeType
+          : undefined
+        : undefined,
+      startTime: values.time ? dayjs(values.time[0]).valueOf() : undefined,
+      endTime: values.time ? dayjs(values.time[1]).valueOf() : undefined,
+    };
 
     setLoading(true);
-    getAlarmList(params).then((res) => {
-      console.log(res);
+    getAlarmList(params, page, pageSize).then((res) => {
       setLoading(false);
-      const { data } = res;
+      const { totalPage, data } = res;
+      setTotal(totalPage);
       setData(data);
     });
   };
@@ -64,14 +69,13 @@ const HistoryAlarm = () => {
     console.log(id);
     await delAlarmDetail(id);
     message.success("success");
-    fetchList();
+    fetchList(1, 6);
   };
   const statusMap = ["pending", "processing", "solved"];
   const colorMap = ["default", "processing", "success"];
   const typeMap = ["intrusion", "tamper", "wire Disconnect", "Disconnect"];
   const onClose = () => setOpen(false);
 
-  const [form] = Form.useForm();
   const [fiberOptions, setFiberOp] = useState();
   const [guardOptions, setGuardOp] = useState([]);
   const [managerOptions, setManagerOp] = useState([]);
@@ -175,13 +179,12 @@ const HistoryAlarm = () => {
   useEffect(() => {
     if (!isLogin) return;
     fetchFormValue();
-    fetchList();
+    fetchList(page, pageSize);
   }, [isLogin]);
 
-  const handleSearch = (values: any) => {
+  const handleSearch = () => {
     // setLoading(true);
-    console.log(values);
-    fetchList(values);
+    fetchList(1, 6);
   };
   return (
     <div className={styles["container"]}>
@@ -308,7 +311,17 @@ const HistoryAlarm = () => {
       <Table
         loading={loading}
         rowKey={"id"}
-        pagination={{ pageSize: 6 }}
+        pagination={{
+          defaultCurrent: 1,
+          defaultPageSize: 6,
+          current: page,
+          pageSize,
+          total,
+          onChange: (page, pageSize) => {
+            fetchList(page, pageSize);
+          },
+          showSizeChanger: false,
+        }}
         columns={columns}
         dataSource={data || []}
         bordered

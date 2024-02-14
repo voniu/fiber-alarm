@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { RtspStream } from "@/libs/rtspStream";
 import defaultImg from "@/assets/video/defaultVideo.webp";
 import styles from "./index.less";
+import { wsUrl } from "@/constant";
 interface IProps {
   id: number;
   style?: Partial<React.CSSProperties>;
@@ -19,7 +20,7 @@ export default (props: IProps) => {
     if (!document.getElementById(`rtsp-video-${prefix}-${id}`)) return;
 
     const rtsp = new RtspStream(
-      `ws://localhost:8090/api/common/stream?id=${id}`,
+      `${wsUrl}/api/common/stream?id=${id}`,
       `rtsp-video-${prefix}-${id}`
     );
     rtsp.open();

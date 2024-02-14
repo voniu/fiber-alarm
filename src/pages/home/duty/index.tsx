@@ -31,6 +31,7 @@ const Duty = () => {
   const [dutyState, setDutyState] = useState<DutyState>();
   const [loading, setLoading] = useState(true);
   const { setGuards, resumeGuards, logout } = useModel("useUserInfo");
+  const [outLoading, setOutLoading] = useState(false);
   const handleConfirm = async (guardId: number) => {
     const { success, msg } = await setGuards(guardId);
     if (!success) {
@@ -40,11 +41,17 @@ const Duty = () => {
     history.push("/home");
   };
   const handleResume = async () => {
+    setOutLoading(true);
     await resumeGuards();
+    setOutLoading(false);
+
     history.push("/home");
   };
   const handleLogout = async () => {
+    setOutLoading(true);
     const { success, msg } = await logout();
+    setOutLoading(false);
+
     if (!success) {
       message.info(msg);
       return;
@@ -67,18 +74,15 @@ const Duty = () => {
       console.log(res);
       setData(res);
     });
+    getDuty().then((res) => {
+      setDutyState(res);
+    });
   }, []);
   const columns: ColumnsType<DataType> = [
     {
       title: "Name",
       dataIndex: "name",
       render: (text) => <a>{text}</a>,
-    },
-    {
-      title: "Status",
-      className: "column-money",
-      dataIndex: "status",
-      align: "right",
     },
     {
       title: "Operator",
@@ -114,8 +118,12 @@ const Duty = () => {
         >
           Duty Manage
         </p>
-        <div className={styles["logout-btn"]} onClick={handleLogout}>
-          Logout
+        <div
+          className={styles["logout-btn"]}
+          onClick={handleLogout}
+          style={{ pointerEvents: `${outLoading ? "none" : "auto"}` }}
+        >
+          {outLoading ? "Logout.." : "Logout"}
         </div>
         {!dutyState?.isAnyoneOnDuty && (
           <ConfigProvider
@@ -143,6 +151,8 @@ const Duty = () => {
               columns={columns}
               dataSource={data}
               bordered
+              scroll={{ x: "max-content", y: 400 }}
+              sticky
             />
           </ConfigProvider>
         )}
@@ -155,8 +165,12 @@ const Duty = () => {
             <div style={{ color: "#699ef8", marginBottom: 10 }}>
               <div>Current Guard: {dutyState.guard.name}</div>
             </div>
-            <div className={styles["resume-btn"]} onClick={handleResume}>
-              <span>Resume</span>
+            <div
+              className={styles["resume-btn"]}
+              onClick={handleResume}
+              style={{ pointerEvents: `${outLoading ? "none" : "auto"}` }}
+            >
+              {outLoading ? <span>Resume..</span> : <span>Resume</span>}
             </div>
           </div>
         )}

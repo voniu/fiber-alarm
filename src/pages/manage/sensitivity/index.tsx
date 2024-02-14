@@ -63,14 +63,20 @@ const FiberSensitivity = () => {
   }>({ type: "Create", taskId: null });
   const onCancel = () => setIsOpen(false);
   const [tasks, setTasks] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [listLoading, setListLoading] = useState(false);
+
   const fetchTask = async () => {
+    setListLoading(true);
     const { data } = await getTask();
     console.log(data);
-
+    setListLoading(false);
     setTasks(data);
   };
   const handleDelete = async (id: number) => {
+    setLoading(true);
     await delTask(id);
+    setLoading(false);
     fetchTask();
   };
   const handleCheck = (id: number) => {
@@ -103,6 +109,7 @@ const FiberSensitivity = () => {
           </div>
           <div className={styles["list"]}>
             <List
+              loading={listLoading}
               style={{
                 padding: "10px 30px",
                 width: 700,
@@ -118,7 +125,7 @@ const FiberSensitivity = () => {
                   Task List
                 </p>
               }
-              pagination={{ pageSize: 3 }}
+              pagination={{ pageSize: 3, showSizeChanger: false }}
               dataSource={tasks}
               renderItem={(item: any) =>
                 tasks.length === 0 ? (
@@ -138,7 +145,9 @@ const FiberSensitivity = () => {
                         title={"Delete the task?"}
                         onConfirm={() => handleDelete(item.id)}
                       >
-                        <Button danger>Delete</Button>
+                        <Button danger loading={loading}>
+                          Delete
+                        </Button>
                       </Popconfirm>,
                     ]}
                   >

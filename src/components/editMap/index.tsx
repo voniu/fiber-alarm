@@ -122,7 +122,6 @@ export default function ({
   };
 
   useEffect(() => {
-    setLocation("");
     console.log("EDIT MAP");
     setTarget("edit-map-container");
     clearSelected();

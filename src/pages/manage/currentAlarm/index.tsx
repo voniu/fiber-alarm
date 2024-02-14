@@ -15,7 +15,7 @@ const Alarm = () => {
   // const [loading, setLoading] = useState(false);
   const onClose = () => setOpen(false);
   const typeMap = ["intrusion", "tamper", "wire Disconnect", "Disconnect"];
-  const { manageAlarm } = useModel("useAlarms");
+  const { manageAlarm, messageLoading } = useModel("useAlarms");
 
   const columns: ColumnsType<AlarmDetail> = [
     {
@@ -74,10 +74,11 @@ const Alarm = () => {
         Current Alarm
       </p>
       <Table
-        // loading={loading}
+        loading={messageLoading}
         rowKey={"id"}
         pagination={{
           pageSize: 7,
+          showSizeChanger: false,
         }}
         columns={columns}
         dataSource={manageAlarm || []}

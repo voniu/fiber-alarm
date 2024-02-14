@@ -7,12 +7,21 @@ import { LogInfo } from "@/type";
 import dayjs from "@/utills/day";
 const LogPage = () => {
   const [data, setData] = useState<LogInfo[]>([]);
-  const fetchLog = async () => {
-    const { data } = await getLog();
+  const [page, setPage] = useState(1);
+  const [pageSize] = useState(10);
+  const [total, setTotal] = useState();
+  const [loading, setLoading] = useState(false);
+  const fetchLog = async (page: number, pageSize: number) => {
+    setLoading(true);
+    setPage(page);
+    const { data, totalPage } = await getLog(page, pageSize);
+    setLoading(false);
+
+    setTotal(totalPage);
     setData(data);
   };
   useEffect(() => {
-    fetchLog();
+    fetchLog(page, pageSize);
   }, []);
 
   return (
@@ -21,15 +30,27 @@ const LogPage = () => {
         Log Information
       </p>
       <List
+        loading={loading}
         header={null}
         bordered
-        pagination={{ pageSize: 10 }}
+        pagination={{
+          defaultCurrent: 1,
+          defaultPageSize: 10,
+          current: page,
+          pageSize,
+          total,
+          onChange: (page, pageSize) => {
+            fetchLog(page, pageSize);
+          },
+          showSizeChanger: false,
+        }}
         dataSource={data}
         renderItem={(item) => (
           <List.Item
             actions={[
               <Typography.Text key={"log-time"} mark>
-                {dayjs(item.createTime).format("MMMM D, YYYY h:mm A")}
+                {item.createTime &&
+                  dayjs(item.createTime).format("MMMM D, YYYY h:mm A")}
               </Typography.Text>,
             ]}
           >

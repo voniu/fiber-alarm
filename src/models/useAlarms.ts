@@ -56,7 +56,9 @@ export default function Alarms() {
   const [guardSocekt, setGuardSocket] = useState<WebSocket>();
   const [manageSocekt, setManageSocket] = useState<WebSocket>();
 
+  const [messageLoading, setMessageLoading] = useState(true);
   const handleGuard = (id: number, log: string) => {
+    setMessageLoading(true);
     guardSocekt?.send(
       JSON.stringify({
         type: "RESOLVE",
@@ -67,7 +69,8 @@ export default function Alarms() {
       })
     );
   };
-  const handleManage = (id: number, log: string) => {
+  const handleManage = async (id: number, log: string) => {
+    setMessageLoading(true);
     manageSocekt?.send(
       JSON.stringify({
         type: "RESOLVE",
@@ -86,6 +89,7 @@ export default function Alarms() {
       if (typeof e.data === "string") {
         let data = JSON.parse(e.data);
         if (data.type === "UPDATE") {
+          setMessageLoading(false);
           setManageAlarm(data.content);
         }
       }
@@ -102,6 +106,7 @@ export default function Alarms() {
       if (typeof e.data === "string") {
         let data = JSON.parse(e.data);
         if (data.type === "UPDATE") {
+          setMessageLoading(false);
           setAlarmList(data.content);
         }
       }
@@ -130,6 +135,7 @@ export default function Alarms() {
     manageAlarm,
     handleManage,
     handleGuard,
+    messageLoading,
     // page,
     // setPage,
     // pageSize,

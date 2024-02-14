@@ -37,6 +37,7 @@ export default (props: IProps) => {
     "0": false,
     "1": false,
   });
+  const [loading, setLoading] = useState(false);
 
   const levelOptions = (count: number) => {
     const op = [];
@@ -66,6 +67,7 @@ export default (props: IProps) => {
     setConfigType(res);
   };
   const onFinish = async (value: any) => {
+    setLoading(true);
     console.log(value);
     const {
       name,
@@ -91,6 +93,7 @@ export default (props: IProps) => {
         groupEntity,
       },
     });
+    setLoading(false);
     message.success("success");
     onCancel();
     fetchTask();
@@ -340,7 +343,7 @@ export default (props: IProps) => {
             }
             {check.type === "Create" && (
               <Form.Item>
-                <Button type="primary" htmlType="submit">
+                <Button type="primary" htmlType="submit" loading={loading}>
                   submit
                 </Button>
               </Form.Item>

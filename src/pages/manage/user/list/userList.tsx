@@ -54,16 +54,19 @@ export default (props: IProps) => {
       title: "NickName",
       dataIndex: "nickname",
       width: 200,
-      render: (text, record) => (
-        <Typography.Text
-          style={{ width: "100px" }}
-          editable={{
-            onChange: (val) => changeNickname(val, record),
-          }}
-        >
-          {record.nickname}
-        </Typography.Text>
-      ),
+      render: (text, record) =>
+        admin?.type !== 0 && record.type === 0 ? (
+          record.nickname
+        ) : (
+          <Typography.Text
+            style={{ width: "100px" }}
+            editable={{
+              onChange: (val) => changeNickname(val, record),
+            }}
+          >
+            {record.nickname}
+          </Typography.Text>
+        ),
     },
     {
       title: "Identity",
@@ -82,7 +85,7 @@ export default (props: IProps) => {
       render: (_, record) => {
         return (
           <div style={{ display: "flex", gap: 10 }}>
-            {isArchived && record.type !== 0 && (
+            {isArchived && record.type !== 0 && record.id !== admin?.id && (
               <Popconfirm
                 title="Undo archive the user"
                 description="Are you sure to Undo archive the user?"
@@ -93,7 +96,7 @@ export default (props: IProps) => {
                 <Button size="small">Undo archive</Button>
               </Popconfirm>
             )}
-            {!isArchived && record.type !== 0 && (
+            {!isArchived && record.id !== admin?.id && record.type !== 0 && (
               <Popconfirm
                 title="archive the user"
                 description="Are you sure to archive the user?"
@@ -115,7 +118,7 @@ export default (props: IProps) => {
                 Reset Password
               </Button>
             )}
-            {isArchived && record.type !== 0 && (
+            {isArchived && record.type !== 0 && record.id !== admin?.id && (
               <Popconfirm
                 title="delete the user"
                 description="Are you sure to delete the user?"
@@ -138,7 +141,7 @@ export default (props: IProps) => {
       <Table
         loading={loading}
         rowKey={"id"}
-        pagination={{ pageSize: 6 }}
+        pagination={{ pageSize: 6, showSizeChanger: false }}
         columns={columns}
         dataSource={data}
         bordered

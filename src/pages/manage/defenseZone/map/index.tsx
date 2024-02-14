@@ -14,6 +14,8 @@ const MapCenter = (props: IProps) => {
   const { open, onClose } = props;
   const [draw, setDraw] = useState<any>();
   const [layer, setLayer] = useState<any>();
+
+  const [loading, setLoading] = useState(false);
   const zoomOption = (n: number) => {
     return new Array(n)
       .fill(0)
@@ -26,18 +28,29 @@ const MapCenter = (props: IProps) => {
   };
   const [form] = Form.useForm();
   const getFormValue = () => {
+    console.log("form");
+
+    console.log(mapui.center);
+
     const center = mapui.center || "[40.60328820848655, 49.67083191777059]";
+    console.log(center);
+
     const zoom = mapui.zoom || 14;
-    form.setFieldsValue({ zoom, location: center });
+    form.setFieldValue("zoom", zoom);
+    form.setFieldValue("location", center);
   };
-  const onFinish = (val: any) => {
+  const onFinish = async (val: any) => {
     console.log(val);
     const { location, zoom } = val;
+    console.log(location);
+
+    setLoading(true);
     if (location) {
-      setMapCenterZoom(location, zoom);
-      setUiConfig({ mapCenter: location, mapScale: zoom });
+      setMapCenterZoom(JSON.parse(location), zoom);
+      await setUiConfig({ mapCenter: location, mapScale: zoom });
       setMapUi({ zoom, center: location });
     }
+    setLoading(false);
     afterClose();
   };
   const setLocation = (location: any) => {
@@ -47,12 +60,13 @@ const MapCenter = (props: IProps) => {
     map.getView().setZoom(val);
   };
   useEffect(() => {
+    if (!open) return;
     console.log("CENTER");
     getFormValue();
     return () => {
       console.log("REMOVE");
     };
-  }, []);
+  }, [open]);
   return (
     <>
       <Modal
@@ -100,7 +114,7 @@ const MapCenter = (props: IProps) => {
                 />
               </Form.Item>
               <Form.Item wrapperCol={{ offset: 16 }}>
-                <Button type="primary" htmlType="submit">
+                <Button type="primary" htmlType="submit" loading={loading}>
                   Submit
                 </Button>
               </Form.Item>

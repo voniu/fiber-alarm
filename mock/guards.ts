@@ -20,9 +20,51 @@ const data = [
     status: "off",
     address: "Sydney No. 1 Lake Park",
   },
+  {
+    id: 4,
+    key: "3",
+    name: "Joe Black",
+    status: "off",
+    address: "Sydney No. 1 Lake Park",
+  },
+  {
+    id: 5,
+    key: "3",
+    name: "Joe Black",
+    status: "off",
+    address: "Sydney No. 1 Lake Park",
+  },
+  {
+    id: 6,
+    key: "3",
+    name: "Joe Black",
+    status: "off",
+    address: "Sydney No. 1 Lake Park",
+  },
+  {
+    id: 7,
+    key: "3",
+    name: "Joe Black",
+    status: "off",
+    address: "Sydney No. 1 Lake Park",
+  },
+  {
+    id: 8,
+    key: "3",
+    name: "Joe Black",
+    status: "off",
+    address: "Sydney No. 1 Lake Park",
+  },
+  {
+    id: 9,
+    key: "3",
+    name: "Joe Black",
+    status: "off",
+    address: "Sydney No. 1 Lake Park",
+  },
 ];
 export default {
-  "GET /api/guard/guards": (req, res) => {
+  "GET /api/guard/guard": (req, res) => {
     console.log(req.body);
 
     return res.json({

@@ -170,11 +170,13 @@ export const delCamera = (cameraId: number) => {
 };
 
 // 报警事件
-export const getAlarmList = (props: {
-  fiberId?: number | number[];
-  page?: number;
-  pageSize?: number;
-}) => {
+export const getAlarmList = (
+  props: {
+    fiberId?: number | number[];
+  },
+  page?: number,
+  pageSize?: number
+) => {
   if (Array.isArray(props.fiberId)) {
     let url = "";
     props.fiberId.forEach((item, index) => {
@@ -184,10 +186,10 @@ export const getAlarmList = (props: {
       url += `fiberId=${item}`;
     });
     return request(`${prefix}/alarm?${url}`, {
-      params: { ...props, fiberId: undefined },
+      params: { ...props, fiberId: undefined, page, pageSize },
     });
   }
-  return request(`${prefix}/alarm`, { params: props });
+  return request(`${prefix}/alarm`, { params: { ...props, page, pageSize } });
 };
 
 export const getAlarmDetail = (id: number) => {
@@ -310,6 +312,11 @@ export const delTask = (id: number) => {
   });
 };
 
-export const getLog = () => {
-  return request(`${prefix}/log`);
+export const getLog = (page: number, pageSize: number) => {
+  return request(`${prefix}/log`, {
+    params: {
+      page,
+      pageSize,
+    },
+  });
 };

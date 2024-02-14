@@ -36,7 +36,7 @@ export default function () {
             }
           },
         }}
-        pagination={{ pageSize: 5 }}
+        pagination={{ pageSize: 5, showSizeChanger: false }}
         columns={columns}
         dataSource={cameraList}
         bordered

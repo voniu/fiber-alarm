@@ -89,7 +89,7 @@ export default (props: IProps) => {
       <Table
         loading={loading}
         rowKey={"id"}
-        pagination={{ pageSize: 6 }}
+        pagination={{ pageSize: 6, showSizeChanger: false }}
         columns={columns}
         dataSource={data}
         bordered

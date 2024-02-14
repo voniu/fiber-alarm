@@ -1,10 +1,12 @@
-import { Button, Col, Drawer, Input, Row, Tag, message } from "antd";
+import { Button, Col, Drawer, Row, Tag, message } from "antd";
 import styles from "./index.less";
 import { useEffect, useRef, useState } from "react";
 import { getAlarmDetail } from "@/services/admin";
 import { AlarmDetail } from "@/models/useAlarms";
 import dayjs from "@/utills/day";
 import { useModel } from "umi";
+import TextArea from "./textArea";
+import { TextAreaRef } from "antd/lib/input/TextArea";
 interface IProps {
   open: boolean;
   onClose: () => void;
@@ -45,11 +47,10 @@ const DescriptionText = ({
 export default (props: IProps) => {
   const { open, onClose, alarmID, isHistory, flush } = props;
   const [detail, setDetail] = useState<AlarmDetail>();
-  const { handleManage } = useModel("useAlarms");
-  const processInfo = useRef();
+  const { handleManage, messageLoading } = useModel("useAlarms");
+  const processInfo = useRef<TextAreaRef>();
   const typeMap = ["intrusion", "tamper", "wire Disconnect", "Disconnect"];
   useEffect(() => {
-    console.log("dddddd");
     if (alarmID === -1) return;
     getAlarmDetail(alarmID).then((res) => {
       setDetail(res.data);
@@ -62,11 +63,9 @@ export default (props: IProps) => {
     if (status === -1) return <div>not found</div>;
     return <Tag color={colorMap[status]}>{statusMap[status]}</Tag>;
   };
-  const onChange = (e: any) => {
-    processInfo.current = e.target.value;
-  };
   const handleSubmit = (id: number) => {
-    const log = processInfo.current;
+    if (!processInfo.current) return;
+    const log = processInfo.current.resizableTextArea?.textArea.value;
     if (!log) {
       message.info("please input the log");
       return;
@@ -76,25 +75,13 @@ export default (props: IProps) => {
     if (flush) flush();
     onClose();
   };
-  const renderInfo = (status: number, info: string) => {
-    return status === 1 && !isHistory ? (
-      <Input.TextArea
-        showCount
-        maxLength={100}
-        value={processInfo.current}
-        onChange={onChange}
-        placeholder="input processInfo"
-        style={{ height: 120, resize: "none" }}
-      />
-    ) : (
-      <div className={styles["info-content"]}>{info || "processing"}</div>
-    );
-  };
   return (
     <Drawer
       destroyOnClose
       title="Alarm Detail"
-      onClose={onClose}
+      onClose={() => {
+        onClose();
+      }}
       open={open}
       width={500}
     >
@@ -142,14 +129,24 @@ export default (props: IProps) => {
         <DescriptionText label="guard" content={detail?.guard?.log} />
         <DescriptionText
           label="manage"
-          Other={() =>
-            renderInfo(detail?.status || -1, detail?.manager?.log || "")
-          }
+          Other={() => (
+            <TextArea
+              status={detail?.status || -1}
+              info={detail?.manager?.log || ""}
+              isHistory={isHistory || false}
+              ref={processInfo}
+            />
+          )}
         />
         {!isHistory && (
           <div className={styles["button-container"]}>
             {detail?.status === 1 && (
-              <Button onClick={() => handleSubmit(detail?.id)}>submit</Button>
+              <Button
+                onClick={() => handleSubmit(detail?.id)}
+                loading={messageLoading}
+              >
+                submit
+              </Button>
             )}
           </div>
         )}

@@ -1,5 +1,5 @@
 import { Button, ConfigProvider, Form, Modal, Input, message } from "antd";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import styles from "./index.less";
 import { addGuard, addUser } from "@/services/admin";
 interface IProps {
@@ -11,18 +11,21 @@ interface IProps {
 export default (props: IProps) => {
   const { isModalOpen, onCancel, type, flush } = props;
   const [form] = Form.useForm();
+  const [loading, setLoading] = useState(false);
   const onClose = () => {
     onCancel();
     form.resetFields();
   };
   const onFinish = async (value: any) => {
     console.log(value);
+    setLoading(true);
     const { name, nickname, password } = value;
     if (type === "guard") {
       await addGuard({ name, nickname });
     } else {
-      await addUser({ name, nickname, type: 1, password });
+      await addUser({ name, nickname, type: 2, password });
     }
+    setLoading(false);
     message.success("success");
     onClose();
     flush();
@@ -95,7 +98,7 @@ export default (props: IProps) => {
               )}
 
               <Form.Item style={{ display: "flex", justifyContent: "center" }}>
-                <Button type="primary" htmlType="submit">
+                <Button type="primary" htmlType="submit" loading={loading}>
                   submit
                 </Button>
               </Form.Item>
