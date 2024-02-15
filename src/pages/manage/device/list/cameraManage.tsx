@@ -55,7 +55,7 @@ export default function (props: IProps) {
               setMapModal({ id: record.id, type: "camera", isModalOpen: true });
             }}
           >
-            查看地图
+            Check Map
           </Button>
         );
       },

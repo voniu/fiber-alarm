@@ -8,7 +8,7 @@ import VectorSource from "ol/source/Vector";
 import VectorLayer from "ol/layer/Vector";
 import TileLayer from "ol/layer/Tile";
 import XYZ from "ol/source/XYZ";
-import { FullScreen, defaults } from "ol/control";
+import { FullScreen, defaults, ZoomToExtent } from "ol/control";
 import Stroke from "ol/style/Stroke";
 import { Coordinate } from "ol/coordinate";
 import Circle from "ol/style/Circle.js";
@@ -64,6 +64,11 @@ export default function MapModel() {
     center: string | null;
     zoom: number | null;
   }>({ center: null, zoom: null });
+  const [zoomToExtent, setZoomToExtent] = useState(
+    new ZoomToExtent({
+      extent: map.getView().calculateExtent(),
+    })
+  );
   function getFeaturesByTypeAndId(id: number, type: string) {
     return featuresByTypeAndId.get(`${type}-${id}`);
   }
@@ -202,6 +207,14 @@ export default function MapModel() {
     setMapCenterZoom(JSON.parse(center), zoom);
     setMapUi({ center, zoom });
   };
+  useEffect(() => {
+    const control = new ZoomToExtent({
+      extent: map.getView().calculateExtent(),
+    });
+    map.removeControl(zoomToExtent);
+    setZoomToExtent(control);
+    map.addControl(control);
+  }, [mapui]);
   useEffect(() => {
     if (userLogin || adminLogin) {
       getMapConfig();

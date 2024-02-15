@@ -49,7 +49,11 @@ const DefenseZone = () => {
             {listType === "camera" && <CameraList />}
           </div>
         </div>
-        <div style={{ height: 500, width: 700 }} id="manage-zone-map"></div>
+        <div
+          style={{ height: 500, width: 700 }}
+          id="manage-zone-map"
+          className={"base-map"}
+        ></div>
         <Popup />
       </div>
     </div>

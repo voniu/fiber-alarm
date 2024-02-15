@@ -1,0 +1,7 @@
+.base-map .ol-control {
+  display: inline-block;
+  margin-right: 4px;
+}
+.base-map .ol-control button {
+  width: 32px;
+}

@@ -152,7 +152,7 @@ const HistoryAlarm = () => {
   const fetchFormValue = async () => {
     const { data: allFiber } = await getFiber("", false);
     const { data: allGuard } = await getGuard(false);
-    const { data: allManager } = await getUser(1, "", false);
+    const { data: allManager } = await getUser(2, "", false);
     if (!allFiber || !allGuard || !allManager) return;
     const f = allFiber.map((item: any) => {
       return {

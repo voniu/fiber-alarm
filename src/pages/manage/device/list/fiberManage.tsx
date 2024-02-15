@@ -64,7 +64,7 @@ export default function (props: IProps) {
               setMapModal({ id: record.id, type: "fiber", isModalOpen: true });
             }}
           >
-            查看地图
+            Check Map
           </Button>
         );
       },

@@ -45,7 +45,7 @@ export default (props: IProps) => {
             ]}
           >
             <div>
-              <span>摄像头信息</span>
+              <span>camera info</span>
             </div>
             <div>
               <span>{item.id}</span>

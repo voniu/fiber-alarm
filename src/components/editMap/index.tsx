@@ -8,7 +8,6 @@ import { pointToLocation } from "@/utills";
 import { Feature } from "ol";
 import { Geometry } from "ol/geom";
 import { Button } from "antd";
-
 export default function ({
   setLocation,
   type,
@@ -154,7 +153,11 @@ export default function ({
           <span>(only allow draw a fiber)</span>
         </div>
       )}
-      <div id="edit-map-container" style={{ height: 500, width: 600 }}></div>
+      <div
+        id="edit-map-container"
+        className={"base-map"}
+        style={{ height: 500, width: 600 }}
+      ></div>
     </>
   );
 }

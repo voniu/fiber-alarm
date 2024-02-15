@@ -7,6 +7,7 @@ import {
   Select,
   Tabs,
   TimePicker,
+  Typography,
   message,
 } from "antd";
 import { addTask, getFiber, getTaskDetail } from "@/services/admin";
@@ -38,7 +39,7 @@ export default (props: IProps) => {
     "1": false,
   });
   const [loading, setLoading] = useState(false);
-
+  const [fiberInfo, setFiberInfo] = useState([]);
   const levelOptions = (count: number) => {
     const op = [];
     for (let i = 1; i <= count; i++) {
@@ -101,6 +102,7 @@ export default (props: IProps) => {
   const getTaskForm = async (id: number) => {
     const { data } = await getTaskDetail(id);
     const { name, hour, minute, affectFibers, configMap } = data;
+    setFiberInfo(affectFibers);
     let configA = {};
     let configB = {};
     setConfigType({ "0": !!configMap["0"], "1": !!configMap["1"] });
@@ -138,6 +140,13 @@ export default (props: IProps) => {
       ...configB,
     });
   };
+  const getFibersName = (fibers: any) => {
+    return fibers
+      .map((item: any) => {
+        return item.name;
+      })
+      .join("/");
+  };
   useEffect(() => {
     if (!isModalOpen) return;
     getFiberOptions();
@@ -160,9 +169,9 @@ export default (props: IProps) => {
         width={600}
         onCancel={onCancel}
       >
-        <p style={{ fontSize: 20, fontWeight: "bold", height: 20 }}>{`${
-          check.type
-        } Task ${check.type === "Check" ? "(For viewing only)" : ""}`}</p>
+        <p
+          style={{ fontSize: 20, fontWeight: "bold", height: 20 }}
+        >{`${check.type} Task`}</p>
         <ConfigProvider
           theme={{
             components: {
@@ -174,7 +183,12 @@ export default (props: IProps) => {
             },
           }}
         >
-          <Form form={form} onFinish={onFinish} labelAlign="right">
+          <Form
+            form={form}
+            onFinish={onFinish}
+            labelAlign="right"
+            disabled={check.type === "Check"}
+          >
             <Form.Item
               label={"Name"}
               name={"name"}
@@ -187,17 +201,26 @@ export default (props: IProps) => {
               name={"fibers"}
               rules={[{ required: true, message: "Please select the fiber!" }]}
             >
-              <Select
-                maxTagCount={1}
-                mode="multiple"
-                size={"middle"}
-                placeholder="Please select"
-                style={{ width: "200px" }}
-                onChange={onFiberChange}
-                optionLabelProp="label"
-                optionFilterProp="label"
-                options={fiberOptions}
-              />
+              {check.type === "Create" ? (
+                <Select
+                  maxTagCount={1}
+                  mode="multiple"
+                  size={"middle"}
+                  placeholder="Please select"
+                  style={{ width: "200px" }}
+                  onChange={onFiberChange}
+                  optionLabelProp="label"
+                  optionFilterProp="label"
+                  options={fiberOptions}
+                />
+              ) : (
+                <Typography.Text
+                  ellipsis={{ tooltip: true }}
+                  style={{ width: 250 }}
+                >
+                  {getFibersName(fiberInfo)}
+                </Typography.Text>
+              )}
             </Form.Item>
             <Form.Item
               label={"Time"}

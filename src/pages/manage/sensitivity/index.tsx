@@ -143,6 +143,8 @@ const FiberSensitivity = () => {
                       <Popconfirm
                         key="delete-task"
                         title={"Delete the task?"}
+                        okText="Yes"
+                        cancelText="No"
                         onConfirm={() => handleDelete(item.id)}
                       >
                         <Button danger loading={loading}>

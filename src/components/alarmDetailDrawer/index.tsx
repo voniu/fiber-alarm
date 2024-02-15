@@ -7,6 +7,9 @@ import dayjs from "@/utills/day";
 import { useModel } from "umi";
 import TextArea from "./textArea";
 import { TextAreaRef } from "antd/lib/input/TextArea";
+import Zmage from "react-zmage";
+import "react-zmage/lib/zmage.css";
+import MapModal from "../mapModal";
 interface IProps {
   open: boolean;
   onClose: () => void;
@@ -50,6 +53,12 @@ export default (props: IProps) => {
   const { handleManage, messageLoading } = useModel("useAlarms");
   const processInfo = useRef<TextAreaRef>();
   const typeMap = ["intrusion", "tamper", "wire Disconnect", "Disconnect"];
+
+  const [mapModal, setMapModal] = useState({
+    id: -1,
+    type: "",
+    isModalOpen: false,
+  });
   useEffect(() => {
     if (alarmID === -1) return;
     getAlarmDetail(alarmID).then((res) => {
@@ -75,6 +84,13 @@ export default (props: IProps) => {
     if (flush) flush();
     onClose();
   };
+  const modalClose = () => {
+    setMapModal({
+      id: -1,
+      type: "",
+      isModalOpen: false,
+    });
+  };
   return (
     <Drawer
       destroyOnClose
@@ -93,6 +109,24 @@ export default (props: IProps) => {
           content={
             typeof detail?.type === "number" ? typeMap[detail?.type] : ""
           }
+        />
+        <DescriptionText
+          label="Location"
+          Other={() => (
+            <Button
+              type="primary"
+              size="small"
+              onClick={() => {
+                setMapModal({
+                  id: detail!.fiber.id,
+                  type: "fiber",
+                  isModalOpen: true,
+                });
+              }}
+            >
+              <span style={{ fontSize: 12, color: "#fff" }}>Check Map</span>
+            </Button>
+          )}
         />
         <DescriptionText
           label="Alarm Time"
@@ -119,7 +153,9 @@ export default (props: IProps) => {
                 return (
                   <div key={item.id}>
                     <div>{item.camera.name}</div>
-                    <img style={{ width: 200 }} src={item.picUrl} />
+                    <div className={styles["Zmage"]}>
+                      <Zmage src={item.picUrl} />
+                    </div>
                   </div>
                 );
               })}
@@ -151,6 +187,12 @@ export default (props: IProps) => {
           </div>
         )}
       </div>
+      <MapModal
+        id={mapModal.id}
+        isModalOpen={mapModal.isModalOpen}
+        type={mapModal.type}
+        onClose={modalClose}
+      />
     </Drawer>
   );
 };

@@ -47,8 +47,8 @@ const MapCenter = (props: IProps) => {
     setLoading(true);
     if (location) {
       setMapCenterZoom(JSON.parse(location), zoom);
-      await setUiConfig({ mapCenter: location, mapScale: zoom });
       setMapUi({ zoom, center: location });
+      await setUiConfig({ mapCenter: location, mapScale: zoom });
     }
     setLoading(false);
     afterClose();

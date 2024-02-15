@@ -18,6 +18,8 @@ import dayjs from "@/utills/day";
 import trumpetOn from "@/assets/trumpet/trumpet_on_b.png";
 import trumpetOff from "@/assets/trumpet/trumpet_off_b.png";
 import SoundAlert from "../alarmAudio";
+import Zmage from "react-zmage";
+import "react-zmage/lib/zmage.css";
 const DescriptionText = ({
   label,
   content,
@@ -112,7 +114,9 @@ const TabContent = (props: { id: number }) => {
                   return (
                     <div key={item.id}>
                       <div>{item.camera.name}</div>
-                      <img style={{ width: 200 }} src={item.picUrl} />
+                      <div className={styles["Zmage"]}>
+                        <Zmage src={item.picUrl} />
+                      </div>
                     </div>
                   );
                 })}
