@@ -131,7 +131,7 @@ export default {
     data: {
       id: 2132,
       name: "camera1",
-      location: "[48.206151, 40.027136]",
+      location: "[40.60429492374685, 49.64732866578551]",
     },
   },
 
@@ -141,7 +141,7 @@ export default {
     data: {
       id: 98762,
       name: "camera2",
-      location: "[42.206151, 43.027136]",
+      location: "[40.590507295656835, 49.66875005204566]",
     },
   },
 };

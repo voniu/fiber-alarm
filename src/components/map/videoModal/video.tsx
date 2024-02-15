@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 import { RtspStream } from "@/libs/rtspStream";
 import defaultImg from "@/assets/video/defaultVideo.webp";
 import styles from "./index.less";
@@ -10,10 +10,10 @@ interface IProps {
 }
 export default (props: IProps) => {
   const { id, style, prefix } = props;
-  const [R, setR] = useState<RtspStream>();
+  const RRef = useRef<RtspStream>();
   useEffect(() => {
-    if (R) {
-      R.close();
+    if (RRef.current) {
+      RRef.current.close();
       console.log("close");
     }
     if (!id) return;
@@ -24,10 +24,13 @@ export default (props: IProps) => {
       `rtsp-video-${prefix}-${id}`
     );
     rtsp.open();
-    setR(rtsp);
+    console.log(rtsp);
+
+    RRef.current = rtsp;
     return () => {
       console.log("video close");
-      if (R) R.close();
+
+      if (RRef.current) RRef.current.close();
     };
   }, []);
   return (

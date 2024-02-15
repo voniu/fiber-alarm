@@ -59,15 +59,7 @@ const DeviceManage = () => {
       deviceId: device,
     });
   };
-  const onClose = () => {
-    setDevice({
-      isModalOpen: false,
-      operator: device.operator,
-      type: device.type,
-    });
-    if (draw) map.removeInteraction(draw);
-    if (layer) map.removeLayer(layer);
-  };
+
   const fetchList = async () => {
     setLoading(true);
     if (listType === "fiber-control") {
@@ -83,6 +75,16 @@ const DeviceManage = () => {
       flush({ camera: cameraData });
     }
     setLoading(false);
+  };
+  const onClose = () => {
+    setDevice({
+      isModalOpen: false,
+      operator: device.operator,
+      type: device.type,
+    });
+    fetchList();
+    if (draw) map.removeInteraction(draw);
+    if (layer) map.removeLayer(layer);
   };
   const handleSearch = async (value: { search: string }) => {
     setLoading(true);

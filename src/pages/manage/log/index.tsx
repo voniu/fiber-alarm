@@ -9,7 +9,7 @@ const LogPage = () => {
   const [data, setData] = useState<LogInfo[]>([]);
   const [page, setPage] = useState(1);
   const [pageSize] = useState(10);
-  const [total, setTotal] = useState();
+  const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(false);
   const fetchLog = async (page: number, pageSize: number) => {
     setLoading(true);
@@ -38,7 +38,7 @@ const LogPage = () => {
           defaultPageSize: 10,
           current: page,
           pageSize,
-          total,
+          total: total * pageSize,
           onChange: (page, pageSize) => {
             fetchLog(page, pageSize);
           },

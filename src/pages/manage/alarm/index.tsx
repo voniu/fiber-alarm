@@ -35,7 +35,7 @@ const HistoryAlarm = () => {
   const { admin, isLogin } = useModel("useAdminInfo");
   const [page, setPage] = useState(1);
   const [pageSize] = useState(6);
-  const [total, setTotal] = useState();
+  const [total, setTotal] = useState(0);
   const [form] = Form.useForm();
 
   const fetchList = (page: number, pageSize: number) => {
@@ -130,7 +130,7 @@ const HistoryAlarm = () => {
             >
               {"Detail"}
             </a>
-            {admin?.type === 0 && (
+            {admin?.type === 0 && record.status === 2 && (
               <Popconfirm
                 title="delete the alarm"
                 description="Are you sure to delete the alarm?"
@@ -316,7 +316,7 @@ const HistoryAlarm = () => {
           defaultPageSize: 6,
           current: page,
           pageSize,
-          total,
+          total: total * pageSize,
           onChange: (page, pageSize) => {
             fetchList(page, pageSize);
           },

@@ -61,6 +61,7 @@ export default (props: IProps) => {
   const [contorlOptions, setContorlOptions] = useState([]);
 
   const [loading, setLoading] = useState(false);
+  const [initLocation, setInitLocation] = useState<number[]>();
   const setLocation = (location: any) => {
     form.setFieldValue("location", location);
   };
@@ -85,6 +86,7 @@ export default (props: IProps) => {
   const getFiberForm = async () => {
     const { data } = await getFiberDetail(deviceId!);
     const { name, device, location, identifier } = data;
+    setInitLocation(location);
     if (!identifier) {
       form.setFieldsValue({
         name,
@@ -127,6 +129,7 @@ export default (props: IProps) => {
       streamPath,
       location,
     } = data;
+    setInitLocation(location);
     form.setFieldsValue({
       name,
       host,
@@ -532,12 +535,15 @@ export default (props: IProps) => {
         <div>
           {!(type === "fiber-control") && (
             <EditMap
+              initLocation={initLocation}
               setLocation={(l: any) => setLocation(l)}
+              id={deviceId}
               type={type === "fiber" ? "LineString" : "Point"}
               draw={draw}
               setDraw={setDraw}
               layer={layer}
               setLayer={setLayer}
+              isEdit={operator === "edit"}
             />
           )}
         </div>

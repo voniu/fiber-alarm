@@ -53,10 +53,10 @@ function HomePage() {
               </div>
               <div style={{ display: "flex", justifyContent: "center" }}>
                 {currentCameras && (
-                  <RtspVideo prefix="home3" id={currentCameras["1-1"]} />
+                  <RtspVideo prefix="home3" id={currentCameras["1-0"]} />
                 )}
                 {currentCameras && (
-                  <RtspVideo prefix="home4" id={currentCameras["1-2"]} />
+                  <RtspVideo prefix="home4" id={currentCameras["1-1"]} />
                 )}
               </div>
             </div>

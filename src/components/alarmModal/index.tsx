@@ -2,7 +2,6 @@ import {
   ConfigProvider,
   Modal,
   Tabs,
-  Input,
   Button,
   Row,
   Col,
@@ -10,7 +9,7 @@ import {
   message,
 } from "antd";
 import { useModel } from "umi";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styles from "./index.less";
 import { getAlarmDetail } from "@/services/monitor";
 import { Alarm, AlarmDetail } from "@/models/useAlarms";
@@ -20,6 +19,8 @@ import trumpetOff from "@/assets/trumpet/trumpet_off_b.png";
 import SoundAlert from "../alarmAudio";
 import Zmage from "react-zmage";
 import "react-zmage/lib/zmage.css";
+import { TextAreaRef } from "antd/lib/input/TextArea";
+import TextArea from "./textArea";
 const DescriptionText = ({
   label,
   content,
@@ -55,13 +56,19 @@ const TabContent = (props: { id: number }) => {
   const { monitor } = useModel("useUserInfo");
   const { centerTo } = useModel("useItems");
   const [alarmDetail, setDetail] = useState<AlarmDetail>();
-  const [processInfo, setProcess] = useState("");
+
   const { id } = props;
   const typeMap = ["intrusion", "tamper", "wire Disconnect", "Disconnect"];
+  const processInfo = useRef<TextAreaRef>();
 
   const onSubmit = async () => {
-    handleGuard(id, processInfo);
-    setProcess("");
+    if (!processInfo.current) return;
+    const log = processInfo.current.resizableTextArea?.textArea.value;
+    if (!log) {
+      message.info("please input the log");
+      return;
+    }
+    handleGuard(id, log);
     message.success("success");
   };
   useEffect(() => {
@@ -126,14 +133,7 @@ const TabContent = (props: { id: number }) => {
         </div>
         <DescriptionText label="Manager" content={monitor?.name} />
         <div className={styles["tab-sub"]}>
-          <Input.TextArea
-            showCount
-            maxLength={200}
-            value={processInfo}
-            onChange={(e) => setProcess(e.target.value)}
-            placeholder="input info"
-            style={{ height: 100, resize: "none" }}
-          />
+          <TextArea ref={processInfo} />
           <Button style={{ marginTop: 20 }} onClick={onSubmit}>
             submit
           </Button>

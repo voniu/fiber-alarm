@@ -13,6 +13,22 @@ export const generateLines = (pointsArray: number[][]) => {
   }
   return lines;
 };
+export const restorePoints = (lines: any) => {
+  const points = [lines[0][0]]; // 使用第一条线段的起点作为初始点
+  for (const line of lines) {
+    const lastPoint = points[points.length - 1];
+    const endPointOfLine = line[1];
+
+    // 如果线段的起点与上一个点不同，将其添加到还原的点数组中
+    if (
+      endPointOfLine[0] !== lastPoint[0] ||
+      endPointOfLine[1] !== lastPoint[1]
+    ) {
+      points.push(endPointOfLine);
+    }
+  }
+  return points;
+};
 export const pointToLocation = (point: number[][]) => {
   console.log(point, generateLines(point));
   return JSON.stringify(generateLines(point));
