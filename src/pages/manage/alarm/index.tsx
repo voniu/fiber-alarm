@@ -37,6 +37,7 @@ const HistoryAlarm = () => {
   const [pageSize] = useState(6);
   const [total, setTotal] = useState(0);
   const [form] = Form.useForm();
+  const [optionLoading, setOptionLoading] = useState(false);
 
   const fetchList = (page: number, pageSize: number) => {
     setPage(page);
@@ -150,6 +151,7 @@ const HistoryAlarm = () => {
   ];
 
   const fetchFormValue = async () => {
+    setOptionLoading(true);
     const { data: allFiber } = await getFiber("", false);
     const { data: allGuard } = await getGuard(false);
     const { data: allManager } = await getUser(2, "", false);
@@ -175,6 +177,7 @@ const HistoryAlarm = () => {
     setFiberOp(f);
     setGuardOp(g);
     setManagerOp(m);
+    setOptionLoading(false);
   };
   useEffect(() => {
     if (!isLogin) return;
@@ -212,6 +215,7 @@ const HistoryAlarm = () => {
                 style={{ width: "230px" }}
                 options={fiberOptions}
                 maxTagCount={1}
+                loading={optionLoading}
               />
             </Form.Item>
           </Col>
@@ -281,6 +285,7 @@ const HistoryAlarm = () => {
                 style={{ width: "230px" }}
                 maxTagCount={1}
                 options={[{ value: "all", label: "all" }, ...managerOptions]}
+                loading={optionLoading}
               />
             </Form.Item>
           </Col>
@@ -295,6 +300,7 @@ const HistoryAlarm = () => {
                 style={{ width: "230px" }}
                 maxTagCount={1}
                 options={[{ value: "all", label: "all" }, ...guardOptions]}
+                loading={optionLoading}
               />
             </Form.Item>
           </Col>
