@@ -2,7 +2,7 @@ import { getLog } from "@/services/admin";
 import WithAuth from "@/wrappers/authAdmin";
 import { useEffect, useState } from "react";
 import styles from "./index.less";
-import { List, Typography } from "antd";
+import { List, Typography, message } from "antd";
 import { LogInfo } from "@/type";
 import dayjs from "@/utills/day";
 const LogPage = () => {
@@ -14,7 +14,11 @@ const LogPage = () => {
   const fetchLog = async (page: number, pageSize: number) => {
     setLoading(true);
     setPage(page);
-    const { data, totalPage } = await getLog(page, pageSize);
+    const { success, msg, data, totalPage } = await getLog(page, pageSize);
+    if (!success) {
+      message.error(msg);
+      return;
+    }
     setLoading(false);
 
     setTotal(totalPage);

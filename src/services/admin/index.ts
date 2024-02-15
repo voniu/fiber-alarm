@@ -235,7 +235,7 @@ export const delGuard = (id: number) => {
 export const getUser = (type: number, nameKw: string, archived: boolean) => {
   return request(`${prefix}/user`, {
     params: {
-      type,
+      type: type === -1 ? null : type,
       nameKw: nameKw ? nameKw : null,
       archived,
     },

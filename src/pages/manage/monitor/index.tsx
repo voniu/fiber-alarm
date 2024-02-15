@@ -15,9 +15,12 @@ const Monitor = () => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const fetchMartix = async () => {
-    const { data: matrix } = await getMatrix();
+    const { success, msg, data: matrix } = await getMatrix();
     const camerasSetting: any = {};
-
+    if (!success) {
+      message.error(msg);
+      return;
+    }
     matrix.forEach((item: MonitorSetting) => {
       camerasSetting[`${item.row - 1}-${item.column - 1}`] = item.cameraId;
     });
@@ -25,9 +28,12 @@ const Monitor = () => {
     form.setFieldsValue(camerasSetting);
   };
   const fetchOptions = async () => {
-    const { data: allCamera } = await getCamera("", false);
+    const { success, msg, data: allCamera } = await getCamera("", false);
     console.log(allCamera);
-
+    if (!success) {
+      message.error(msg);
+      return;
+    }
     const options = allCamera.map((item: any) => {
       return {
         value: item.id,
@@ -39,10 +45,14 @@ const Monitor = () => {
   const onFinsh = async (value: any) => {
     setLoading(true);
     console.log(value, matrixData(value));
-    await setMatrix(matrixData(value));
+    const { success, msg } = await setMatrix(matrixData(value));
+    if (!success) {
+      message.error(msg);
+    } else {
+      message.success("Success");
+    }
     setLoading(false);
 
-    message.success("Success");
     window.location.reload();
   };
   useEffect(() => {

@@ -1,6 +1,6 @@
 import WithAuth from "@/wrappers/authAdmin";
 import styles from "./index.less";
-import { Button, Col, Empty, List, Popconfirm, Row } from "antd";
+import { Button, Col, Empty, List, Popconfirm, Row, message } from "antd";
 import CreateTask from "./createTask";
 import { useEffect, useState } from "react";
 import { delTask, getTask } from "@/services/admin";
@@ -75,7 +75,12 @@ const FiberSensitivity = () => {
   };
   const handleDelete = async (id: number) => {
     setLoading(true);
-    await delTask(id);
+    const { success, msg } = await delTask(id);
+    if (!success) {
+      message.error(msg);
+    } else {
+      message.success("success");
+    }
     setLoading(false);
     fetchTask();
   };

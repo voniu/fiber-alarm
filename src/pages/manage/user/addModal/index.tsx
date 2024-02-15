@@ -1,7 +1,16 @@
-import { Button, ConfigProvider, Form, Modal, Input, message } from "antd";
+import {
+  Button,
+  ConfigProvider,
+  Form,
+  Modal,
+  Input,
+  message,
+  Select,
+} from "antd";
 import { useEffect, useState } from "react";
 import styles from "./index.less";
 import { addGuard, addUser } from "@/services/admin";
+import { useModel } from "umi";
 interface IProps {
   isModalOpen: boolean;
   onCancel: () => void;
@@ -12,6 +21,7 @@ export default (props: IProps) => {
   const { isModalOpen, onCancel, type, flush } = props;
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
+  const { admin } = useModel("useAdminInfo");
   const onClose = () => {
     onCancel();
     form.resetFields();
@@ -19,13 +29,28 @@ export default (props: IProps) => {
   const onFinish = async (value: any) => {
     console.log(value);
     setLoading(true);
-    const { name, nickname, password } = value;
+    const { name, nickname, password, type } = value;
+    form.setFieldValue("type", type);
     if (type === "guard") {
-      await addGuard({ name, nickname });
+      const { success, msg } = await addGuard({ name, nickname });
+      setLoading(false);
+      if (!success) {
+        message.error(msg);
+        return;
+      }
     } else {
-      await addUser({ name, nickname, type: 2, password });
+      const { success, msg } = await addUser({
+        name,
+        nickname,
+        type,
+        password,
+      });
+      setLoading(false);
+      if (!success) {
+        message.error(msg);
+        return;
+      }
     }
-    setLoading(false);
     message.success("success");
     onClose();
     flush();
@@ -68,6 +93,7 @@ export default (props: IProps) => {
               form={form}
               onFinish={onFinish}
               labelAlign="right"
+              initialValues={{ type: 2 }}
             >
               <Form.Item
                 label={"Name"}
@@ -85,6 +111,19 @@ export default (props: IProps) => {
                     rules={[{ required: true, message: "Please input" }]}
                   >
                     <Input />
+                  </Form.Item>
+                  <Form.Item
+                    label={"Identity"}
+                    name={"type"}
+                    rules={[{ required: true, message: "Please input" }]}
+                  >
+                    <Select
+                      disabled={admin?.type !== 0}
+                      options={[
+                        { value: 1, label: "admin" },
+                        { value: 2, label: "manager" },
+                      ]}
+                    />
                   </Form.Item>
                   <Form.Item
                     className={styles["form-item"]}

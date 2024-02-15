@@ -23,7 +23,7 @@ const UserManage = () => {
   };
   const fetchUser = async () => {
     setLoading2(true);
-    const { data } = await getUser(0, "", isArchived);
+    const { data } = await getUser(-1, "", isArchived);
     setLoading2(false);
     setData(data);
   };

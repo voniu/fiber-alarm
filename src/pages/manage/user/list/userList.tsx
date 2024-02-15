@@ -1,5 +1,12 @@
 import { User } from "@/type";
-import { Button, Popconfirm, Table, TableColumnsType, Typography } from "antd";
+import {
+  Button,
+  Popconfirm,
+  Table,
+  TableColumnsType,
+  Typography,
+  message,
+} from "antd";
 import dayjs from "@/utills/day";
 import {
   delUser,
@@ -25,18 +32,41 @@ export default (props: IProps) => {
     id: -1,
   });
   const deleteUser = async (id: number) => {
-    await delUser(id);
+    const { success, msg } = await delUser(id);
+    if (!success) {
+      message.error(msg);
+    } else {
+      message.success("success");
+    }
     flush();
   };
   const changeNickname = async (val: string, user: User) => {
-    await updateUser(user.id, { ...user, nickname: val });
+    const { success, msg } = await updateUser(user.id, {
+      ...user,
+      nickname: val,
+    });
+    if (!success) {
+      message.error(msg);
+    } else {
+      message.success("success");
+    }
     flush();
   };
   const resetPassword = async (id: number, password: string) => {
-    await updateUserPassword(id, password);
+    const { success, msg } = await updateUserPassword(id, password);
+    if (!success) {
+      message.error(msg);
+    } else {
+      message.success("success");
+    }
   };
   const setArchive = async (id: number, archived: boolean) => {
-    await setUserArchive(id, archived);
+    const { success, msg } = await setUserArchive(id, archived);
+    if (!success) {
+      message.error(msg);
+    } else {
+      message.success("success");
+    }
     flush();
   };
   const columns: TableColumnsType<User> = [
@@ -55,9 +85,9 @@ export default (props: IProps) => {
       dataIndex: "nickname",
       width: 200,
       render: (text, record) =>
-        admin?.type !== 0 && record.type === 0 ? (
-          record.nickname
-        ) : (
+        record.type !== 0 &&
+        record.id !== admin?.id &&
+        (admin?.type === 0 || (admin?.type === 1 && record.type === 2)) ? (
           <Typography.Text
             style={{ width: "100px" }}
             editable={{
@@ -66,6 +96,8 @@ export default (props: IProps) => {
           >
             {record.nickname}
           </Typography.Text>
+        ) : (
+          record.nickname
         ),
     },
     {
@@ -85,30 +117,37 @@ export default (props: IProps) => {
       render: (_, record) => {
         return (
           <div style={{ display: "flex", gap: 10 }}>
-            {isArchived && record.type !== 0 && record.id !== admin?.id && (
-              <Popconfirm
-                title="Undo archive the user"
-                description="Are you sure to Undo archive the user?"
-                okText="Yes"
-                cancelText="No"
-                onConfirm={() => setArchive(record.id, false)}
-              >
-                <Button size="small">Undo archive</Button>
-              </Popconfirm>
-            )}
-            {!isArchived && record.id !== admin?.id && record.type !== 0 && (
-              <Popconfirm
-                title="archive the user"
-                description="Are you sure to archive the user?"
-                okText="Yes"
-                cancelText="No"
-                onConfirm={() => setArchive(record.id, true)}
-              >
-                <Button type="primary" size="small">
-                  Archive
-                </Button>
-              </Popconfirm>
-            )}
+            {isArchived &&
+              record.type !== 0 &&
+              record.id !== admin?.id &&
+              (admin?.type === 0 ||
+                (admin?.type === 1 && record.type === 2)) && (
+                <Popconfirm
+                  title="Undo archive the user"
+                  description="Are you sure to Undo archive the user?"
+                  okText="Yes"
+                  cancelText="No"
+                  onConfirm={() => setArchive(record.id, false)}
+                >
+                  <Button size="small">Undo archive</Button>
+                </Popconfirm>
+              )}
+            {!isArchived &&
+              record.id !== admin?.id &&
+              (admin?.type === 0 ||
+                (admin?.type === 1 && record.type === 2)) && (
+                <Popconfirm
+                  title="archive the user"
+                  description="Are you sure to archive the user?"
+                  okText="Yes"
+                  cancelText="No"
+                  onConfirm={() => setArchive(record.id, true)}
+                >
+                  <Button type="primary" size="small">
+                    Archive
+                  </Button>
+                </Popconfirm>
+              )}
             {admin?.type === 0 && (
               <Button
                 danger
@@ -118,19 +157,23 @@ export default (props: IProps) => {
                 Reset Password
               </Button>
             )}
-            {isArchived && record.type !== 0 && record.id !== admin?.id && (
-              <Popconfirm
-                title="delete the user"
-                description="Are you sure to delete the user?"
-                okText="Yes"
-                cancelText="No"
-                onConfirm={() => deleteUser(record.id)}
-              >
-                <Button danger size="small">
-                  Delete
-                </Button>
-              </Popconfirm>
-            )}
+            {isArchived &&
+              record.type !== 0 &&
+              record.id !== admin?.id &&
+              (admin?.type === 0 ||
+                (admin?.type === 1 && record.type === 2)) && (
+                <Popconfirm
+                  title="delete the user"
+                  description="Are you sure to delete the user?"
+                  okText="Yes"
+                  cancelText="No"
+                  onConfirm={() => deleteUser(record.id)}
+                >
+                  <Button danger size="small">
+                    Delete
+                  </Button>
+                </Popconfirm>
+              )}
           </div>
         );
       },

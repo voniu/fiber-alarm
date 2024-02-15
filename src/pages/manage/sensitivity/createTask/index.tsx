@@ -48,7 +48,11 @@ export default (props: IProps) => {
     return op;
   };
   const getFiberOptions = async () => {
-    const { data: allFiber } = await getFiber("", false);
+    const { success, msg, data: allFiber } = await getFiber("", false);
+    if (!success) {
+      message.error(msg);
+      return;
+    }
     const f = allFiber.map((item: any) => {
       return {
         value: item.id,
@@ -84,23 +88,36 @@ export default (props: IProps) => {
       vibeWidth,
       vibeGap,
     } = value;
-    await addTask(name, { hour: time.hour(), minute: time.minute() }, fibers, {
-      "0": { vibeCount, vibeAmplitude, vibeWidth, vibeGap },
-      "1": {
-        alarmSensitivity,
-        systemSensitivity,
-        groupWidth,
-        groupGap,
-        groupEntity,
-      },
-    });
+    const { success, msg } = await addTask(
+      name,
+      { hour: time.hour(), minute: time.minute() },
+      fibers,
+      {
+        "0": { vibeCount, vibeAmplitude, vibeWidth, vibeGap },
+        "1": {
+          alarmSensitivity,
+          systemSensitivity,
+          groupWidth,
+          groupGap,
+          groupEntity,
+        },
+      }
+    );
+    if (!success) {
+      message.error(msg);
+    } else {
+      message.success("success");
+    }
     setLoading(false);
-    message.success("success");
     onCancel();
     fetchTask();
   };
   const getTaskForm = async (id: number) => {
-    const { data } = await getTaskDetail(id);
+    const { success, msg, data } = await getTaskDetail(id);
+    if (!success) {
+      message.error(msg);
+      return;
+    }
     const { name, hour, minute, affectFibers, configMap } = data;
     setFiberInfo(affectFibers);
     let configA = {};
