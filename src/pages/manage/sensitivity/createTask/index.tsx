@@ -10,12 +10,13 @@ import {
   Typography,
   message,
 } from "antd";
-import { addTask, getFiber, getTaskDetail } from "@/services/admin";
+import { addTask, getTaskDetail } from "@/services/admin";
 import { useEffect, useState } from "react";
 import { InfoCircleOutlined } from "@ant-design/icons";
 import dayjs from "@/utills/day";
 import locale from "antd/es/date-picker/locale/en_GB";
-
+import FiberTable from "./fiberTable";
+import styles from "./index.less";
 interface IProps {
   isModalOpen: boolean;
   onCancel: () => void;
@@ -28,12 +29,12 @@ interface IProps {
 export default (props: IProps) => {
   const { isModalOpen, onCancel, fetchTask, check } = props;
   const [form] = Form.useForm();
-  const [fiberOptions, setFiberOp] = useState<
+  const [selectdFiber, setSelectFiber] = useState<
     {
-      label: string;
-      value: string;
+      id: number;
+      type: number;
     }[]
-  >();
+  >([]);
   const [configType, setConfigType] = useState({
     "0": false,
     "1": false,
@@ -47,30 +48,14 @@ export default (props: IProps) => {
     }
     return op;
   };
-  const getFiberOptions = async () => {
-    const { success, msg, data: allFiber } = await getFiber("", false);
-    if (!success) {
-      message.error(msg);
-      return;
-    }
-    const f = allFiber.map((item: any) => {
-      return {
-        value: item.id,
-        type: item.device.type,
-        label: item.name,
-      };
-    });
-    setFiberOp(f);
-  };
-  const onFiberChange = (val: any, option: any) => {
-    console.log(val, option);
+  useEffect(() => {
     let res = { "0": false, "1": false };
-    option.forEach((item: any) => {
+    selectdFiber.forEach((item: any) => {
       if (item.type === 0) res = { ...res, "0": true };
       if (item.type === 1) res = { ...res, "1": true };
     });
     setConfigType(res);
-  };
+  }, [selectdFiber]);
   const onFinish = async (value: any) => {
     setLoading(true);
     console.log(value);
@@ -165,8 +150,8 @@ export default (props: IProps) => {
       .join("/");
   };
   useEffect(() => {
+    setLoading(false);
     if (!isModalOpen) return;
-    getFiberOptions();
     if (check.type === "Create") {
       form.resetFields();
       setConfigType({ "0": false, "1": false });
@@ -183,7 +168,7 @@ export default (props: IProps) => {
         footer={null}
         keyboard={false}
         open={isModalOpen}
-        width={600}
+        width={check.type === "Check" ? 600 : 800}
         onCancel={onCancel}
       >
         <p
@@ -206,46 +191,68 @@ export default (props: IProps) => {
             labelAlign="right"
             disabled={check.type === "Check"}
           >
-            <Form.Item
-              label={"Name"}
-              name={"name"}
-              rules={[{ required: true, message: "Please input the name!" }]}
-            >
-              <Input style={{ width: 200 }} />
-            </Form.Item>
-            <Form.Item
-              label={"Fibers"}
-              name={"fibers"}
-              rules={[{ required: true, message: "Please select the fiber!" }]}
-            >
-              {check.type === "Create" ? (
-                <Select
-                  maxTagCount={1}
-                  mode="multiple"
-                  size={"middle"}
-                  placeholder="Please select"
-                  style={{ width: "200px" }}
-                  onChange={onFiberChange}
-                  optionLabelProp="label"
-                  optionFilterProp="label"
-                  options={fiberOptions}
-                />
-              ) : (
-                <Typography.Text
-                  ellipsis={{ tooltip: true }}
-                  style={{ width: 250 }}
+            <div className={styles["form-top"]}>
+              <div className={styles["form-top-item-l"]}>
+                <Form.Item
+                  label={"Name"}
+                  name={"name"}
+                  rules={[
+                    { required: true, message: "Please input the name!" },
+                  ]}
                 >
-                  {getFibersName(fiberInfo)}
-                </Typography.Text>
-              )}
-            </Form.Item>
-            <Form.Item
-              label={"Time"}
-              name={"time"}
-              rules={[{ required: true, message: "Please set the time!" }]}
-            >
-              <TimePicker locale={locale} minuteStep={30} format={"HH:mm"} />
-            </Form.Item>
+                  <Input style={{ width: 200 }} />
+                </Form.Item>
+
+                {check.type === "Check" && (
+                  <Form.Item
+                    label={"Fibers"}
+                    name={"fibers"}
+                    rules={[
+                      { required: true, message: "Please select the fiber!" },
+                    ]}
+                  >
+                    <Typography.Text
+                      ellipsis={{ tooltip: true }}
+                      style={{ width: 250 }}
+                    >
+                      {getFibersName(fiberInfo)}
+                    </Typography.Text>
+                  </Form.Item>
+                )}
+                <Form.Item
+                  label={"Time"}
+                  name={"time"}
+                  rules={[{ required: true, message: "Please set the time!" }]}
+                >
+                  <TimePicker
+                    locale={locale}
+                    minuteStep={30}
+                    format={"HH:mm"}
+                  />
+                </Form.Item>
+              </div>
+              <div className={styles["form-top-item-r"]}>
+                {check.type === "Create" && (
+                  <Form.Item
+                    label={"Fibers"}
+                    name={"fibers"}
+                    rules={[
+                      { required: true, message: "Please select the fiber!" },
+                    ]}
+                  >
+                    <FiberTable
+                      setSelectFiber={(fibers: any) => {
+                        form.setFieldValue(
+                          "fibers",
+                          fibers.map((item: any) => item.id)
+                        );
+                        setSelectFiber(fibers);
+                      }}
+                    />
+                  </Form.Item>
+                )}
+              </div>
+            </div>
             {
               <Form.Item label={"config"} name={"config"}>
                 <Tabs
@@ -262,9 +269,10 @@ export default (props: IProps) => {
                           title: "Optional",
                           icon: <InfoCircleOutlined />,
                         }}
+                        className={styles["config-item"]}
                       >
                         <Select
-                          style={{ width: 100 }}
+                          style={{ width: 100, height: 25 }}
                           options={levelOptions(99)}
                         />
                       </Form.Item>
@@ -275,9 +283,10 @@ export default (props: IProps) => {
                         }}
                         label={"vibeAmplitude"}
                         name={"vibeAmplitude"}
+                        className={styles["config-item"]}
                       >
                         <Select
-                          style={{ width: 100 }}
+                          style={{ width: 100, height: 25 }}
                           options={levelOptions(99)}
                         />
                       </Form.Item>
@@ -286,15 +295,17 @@ export default (props: IProps) => {
                           title: "Optional",
                           icon: <InfoCircleOutlined />,
                         }}
+                        className={styles["config-item"]}
                         label={"vibeWidth"}
                         name={"vibeWidth"}
                       >
                         <Select
-                          style={{ width: 100 }}
+                          style={{ width: 100, height: 25 }}
                           options={levelOptions(99)}
                         />
                       </Form.Item>
                       <Form.Item
+                        className={styles["config-item"]}
                         tooltip={{
                           title: "Optional",
                           icon: <InfoCircleOutlined />,
@@ -303,7 +314,7 @@ export default (props: IProps) => {
                         name={"vibeGap"}
                       >
                         <Select
-                          style={{ width: 100 }}
+                          style={{ width: 100, height: 25 }}
                           options={levelOptions(99)}
                         />
                       </Form.Item>
@@ -312,6 +323,7 @@ export default (props: IProps) => {
                   {configType["1"] && (
                     <Tabs.TabPane forceRender tab="config-b" key={"2"}>
                       <Form.Item
+                        className={styles["config-item"]}
                         tooltip={{
                           title: "Optional",
                           icon: <InfoCircleOutlined />,
@@ -320,11 +332,12 @@ export default (props: IProps) => {
                         name={"alarmSensitivity"}
                       >
                         <Select
-                          style={{ width: 100 }}
+                          style={{ width: 100, height: 25 }}
                           options={levelOptions(50)}
                         />
                       </Form.Item>
                       <Form.Item
+                        className={styles["config-item"]}
                         tooltip={{
                           title: "Optional",
                           icon: <InfoCircleOutlined />,
@@ -333,11 +346,12 @@ export default (props: IProps) => {
                         name={"systemSensitivity"}
                       >
                         <Select
-                          style={{ width: 100 }}
+                          style={{ width: 100, height: 25 }}
                           options={levelOptions(10)}
                         />
                       </Form.Item>
                       <Form.Item
+                        className={styles["config-item"]}
                         tooltip={{
                           title: "Optional",
                           icon: <InfoCircleOutlined />,
@@ -346,11 +360,12 @@ export default (props: IProps) => {
                         name={"groupWidth"}
                       >
                         <Select
-                          style={{ width: 100 }}
+                          style={{ width: 100, height: 25 }}
                           options={levelOptions(50)}
                         />
                       </Form.Item>
                       <Form.Item
+                        className={styles["config-item"]}
                         tooltip={{
                           title: "Optional",
                           icon: <InfoCircleOutlined />,
@@ -359,11 +374,12 @@ export default (props: IProps) => {
                         name={"groupGap"}
                       >
                         <Select
-                          style={{ width: 100 }}
+                          style={{ width: 100, height: 25 }}
                           options={levelOptions(50)}
                         />
                       </Form.Item>
                       <Form.Item
+                        className={styles["config-item"]}
                         tooltip={{
                           title: "Optional",
                           icon: <InfoCircleOutlined />,
@@ -372,7 +388,7 @@ export default (props: IProps) => {
                         name={"groupEntity"}
                       >
                         <Select
-                          style={{ width: 100 }}
+                          style={{ width: 100, height: 25 }}
                           options={levelOptions(50)}
                         />
                       </Form.Item>

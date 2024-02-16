@@ -36,6 +36,11 @@ export interface Fiber {
   name: string;
   archived: boolean;
   location: Array<Coordinate[]>;
+  device: {
+    id: number;
+    name: string;
+    type: number;
+  };
 }
 
 export default function ItemsModel() {

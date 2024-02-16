@@ -33,9 +33,11 @@ const rendertTskItem = (props: {
           <span className={styles["item-label"]}>Time:</span>
         </Col>
         <Col span={12}>
-          <span
-            className={styles["item-content"]}
-          >{`${time.hour}:${time.minute}`}</span>
+          <span className={styles["item-content"]}>{`${time.hour
+            .toString()
+            .padStart(2, "0")}:${time.minute
+            .toString()
+            .padStart(2, "0")}`}</span>
         </Col>
       </Row>
       <Row>

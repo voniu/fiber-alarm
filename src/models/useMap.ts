@@ -14,7 +14,7 @@ import { Coordinate } from "ol/coordinate";
 import Circle from "ol/style/Circle.js";
 import Text from "ol/style/Text";
 import Select from "ol/interaction/Select";
-import { CAMERA, FIBER } from "@/constant";
+import { CAMERA, FIBER, mapUrl } from "@/constant";
 import { useModel } from "umi";
 import { getFiberDetail as getFiberDetailAdmin } from "@/services/admin";
 import { getFiberDetail as getFiberDetailGuard } from "@/services/monitor";
@@ -32,10 +32,10 @@ export default function MapModel() {
       layers: [
         new TileLayer({
           source: new XYZ({
-            // url: 'http://127.0.0.1:8080/{z}/{y}/{x}.jpg',
+            url: mapUrl,
             // url: 'http://192.168.31.202:8000/{z}/{y}/{x}.png',
             // url: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-            url: "http://mt0.google.com/vt/lyrs=s&x={x}&y={y}&z={z}",
+            // url: "http://mt0.google.com/vt/lyrs=s&x={x}&y={y}&z={z}",
             // url: "http://wprd04.is.autonavi.com/appmaptile?lang=zh_cn&size=1&style=7&x={x}&y={y}&z={z}",
             // url: "https://webst01.is.autonavi.com/appmaptile?style=6&x={x}&y={y}&z={z}",
             projection: "EPSG:3857",
@@ -43,8 +43,9 @@ export default function MapModel() {
         }),
       ],
       view: new View({
-        center: [40.60328820848655, 49.67083191777059], //地图中心点
-        zoom: 14,
+        // center: [40.60328820848655, 49.67083191777059], //地图中心点
+        center: [117.0509681, 39.243617],
+        zoom: 16,
         projection: "EPSG:4326",
       }),
       controls: defaults({ rotate: false }).extend([
