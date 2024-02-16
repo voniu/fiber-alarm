@@ -1,22 +1,22 @@
 import { Result, Spin } from "antd";
 import { useEffect, useState } from "react";
-import { useAccess, useLocation } from "umi";
+import { useAccess, useLocation, useModel } from "umi";
 
 export default function (props: { children?: any }) {
   const [shouldRender, setShRender] = useState(false);
   const access = useAccess();
   const location = useLocation();
-
+  const { loading } = useModel("useAdminInfo");
   const getAccess = () => {
     //@ts-ignore
     const val = access[location.pathname.split("/")[2]];
     return val === undefined ? true : val;
   };
   useEffect(() => {
-    if (getAccess()) {
+    if (!loading) {
       setShRender(true);
     }
-  }, [getAccess()]);
+  }, [loading]);
   return (
     <>
       {shouldRender ? (
