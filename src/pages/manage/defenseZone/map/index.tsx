@@ -1,5 +1,5 @@
 import EditMap from "@/components/editMap";
-import { Button, Form, Input, Modal, Select } from "antd";
+import { Button, Form, Input, Modal, Select, message } from "antd";
 import { useEffect, useState } from "react";
 import { useModel } from "umi";
 import styles from "./index.less";
@@ -28,13 +28,7 @@ const MapCenter = (props: IProps) => {
   };
   const [form] = Form.useForm();
   const getFormValue = () => {
-    console.log("form");
-
-    console.log(mapui.center);
-
     const center = mapui.center || "[40.60328820848655, 49.67083191777059]";
-    console.log(center);
-
     const zoom = mapui.zoom || 14;
     form.setFieldValue("zoom", zoom);
     form.setFieldValue("location", center);
@@ -48,7 +42,15 @@ const MapCenter = (props: IProps) => {
     if (location) {
       setMapCenterZoom(JSON.parse(location), zoom);
       setMapUi({ zoom, center: location });
-      await setUiConfig({ mapCenter: location, mapScale: zoom });
+      const { success, msg } = await setUiConfig({
+        mapCenter: location,
+        mapScale: zoom,
+      });
+      if (!success) {
+        message.error(msg);
+      } else {
+        message.success("success");
+      }
     }
     setLoading(false);
     afterClose();
