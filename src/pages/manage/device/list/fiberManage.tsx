@@ -1,10 +1,11 @@
-import { Button, Popconfirm, Table } from "antd";
+import { Button, Popconfirm, Table, message } from "antd";
 import type { TableColumnsType } from "antd";
 import type { Fiber } from "@/models/useItems";
 import TriggerCameraList from "./triggerCameraList";
 import { delFiber, setFiberArchive } from "@/services/admin";
 import MapModal from "@/components/mapModal";
 import { useState } from "react";
+import { useModel } from "umi";
 
 interface IProps {
   isArchived: boolean;
@@ -22,17 +23,28 @@ interface IProps {
 }
 export default function (props: IProps) {
   const { edit, setRelation, data, flush, loading, isArchived } = props;
+  const { admin } = useModel("useAdminInfo");
   const [mapModal, setMapModal] = useState({
     id: -1,
     type: "",
     isModalOpen: false,
   });
   const setArchive = async (id: number, archived: boolean) => {
-    await setFiberArchive(id, archived);
+    const { success, msg } = await setFiberArchive(id, archived);
+    if (!success) {
+      message.error(msg);
+    } else {
+      message.success("success");
+    }
     flush();
   };
   const deleteFiber = async (id: number) => {
-    await delFiber(id);
+    const { success, msg } = await delFiber(id);
+    if (!success) {
+      message.error(msg);
+    } else {
+      message.success("success");
+    }
     flush();
   };
   const onClose = () => {
@@ -117,7 +129,7 @@ export default function (props: IProps) {
                 </Button>
               </Popconfirm>
             )}
-            {isArchived && (
+            {isArchived && admin?.type === 0 && (
               <Popconfirm
                 title="Delete the Fiber"
                 description="Are you sure to delete this Fiber?"

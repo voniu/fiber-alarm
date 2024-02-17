@@ -1,7 +1,8 @@
-import { Button, Popconfirm, Table } from "antd";
+import { Button, Popconfirm, Table, message } from "antd";
 import type { TableColumnsType } from "antd";
 import { delControl, setControlArchive } from "@/services/admin";
 import { FiberControl } from "@/type";
+import { useModel } from "umi";
 interface IProps {
   isArchived: boolean;
   flush: () => void;
@@ -11,8 +12,14 @@ interface IProps {
 }
 export default function (props: IProps) {
   const { edit, data, flush, loading, isArchived } = props;
+  const { admin } = useModel("useAdminInfo");
   const setArchive = async (id: number, archived: boolean) => {
-    await setControlArchive(id, archived);
+    const { success, msg } = await setControlArchive(id, archived);
+    if (!success) {
+      message.error(msg);
+    } else {
+      message.success("success");
+    }
     flush();
   };
   const columns: TableColumnsType<FiberControl> = [
@@ -81,14 +88,19 @@ export default function (props: IProps) {
                 </Button>
               </Popconfirm>
             )}
-            {isArchived && (
+            {isArchived && admin?.type === 0 && (
               <Popconfirm
                 title="Delete the Fiber"
                 description="Are you sure to delete this Fiber?"
                 okText="Yes"
                 cancelText="No"
-                onConfirm={() => {
-                  delControl(record.id);
+                onConfirm={async () => {
+                  const { success, msg } = await delControl(record.id);
+                  if (!success) {
+                    message.error(msg);
+                  } else {
+                    message.success("success");
+                  }
                   flush();
                 }}
               >

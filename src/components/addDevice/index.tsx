@@ -1,5 +1,5 @@
 import EditMap from "@/components/editMap";
-import { Form, Modal, Input, Button, Select } from "antd";
+import { Form, Modal, Input, Button, Select, message } from "antd";
 import styles from "./index.less";
 import { useEffect, useState } from "react";
 import {
@@ -156,33 +156,54 @@ export default (props: IProps) => {
     setLoading(true);
     if (operator === "add") {
       if (type === "camera") {
-        await addCamera({ ...value, location: value.location });
+        const { success, msg } = await addCamera({
+          ...value,
+          location: value.location,
+        });
+        if (!success) {
+          message.error(msg);
+        }
       } else if (type === "fiber") {
         const { fiberControl, name, zone, subzone } = value;
-        await addFiber({
+        const { success, msg } = await addFiber({
           deviceId: fiberControl,
           name,
           identifier: [Number(zone), Number(subzone)],
           location: value.location,
         });
+        if (!success) {
+          message.error(msg);
+        }
       } else if (type === "fiber-control") {
-        await addControl(value);
+        const { success, msg } = await addControl(value);
+        if (!success) {
+          message.error(msg);
+        }
       }
     } else {
       if (type === "camera") {
-        await updateCamera(deviceId!, {
+        const { success, msg } = await updateCamera(deviceId!, {
           ...value,
           location: value.location,
         });
+        if (!success) {
+          message.error(msg);
+        }
       } else if (type === "fiber") {
         const { name, zone, subzone } = value;
-        await setFiberDetail(deviceId!, {
+        const { success, msg } = await setFiberDetail(deviceId!, {
           name,
           identifier: [zone, subzone],
           location: value.location,
         });
+        if (!success) {
+          message.error(msg);
+        }
       } else if (type === "fiber-control") {
-        await updateControl(deviceId!, value);
+        const { success, msg } = await updateControl(deviceId!, value);
+        if (!success) {
+          message.error(msg);
+        }
       }
     }
     setLoading(false);

@@ -5,11 +5,11 @@ import { baseUrl } from "./constant";
 
 const errorHandler = (error: any) => {
   const { response, data } = error;
-  console.log(response, data);
   if (response && response.status) {
     const errorText = "An error occurred and try again later.";
-
-    message.error(errorText);
+    if (response.data) {
+      message.error(response.data.msg);
+    } else message.error(errorText);
     return;
   }
 

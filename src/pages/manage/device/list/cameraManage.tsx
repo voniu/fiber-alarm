@@ -1,9 +1,10 @@
-import { Button, Popconfirm, Table } from "antd";
+import { Button, Popconfirm, Table, message } from "antd";
 import type { TableColumnsType } from "antd";
 import type { Camera } from "@/models/useItems";
 import { delCamera, setCameraArchive } from "@/services/admin";
 import MapModal from "@/components/mapModal";
 import { useState } from "react";
+import { useModel } from "umi";
 interface IProps {
   isArchived: boolean;
   flush: () => void;
@@ -13,17 +14,28 @@ interface IProps {
 }
 export default function (props: IProps) {
   const { edit, data, flush, loading, isArchived } = props;
+  const { admin } = useModel("useAdminInfo");
   const [mapModal, setMapModal] = useState({
     id: -1,
     type: "",
     isModalOpen: false,
   });
   const setArchive = async (id: number, archived: boolean) => {
-    await setCameraArchive(id, archived);
+    const { success, msg } = await setCameraArchive(id, archived);
+    if (!success) {
+      message.error(msg);
+    } else {
+      message.success("success");
+    }
     flush();
   };
   const deleteCamera = async (id: number) => {
-    await delCamera(id);
+    const { success, msg } = await delCamera(id);
+    if (!success) {
+      message.error(msg);
+    } else {
+      message.success("success");
+    }
     flush();
   };
   const onClose = () => {
@@ -98,7 +110,7 @@ export default function (props: IProps) {
                 </Button>
               </Popconfirm>
             )}
-            {isArchived && (
+            {isArchived && admin?.type === 0 && (
               <Popconfirm
                 title="Delete the camera"
                 description="Are you sure to delete this camera?"

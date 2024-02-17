@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { delFiberCamera, getFiberDetail } from "@/services/admin";
-import { Button, List, Popconfirm } from "antd";
+import { Button, List, Popconfirm, message } from "antd";
 import type { Camera } from "@/models/useItems";
 interface IProps {
   id: number;
@@ -10,8 +10,13 @@ export default (props: IProps) => {
   const [list, setList] = useState<Camera[]>();
   const [isChange, setIsChange] = useState(false);
   const { id, flush } = props;
-  const dissolve = (cameraId: number) => {
-    delFiberCamera(id, cameraId);
+  const dissolve = async (cameraId: number) => {
+    const { success, msg } = await delFiberCamera(id, cameraId);
+    if (!success) {
+      message.error(msg);
+    } else {
+      message.success("success");
+    }
     setIsChange(!isChange);
     flush();
   };

@@ -20,8 +20,12 @@ export default (props: IProps) => {
   const onFinish = async (value: any) => {
     console.log(value);
     setLoading(true);
-    await reset(id, value.newpassword);
-    message.success("success");
+    const { success, msg } = await reset(id, value.newpassword);
+    if (!success) {
+      message.error(msg);
+    } else {
+      message.success("success");
+    }
     setLoading(false);
     onClose();
     flush();

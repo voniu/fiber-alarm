@@ -1,7 +1,8 @@
 import { Guard } from "@/type";
-import { Button, Popconfirm, Table, TableColumnsType } from "antd";
+import { Button, Popconfirm, Table, TableColumnsType, message } from "antd";
 import dayjs from "@/utills/day";
 import { delGuard, setGuardArchived } from "@/services/admin";
+import { useModel } from "@/.umi/plugin-model";
 
 interface IProps {
   data: Guard[];
@@ -11,12 +12,23 @@ interface IProps {
 }
 export default (props: IProps) => {
   const { data, flush, loading, isArchived } = props;
+  const { admin } = useModel("useAdminInfo");
   const deleteUser = async (id: number) => {
-    await delGuard(id);
+    const { success, msg } = await delGuard(id);
+    if (!success) {
+      message.error(msg);
+    } else {
+      message.success("success");
+    }
     flush();
   };
   const setArchive = async (id: number, archived: boolean) => {
-    await setGuardArchived(id, archived);
+    const { success, msg } = await setGuardArchived(id, archived);
+    if (!success) {
+      message.error(msg);
+    } else {
+      message.success("success");
+    }
     flush();
   };
   const columns: TableColumnsType<Guard> = [
@@ -66,7 +78,7 @@ export default (props: IProps) => {
                 </Button>
               </Popconfirm>
             )}
-            {isArchived && (
+            {isArchived && admin?.type === 0 && (
               <Popconfirm
                 title="delete the guard"
                 description="Are you sure to delete the guard?"

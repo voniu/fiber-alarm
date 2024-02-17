@@ -160,8 +160,7 @@ export default (props: IProps) => {
             {isArchived &&
               record.type !== 0 &&
               record.id !== admin?.id &&
-              (admin?.type === 0 ||
-                (admin?.type === 1 && record.type === 2)) && (
+              admin?.type === 0 && (
                 <Popconfirm
                   title="delete the user"
                   description="Are you sure to delete the user?"
