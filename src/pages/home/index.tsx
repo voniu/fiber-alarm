@@ -36,7 +36,7 @@ function HomePage() {
   }, []);
   return (
     <div className="data_body">
-      <div style={{ height: "10vh", color: "#ccc", paddingTop: 12 }}>
+      <div style={{ height: "8vh", color: "#ccc", paddingTop: 12 }}>
         <Header />
       </div>
       <div className="index_tabs">
@@ -62,7 +62,7 @@ function HomePage() {
             </div>
             <div
               className="dataAllBorder01 cage_cl"
-              style={{ marginTop: "0.6%", height: "50.1%" }}
+              style={{ marginTop: "0.6%", height: "51.5%" }}
             >
               <div
                 className="dataAllBorder01"
@@ -114,7 +114,7 @@ function HomePage() {
           <div className="center_cage">
             <div
               className="dataAllBorder01 cage_cl"
-              style={{ height: "98%", position: "relative" }}
+              style={{ height: "100%", position: "relative" }}
             >
               <div
                 className="dataAllBorder01"
