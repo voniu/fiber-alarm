@@ -516,8 +516,8 @@ export default (props: IProps) => {
                 <Select
                   disabled={operator === "edit"}
                   options={[
-                    { label: "0", value: 0 },
-                    { label: "1", value: 1 },
+                    { label: "Lanstar-TZ02", value: 0 },
+                    { label: "Jinganneng-S2", value: 1 },
                   ]}
                 ></Select>
               </Form.Item>

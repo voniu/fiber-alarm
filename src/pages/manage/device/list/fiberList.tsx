@@ -39,7 +39,9 @@ export default function (props: IProps) {
     {
       title: "Type",
       dataIndex: "type",
-      render: (text, record) => <a>{record.name}</a>,
+      render: (text, record) => (
+        <a>{record.type === 0 ? "Lanstar-TZ02" : "Jinganneng-S2"}</a>
+      ),
     },
     {
       title: "Operator",
