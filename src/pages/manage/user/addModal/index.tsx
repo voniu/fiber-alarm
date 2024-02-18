@@ -18,7 +18,7 @@ interface IProps {
   flush: () => void;
 }
 export default (props: IProps) => {
-  const { isModalOpen, onCancel, type, flush } = props;
+  const { isModalOpen, onCancel, type: listType, flush } = props;
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const { admin } = useModel("useAdminInfo");
@@ -30,8 +30,8 @@ export default (props: IProps) => {
     console.log(value);
     setLoading(true);
     const { name, nickname, password, type } = value;
-    form.setFieldValue("type", type);
-    if (type === "guard") {
+    // form.setFieldValue("type", type);
+    if (listType === "guard") {
       const { success, msg } = await addGuard({ name, nickname });
       setLoading(false);
       if (!success) {
@@ -71,7 +71,7 @@ export default (props: IProps) => {
         forceRender
       >
         <p style={{ fontSize: 20, fontWeight: "bold", height: 20 }}>
-          Add {`${type === "user" ? "Manager" : "Guard"}`}
+          Add {`${listType === "user" ? "Manager" : "Guard"}`}
         </p>
         <div className={styles["main"]}>
           <ConfigProvider
@@ -103,7 +103,7 @@ export default (props: IProps) => {
                 <Input />
               </Form.Item>
 
-              {type === "user" && (
+              {listType === "user" && (
                 <>
                   <Form.Item
                     label={"NickName"}
