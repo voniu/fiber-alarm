@@ -1,4 +1,3 @@
-import "bootstrap/dist/css/bootstrap.min.css";
 import { useModel } from "umi";
 import { useEffect, useState } from "react";
 import { Overlay } from "ol";
