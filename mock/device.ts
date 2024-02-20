@@ -85,7 +85,7 @@ export default {
         // 所属设备
         id: 123,
         name: "Device 1",
-        type: 0,
+        type: 1,
       },
     },
   },
@@ -168,7 +168,7 @@ export default {
       ],
     },
   },
-  "GET /api/admin/fiberControl": {
+  "GET /api/admin/fiberDevice": {
     success: true,
     msg: "xxxxxx错误",
     data: [
@@ -176,6 +176,12 @@ export default {
         id: 1,
         name: "fibercontrol1",
         type: 1,
+        fiberNum: 10,
+      },
+      {
+        id: 2,
+        name: "fibercontrol2",
+        type: 0,
         fiberNum: 10,
       },
     ],

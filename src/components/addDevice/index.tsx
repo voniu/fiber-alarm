@@ -303,7 +303,7 @@ export default (props: IProps) => {
                   { required: true, message: "Please input the password!" },
                 ]}
               >
-                <Input.Password placeholder="input" />
+                <Input placeholder="input" />
               </Form.Item>
               <Form.Item
                 className={styles["form-item"]}
