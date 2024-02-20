@@ -198,9 +198,15 @@ export default (props: IProps) => {
         }
       } else if (type === "fiber") {
         const { name, zone, subzone } = value;
+        let identify;
+        if (subzone) {
+          identify = [Number(zone), Number(subzone)];
+        } else {
+          identify = [Number(zone)];
+        }
         const { success, msg } = await setFiberDetail(deviceId!, {
           name,
-          identifier: [zone, subzone],
+          identifier: identify,
           location: value.location,
         });
         if (!success) {
