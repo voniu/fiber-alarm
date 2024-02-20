@@ -165,10 +165,16 @@ export default (props: IProps) => {
         }
       } else if (type === "fiber") {
         const { fiberControl, name, zone, subzone } = value;
+        let identify;
+        if (subzone) {
+          identify = [Number(zone), Number(subzone)];
+        } else {
+          identify = [Number(zone)];
+        }
         const { success, msg } = await addFiber({
           deviceId: fiberControl,
           name,
-          identifier: [Number(zone), Number(subzone)],
+          identifier: identify,
           location: value.location,
         });
         if (!success) {
