@@ -2,7 +2,7 @@ import { Guard } from "@/type";
 import { Button, Popconfirm, Table, TableColumnsType, message } from "antd";
 import dayjs from "@/utills/day";
 import { delGuard, setGuardArchived } from "@/services/admin";
-import { useModel } from "@/.umi/plugin-model";
+import { useModel } from "umi";
 
 interface IProps {
   data: Guard[];
