@@ -19,12 +19,12 @@ export default function () {
     {
       title: "ID",
       dataIndex: "id",
-      render: (text) => <a>{text}</a>,
+      render: (text) => <span>{text}</span>,
     },
     {
       title: "Name",
       dataIndex: "name",
-      render: (text, record) => <a>{record.name}</a>,
+      render: (text, record) => <span>{record.name}</span>,
     },
   ];
   //   const config = {

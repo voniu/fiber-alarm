@@ -18,7 +18,7 @@ export default {
       success: true,
       message: "",
       data: {
-        isLogined: false,
+        isLogined: true,
         user: {
           // 只在 isLogined = true 时存在
           id: 1,

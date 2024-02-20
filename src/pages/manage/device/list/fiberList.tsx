@@ -90,8 +90,8 @@ export default function (props: IProps) {
             )}
             {isArchived && admin?.type === 0 && (
               <Popconfirm
-                title="Delete the Fiber"
-                description="Are you sure to delete this Fiber?"
+                title="Delete the Fiber control"
+                description="Are you sure to delete this Fiber control?"
                 okText="Yes"
                 cancelText="No"
                 onConfirm={async () => {

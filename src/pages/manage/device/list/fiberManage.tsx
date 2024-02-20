@@ -118,7 +118,7 @@ export default function (props: IProps) {
             )}
             {!isArchived && (
               <Popconfirm
-                title="archive the fiber control"
+                title="archive the fiber"
                 description="Are you sure to archive the fiber?"
                 okText="Yes"
                 cancelText="No"
