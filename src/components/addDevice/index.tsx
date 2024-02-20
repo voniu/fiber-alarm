@@ -13,6 +13,7 @@ import {
   updateCamera,
   updateControl,
 } from "@/services/admin";
+import { deviceType } from "@/constant";
 interface IProps {
   operator: string;
   isModalOpen: boolean;
@@ -543,8 +544,8 @@ export default (props: IProps) => {
                 <Select
                   disabled={operator === "edit"}
                   options={[
-                    { label: "Lanstar-TZ02", value: 0 },
-                    { label: "Jinganneng-S2", value: 1 },
+                    { label: deviceType[0], value: 0 },
+                    { label: deviceType[1], value: 1 },
                   ]}
                 ></Select>
               </Form.Item>

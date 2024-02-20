@@ -3,6 +3,7 @@ import type { TableColumnsType } from "antd";
 import { delControl, setControlArchive } from "@/services/admin";
 import { FiberControl } from "@/type";
 import { useModel } from "umi";
+import { deviceType } from "@/constant";
 interface IProps {
   isArchived: boolean;
   flush: () => void;
@@ -46,9 +47,7 @@ export default function (props: IProps) {
     {
       title: "Type",
       dataIndex: "type",
-      render: (text, record) => (
-        <a>{record.type === 0 ? "Lanstar-TZ02" : "Jinganneng-S2"}</a>
-      ),
+      render: (text, record) => <a>{deviceType[record.type]}</a>,
     },
     {
       title: "Operator",
