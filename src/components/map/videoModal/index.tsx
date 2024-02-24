@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import RtspVideo from "./video";
 import { Modal } from "antd";
 interface IProps {
-  id: number;
+  id?: number;
   open: boolean;
   onCancel: () => void;
 }
@@ -24,7 +24,7 @@ export default (props: IProps) => {
           <RtspVideo
             prefix={"modal"}
             id={id}
-            style={{ height: 400, width: 550 }}
+            style={{ height: 350, width: 550 }}
           />
         </div>
       </Modal>

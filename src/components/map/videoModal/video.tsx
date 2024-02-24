@@ -4,7 +4,7 @@ import defaultImg from "@/assets/video/defaultVideo.webp";
 import styles from "./index.less";
 import { wsUrl } from "@/constant";
 interface IProps {
-  id: number;
+  id?: number;
   style?: Partial<React.CSSProperties>;
   prefix: string;
 }

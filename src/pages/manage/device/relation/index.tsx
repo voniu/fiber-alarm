@@ -13,11 +13,13 @@ export default function (props: IProps) {
   const { fiber, isModalOpen, setRelation, flush } = props;
   const [value, setValue] = useState<string[]>([]);
   const [options, setOptions] = useState();
+  const [loading, setLoading] = useState(false);
   const handleChange = (value: string[]) => {
     console.log(value);
     setValue(value);
   };
   const fetchData = async () => {
+    setLoading(true);
     const { data: allCamera } = await getCamera("", false);
     const { data: fiberDetail } = await getFiberDetail(fiber.id);
     const defaultCamera = fiberDetail?.triggerCameras.map((item: Camera) => {
@@ -32,6 +34,7 @@ export default function (props: IProps) {
     });
 
     setOptions(options);
+    setLoading(false);
   };
   const handleSubmit = async () => {
     if (value.length === 0) {
@@ -79,6 +82,7 @@ export default function (props: IProps) {
             </Col>
             <Col span={12}>
               <Select
+                loading={loading}
                 mode="multiple"
                 optionFilterProp="label"
                 placeholder="Please select"

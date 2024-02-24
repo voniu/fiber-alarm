@@ -5,6 +5,7 @@ import { delCamera, setCameraArchive } from "@/services/admin";
 import MapModal from "@/components/mapModal";
 import { useState } from "react";
 import { useModel } from "umi";
+import VideoModal from "@/components/map/videoModal";
 interface IProps {
   isArchived: boolean;
   flush: () => void;
@@ -20,6 +21,8 @@ export default function (props: IProps) {
     type: "",
     isModalOpen: false,
   });
+  const [test, setTest] = useState(false);
+  const [testID, setTestID] = useState<number>();
   const setArchive = async (id: number, archived: boolean) => {
     const { success, msg } = await setCameraArchive(id, archived);
     if (!success) {
@@ -110,6 +113,16 @@ export default function (props: IProps) {
                 </Button>
               </Popconfirm>
             )}
+            <Button
+              type="primary"
+              size="small"
+              onClick={() => {
+                setTest(true);
+                setTestID(record.id);
+              }}
+            >
+              {"Test"}
+            </Button>
             {isArchived && admin?.type === 0 && (
               <Popconfirm
                 title="Delete the camera"
@@ -148,6 +161,7 @@ export default function (props: IProps) {
         type={mapModal.type}
         onClose={onClose}
       />
+      <VideoModal open={test} onCancel={() => setTest(false)} id={testID} />
     </>
   );
 }

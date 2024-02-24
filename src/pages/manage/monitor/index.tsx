@@ -57,10 +57,10 @@ const Monitor = () => {
     setCurrentCameras(undefined);
     fetchMartix();
   };
-  const handleOpen = () => {
-    setCurrentCameras(form.getFieldsValue());
-    setOpen(true);
-  };
+  // const handleOpen = () => {
+  //   setCurrentCameras(form.getFieldsValue());
+  //   setOpen(true);
+  // };
   useEffect(() => {
     fetchOptions();
     fetchMartix();
@@ -133,12 +133,12 @@ const Monitor = () => {
                 />
               </Form.Item>
               <Form.Item wrapperCol={{ offset: 8 }}>
-                <Button
+                {/* <Button
                   style={{ marginRight: 10 }}
                   onClick={() => handleOpen()}
                 >
                   Test
-                </Button>
+                </Button> */}
                 <Button type="primary" htmlType="submit" loading={loading}>
                   Submit
                 </Button>
