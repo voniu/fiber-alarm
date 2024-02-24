@@ -1,7 +1,10 @@
+import { message } from "antd";
+
 export class RtspStream {
   constructor(wsUrl, videoId) {
     this.wsUrl = wsUrl;
     this.videoId = videoId;
+    this.reconnectInterval = 5000;
     console.log("videoId", videoId);
   }
 
@@ -18,7 +21,7 @@ export class RtspStream {
   }
 
   close() {
-    if (this.websocket) {
+    if (this.websocket && this.websocket.readyState === WebSocket.OPEN) {
       this.websocket.close();
     }
   }
@@ -29,10 +32,25 @@ export class RtspStream {
 
   onOpen(evt) {
     console.log("连接成功", this.wsUrl);
+    if (this.timer) clearInterval(this.timer);
+    if (this.pingCheckInterval) clearInterval(this.pingCheckInterval);
+    this.startPingCheck();
+    this.resetPingCheck();
   }
 
   onClose(evt) {
     console.log("连接关闭", this.wsUrl);
+    this.clearPingCheckInterval();
+    if (evt.code !== 1000) {
+      message.info("WebSocket connection lost. Reconnecting...");
+      // 尝试重连
+      if (this.timer) clearTimeout(this.timer);
+      this.timer = setTimeout(() => {
+        this.open();
+      }, 5000);
+    } else {
+      console.log("normal close");
+    }
   }
 
   onMessage(evt) {
@@ -42,12 +60,36 @@ export class RtspStream {
         this.media.init(data.content.codec);
       } else if (data.type === "ERROR") {
         console.error(`error: ${data.content.msg}`);
+        message.error(`error: ${data.content.msg}`);
+      } else if (data.type === "PING") {
       } else {
         console.log(data.content);
       }
     } else {
+      this.resetPingCheck();
       this.media.pushData(new Uint8Array(evt.data));
     }
+  }
+  startPingCheck() {
+    this.pingCheckInterval = setInterval(() => {
+      const currentTime = Date.now();
+      const elapsedTime = currentTime - this.lastMessageTimestamp;
+      if (elapsedTime > 10000) {
+        message.error(
+          "No message received in the last 10 seconds. Reconnecting..."
+        );
+        this.clearPingCheckInterval();
+        this.websocket.close(3001);
+      }
+    }, 2000);
+  }
+
+  resetPingCheck() {
+    this.lastMessageTimestamp = Date.now();
+  }
+
+  clearPingCheckInterval() {
+    if (this.pingCheckInterval) clearInterval(this.pingCheckInterval);
   }
 }
 

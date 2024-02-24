@@ -52,8 +52,8 @@ const Monitor = () => {
       message.success("Success");
     }
     setLoading(false);
-
-    window.location.reload();
+    setCurrentCameras(undefined);
+    fetchMartix();
   };
   useEffect(() => {
     fetchOptions();

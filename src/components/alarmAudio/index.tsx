@@ -13,14 +13,27 @@ const SoundAlert = (props: IProps) => {
       message.info("Error playing sound");
     });
   };
+  const handleEnded = () => {
+    audio.currentTime = 0; // 将播放时间设置为音频的开头
+    audio.play(); // 重新播放音频
+  };
   useEffect(() => {
     // 检查alert变量的变化
+
+    console.log(alert);
 
     if (alert) {
       playAlertSound();
     } else {
       audio.pause();
     }
+    audio.addEventListener("ended", handleEnded);
+    return () => {
+      if (audio) {
+        audio.removeEventListener("ended", handleEnded);
+        audio.pause();
+      }
+    };
   }, [alert]);
 
   return null;

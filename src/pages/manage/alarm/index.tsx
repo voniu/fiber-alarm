@@ -17,6 +17,7 @@ import {
   Button,
   Popconfirm,
   message,
+  ConfigProvider,
 } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useEffect, useState } from "react";
@@ -192,127 +193,137 @@ const HistoryAlarm = () => {
   return (
     <div className={styles["container"]}>
       <p style={{ fontSize: 20, fontWeight: "bold", height: 20 }}>AlarmList</p>
-      <Form
-        form={form}
-        name="advanced_search"
-        onFinish={handleSearch}
-        labelAlign="right"
-        initialValues={{
-          status: -1,
-          type: "all",
-          guardId: "all",
-          managerId: "all",
+      <ConfigProvider
+        theme={{
+          components: {
+            Form: {
+              screenXSMax: 0,
+            },
+          },
         }}
       >
-        <Row gutter={24} style={{ height: 45 }}>
-          <Col>
-            <Form.Item name={`fiberId`} label={`fiber`}>
-              <Select
-                optionFilterProp="label"
-                mode="multiple"
-                size={"middle"}
-                placeholder="Please select"
-                style={{ width: "230px" }}
-                options={fiberOptions}
-                maxTagCount={1}
-                loading={optionLoading}
-              />
-            </Form.Item>
-          </Col>
-          <Col>
-            <Form.Item name={`status`} label={`status`}>
-              <Select
-                style={{ width: 150 }}
-                options={[
-                  { value: -1, label: "all" },
-                  { value: 0, label: "happen" },
-                  { value: 1, label: "guard processed" },
-                  { value: 2, label: "manager processed" },
-                ]}
-              />
-            </Form.Item>
-          </Col>
-          <Col>
-            <Form.Item name={`timeType`} label={`timeType`}>
-              <Select
-                style={{ width: 100 }}
-                options={[
-                  { value: "CREATE", label: "CREATE" },
-                  { value: "GUARD", label: "GUARD" },
-                  { value: "MANAGER", label: "MANAGER" },
-                ]}
-              />
-            </Form.Item>
-          </Col>
-          <Col>
-            <Form.Item name={`time`} label={``}>
-              <DatePicker.RangePicker
-                locale={locale}
-                style={{ width: 350 }}
-                showTime
-                format="YYYY/MM/DD HH:mm:ss"
-              />
-            </Form.Item>
-          </Col>
-        </Row>
-        <Row gutter={24}>
-          <Col>
-            <Form.Item name={`type`} label={`type`}>
-              <Select
-                // mode="multiple"
-                size={"middle"}
-                placeholder="Please select"
-                style={{ width: "230px" }}
-                maxTagCount={1}
-                options={[
-                  { value: "all", label: "all" },
-                  { value: 0, label: "intrusion" },
-                  { value: 1, label: "tamper" },
-                  { value: 2, label: "wire Disconnect" },
-                  { value: 3, label: "Disconnect" },
-                ]}
-              />
-            </Form.Item>
-          </Col>
-          <Col>
-            <Form.Item name={`managerId`} label={`manager`}>
-              <Select
-                // mode="multiple"
-                size={"middle"}
-                placeholder="Please select"
-                showSearch
-                optionFilterProp="label"
-                style={{ width: "230px" }}
-                maxTagCount={1}
-                options={[{ value: "all", label: "all" }, ...managerOptions]}
-                loading={optionLoading}
-              />
-            </Form.Item>
-          </Col>
-          <Col>
-            <Form.Item name={`guardId`} label={`guard`}>
-              <Select
-                // mode="multiple"
-                size={"middle"}
-                showSearch
-                optionFilterProp="label"
-                placeholder="Please select"
-                style={{ width: "230px" }}
-                maxTagCount={1}
-                options={[{ value: "all", label: "all" }, ...guardOptions]}
-                loading={optionLoading}
-              />
-            </Form.Item>
-          </Col>
-          <Col>
-            <Form.Item>
-              <Button type="primary" loading={loading} htmlType="submit">
-                Search
-              </Button>
-            </Form.Item>
-          </Col>
-        </Row>
-      </Form>
+        <Form
+          form={form}
+          name="advanced_search"
+          onFinish={handleSearch}
+          labelAlign="right"
+          initialValues={{
+            status: -1,
+            type: "all",
+            guardId: "all",
+            managerId: "all",
+          }}
+        >
+          <Row gutter={24} style={{ height: 45, flexWrap: "nowrap" }}>
+            <Col style={{ flexShrink: 0 }}>
+              <Form.Item name={`fiberId`} label={`fiber`}>
+                <Select
+                  optionFilterProp="label"
+                  mode="multiple"
+                  size={"middle"}
+                  placeholder="Please select"
+                  style={{ width: "230px" }}
+                  options={fiberOptions}
+                  maxTagCount={1}
+                  loading={optionLoading}
+                />
+              </Form.Item>
+            </Col>
+            <Col style={{ flexShrink: 0 }}>
+              <Form.Item name={`status`} label={`status`}>
+                <Select
+                  style={{ width: 150 }}
+                  options={[
+                    { value: -1, label: "all" },
+                    { value: 0, label: "happen" },
+                    { value: 1, label: "guard processed" },
+                    { value: 2, label: "manager processed" },
+                  ]}
+                />
+              </Form.Item>
+            </Col>
+            <Col style={{ flexShrink: 0 }}>
+              <Form.Item name={`timeType`} label={`timeType`}>
+                <Select
+                  style={{ width: 100 }}
+                  options={[
+                    { value: "CREATE", label: "CREATE" },
+                    { value: "GUARD", label: "GUARD" },
+                    { value: "MANAGER", label: "MANAGER" },
+                  ]}
+                />
+              </Form.Item>
+            </Col>
+            <Col style={{ flexShrink: 0 }}>
+              <Form.Item name={`time`} label={``}>
+                <DatePicker.RangePicker
+                  locale={locale}
+                  style={{ width: 350 }}
+                  showTime
+                  format="YYYY/MM/DD HH:mm:ss"
+                />
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row gutter={24} style={{ flexWrap: "nowrap" }}>
+            <Col style={{ flexShrink: 0 }}>
+              <Form.Item name={`type`} label={`type`}>
+                <Select
+                  // mode="multiple"
+                  size={"middle"}
+                  placeholder="Please select"
+                  style={{ width: "230px" }}
+                  maxTagCount={1}
+                  options={[
+                    { value: "all", label: "all" },
+                    { value: 0, label: "intrusion" },
+                    { value: 1, label: "tamper" },
+                    { value: 2, label: "wire Disconnect" },
+                    { value: 3, label: "Disconnect" },
+                  ]}
+                />
+              </Form.Item>
+            </Col>
+            <Col style={{ flexShrink: 0 }}>
+              <Form.Item name={`managerId`} label={`manager`}>
+                <Select
+                  // mode="multiple"
+                  size={"middle"}
+                  placeholder="Please select"
+                  showSearch
+                  optionFilterProp="label"
+                  style={{ width: "230px" }}
+                  maxTagCount={1}
+                  options={[{ value: "all", label: "all" }, ...managerOptions]}
+                  loading={optionLoading}
+                />
+              </Form.Item>
+            </Col>
+            <Col style={{ flexShrink: 0 }}>
+              <Form.Item name={`guardId`} label={`guard`}>
+                <Select
+                  // mode="multiple"
+                  size={"middle"}
+                  showSearch
+                  optionFilterProp="label"
+                  placeholder="Please select"
+                  style={{ width: "230px" }}
+                  maxTagCount={1}
+                  options={[{ value: "all", label: "all" }, ...guardOptions]}
+                  loading={optionLoading}
+                />
+              </Form.Item>
+            </Col>
+            <Col style={{ flexShrink: 0 }}>
+              <Form.Item>
+                <Button type="primary" loading={loading} htmlType="submit">
+                  Search
+                </Button>
+              </Form.Item>
+            </Col>
+          </Row>
+        </Form>
+      </ConfigProvider>
 
       <Table
         loading={loading}

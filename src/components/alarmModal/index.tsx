@@ -72,17 +72,21 @@ const TabContent = (props: { id: number }) => {
     message.success("success");
   };
   useEffect(() => {
-    setTarget("alarm-map-container");
+    if (alarmList.length > 0) {
+      setTarget("alarm-map-container");
 
-    getAlarmDetail(id).then((res: any) => {
-      if (!res.data) return;
-      setDetail(res.data);
-      centerTo(res.data.fiber.id, "fiber");
-    });
+      getAlarmDetail(id).then((res: any) => {
+        if (!res.data) return;
+        setDetail(res.data);
+        centerTo(res.data.fiber.id, "fiber");
+      });
+    } else {
+      setTarget("map-container");
+    }
 
     return function () {
       const dom = document.getElementById("alarm-map-container");
-      setTarget("");
+      setTarget("map-container");
       if (dom) {
         dom.innerHTML = "";
       }
@@ -151,7 +155,7 @@ const TabContent = (props: { id: number }) => {
 export default function () {
   const { alarmList } = useModel("useAlarms");
   const open = alarmList?.length !== 0;
-  const [isTrumpetOn, setTrumpetOn] = useState(true);
+  const [isTrumpetOn, setTrumpetOn] = useState(false);
   useEffect(() => {
     if (open) {
       setTrumpetOn(true);
@@ -162,6 +166,7 @@ export default function () {
   return (
     <>
       <Modal
+        destroyOnClose
         closable={false}
         style={{ top: 20 }}
         title={null}

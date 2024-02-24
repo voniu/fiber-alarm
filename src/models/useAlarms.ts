@@ -1,5 +1,7 @@
 import { wsUrl } from "@/constant";
 import { isHome } from "@/utills";
+import { WebSocketClient } from "@/utills/websocket";
+import { message } from "antd";
 import { useEffect, useState } from "react";
 import { useModel } from "umi";
 
@@ -53,64 +55,62 @@ export default function Alarms() {
     // { id: 2 },
   ]);
 
-  const [guardSocekt, setGuardSocket] = useState<WebSocket>();
-  const [manageSocekt, setManageSocket] = useState<WebSocket>();
+  const [guardSocekt, setGuardSocket] = useState<WebSocketClient>();
+  const [manageSocekt, setManageSocket] = useState<WebSocketClient>();
 
   const [messageLoading, setMessageLoading] = useState(true);
   const handleGuard = (id: number, log: string) => {
     setMessageLoading(true);
-    guardSocekt?.send(
-      JSON.stringify({
-        type: "RESOLVE",
-        content: {
-          alarmId: id,
-          log,
-        },
-      })
-    );
+    guardSocekt?.send({
+      type: "RESOLVE",
+      content: {
+        alarmId: id,
+        log,
+      },
+    });
   };
   const handleManage = async (id: number, log: string) => {
     setMessageLoading(true);
-    manageSocekt?.send(
-      JSON.stringify({
-        type: "RESOLVE",
-        content: {
-          alarmId: id,
-          log,
-        },
-      })
-    );
+    manageSocekt?.send({
+      type: "RESOLVE",
+      content: {
+        alarmId: id,
+        log,
+      },
+    });
   };
   const getMangerAlarm = () => {
-    const socket2 = new WebSocket(
-      `${wsUrl}/api/common/pendingAlarm?type=manager`
-    );
-    socket2.onmessage = (e: MessageEvent) => {
-      if (typeof e.data === "string") {
-        let data = JSON.parse(e.data);
-        if (data.type === "UPDATE") {
-          setMessageLoading(false);
-          setManageAlarm(data.content);
+    const socket2 = new WebSocketClient(
+      `${wsUrl}/api/common/pendingAlarm?type=manager`,
+      (e: MessageEvent) => {
+        if (typeof e.data === "string") {
+          let data = JSON.parse(e.data);
+          if (data.type === "UPDATE") {
+            setMessageLoading(false);
+            setManageAlarm(data.content);
+          } else if (data.type === "ERROR") {
+            message.error(`error: ${data.content.msg}`);
+          }
         }
       }
-    };
+    );
     setManageSocket(socket2);
   };
   const getGuardAlarm = () => {
-    const socket1 = new WebSocket(
-      `${wsUrl}/api/common/pendingAlarm?type=guard`
-    );
-    console.log(socket1);
-
-    socket1.onmessage = (e: MessageEvent) => {
-      if (typeof e.data === "string") {
-        let data = JSON.parse(e.data);
-        if (data.type === "UPDATE") {
-          setMessageLoading(false);
-          setAlarmList(data.content);
+    const socket1 = new WebSocketClient(
+      `${wsUrl}/api/common/pendingAlarm?type=guard`,
+      (e: MessageEvent) => {
+        if (typeof e.data === "string") {
+          let data = JSON.parse(e.data);
+          if (data.type === "UPDATE") {
+            setMessageLoading(false);
+            setAlarmList(data.content);
+          } else if (data.type === "ERROR") {
+            message.error(`error: ${data.content.msg}`);
+          }
         }
       }
-    };
+    );
     setGuardSocket(socket1);
   };
   useEffect(() => {
