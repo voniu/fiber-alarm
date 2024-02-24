@@ -7,6 +7,7 @@ import { getCamera } from "@/services/admin";
 import { getMatrix, setMatrix } from "@/services/common";
 import { MonitorSetting } from "@/type";
 import { matrixData } from "@/utills";
+import TestVideo from "./testVideo";
 const Monitor = () => {
   const [cameraOptions, setCameraOp] = useState<any[]>([]);
   const [currentCameras, setCurrentCameras] = useState<{
@@ -14,6 +15,7 @@ const Monitor = () => {
   }>();
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
   const fetchMartix = async () => {
     const { success, msg, data: matrix } = await getMatrix();
     const camerasSetting: any = {};
@@ -54,6 +56,10 @@ const Monitor = () => {
     setLoading(false);
     setCurrentCameras(undefined);
     fetchMartix();
+  };
+  const handleOpen = () => {
+    setCurrentCameras(form.getFieldsValue());
+    setOpen(true);
   };
   useEffect(() => {
     fetchOptions();
@@ -127,6 +133,12 @@ const Monitor = () => {
                 />
               </Form.Item>
               <Form.Item wrapperCol={{ offset: 8 }}>
+                <Button
+                  style={{ marginRight: 10 }}
+                  onClick={() => handleOpen()}
+                >
+                  Test
+                </Button>
                 <Button type="primary" htmlType="submit" loading={loading}>
                   Submit
                 </Button>
@@ -135,6 +147,11 @@ const Monitor = () => {
           </div>
         </div>
       </div>
+      <TestVideo
+        cameras={currentCameras}
+        open={open}
+        onCancel={() => setOpen(false)}
+      />
     </div>
   );
 };
