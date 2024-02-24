@@ -26,15 +26,15 @@ export class WebSocketClient {
   }
   private onOpen(event: Event): void {
     console.log(`WebSocket connection opened `, event);
-    this.startPingCheck();
-    this.resetPingCheck();
+    // this.startPingCheck();
+    // this.resetPingCheck();
     if (this.reconnectTimer) {
       clearInterval(this.reconnectTimer);
     }
   }
 
   private onClose(event: CloseEvent): void {
-    this.clearPingCheckInterval();
+    // this.clearPingCheckInterval();
     if (event.code !== 1000) {
       clearInterval(this.reconnectTimer);
       console.log("WebSocket connection closed", event.code);
@@ -54,7 +54,7 @@ export class WebSocketClient {
     if (typeof event.data === "string") {
       let data = JSON.parse(event.data);
       if (data.type === "PING") {
-        this.resetPingCheck();
+        // this.resetPingCheck();
       }
     }
   }
@@ -70,26 +70,26 @@ export class WebSocketClient {
   public close(): void {
     this.socket.close();
   }
-  private startPingCheck() {
-    this.pingCheckInterval = setInterval(() => {
-      const currentTime = Date.now();
-      const elapsedTime = currentTime - this.lastMessageTimestamp;
+  // private startPingCheck() {
+  //   this.pingCheckInterval = setInterval(() => {
+  //     const currentTime = Date.now();
+  //     const elapsedTime = currentTime - this.lastMessageTimestamp;
 
-      if (elapsedTime > 15000) {
-        message.error(
-          "No message received in the last 12 seconds. Reconnecting..."
-        );
-        this.clearPingCheckInterval();
-        this.socket.close(3001);
-      }
-    }, 2000);
-  }
+  //     if (elapsedTime > 15000) {
+  //       message.error(
+  //         "No message received in the last 12 seconds. Reconnecting..."
+  //       );
+  //       this.clearPingCheckInterval();
+  //       this.socket.close(3001);
+  //     }
+  //   }, 2000);
+  // }
 
-  private resetPingCheck() {
-    this.lastMessageTimestamp = Date.now();
-  }
+  // private resetPingCheck() {
+  //   this.lastMessageTimestamp = Date.now();
+  // }
 
-  private clearPingCheckInterval() {
-    if (this.pingCheckInterval) clearInterval(this.pingCheckInterval);
-  }
+  // private clearPingCheckInterval() {
+  //   if (this.pingCheckInterval) clearInterval(this.pingCheckInterval);
+  // }
 }

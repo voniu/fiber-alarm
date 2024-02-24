@@ -10,6 +10,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  img {
+    height: 58px;
+    @media screen and (max-width: 560px) {
+      /* 在小屏幕上设置不同的宽度 */
+      height: 30px;
+    }
+  }
 }
 .header-title {
   font-weight: 600;

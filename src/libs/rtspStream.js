@@ -21,7 +21,7 @@ export class RtspStream {
   }
 
   close() {
-    if (this.websocket && this.websocket.readyState === WebSocket.OPEN) {
+    if (this.websocket) {
       this.websocket.close();
     }
   }
@@ -33,14 +33,14 @@ export class RtspStream {
   onOpen(evt) {
     console.log("连接成功", this.wsUrl);
     if (this.timer) clearInterval(this.timer);
-    if (this.pingCheckInterval) clearInterval(this.pingCheckInterval);
-    this.startPingCheck();
-    this.resetPingCheck();
+    // if (this.pingCheckInterval) clearInterval(this.pingCheckInterval);
+    // this.startPingCheck();
+    // this.resetPingCheck();
   }
 
   onClose(evt) {
     console.log("连接关闭", this.wsUrl);
-    this.clearPingCheckInterval();
+    // this.clearPingCheckInterval();
     if (evt.code !== 1000) {
       message.info("WebSocket connection lost. Reconnecting...");
       // 尝试重连
@@ -66,31 +66,31 @@ export class RtspStream {
         console.log(data.content);
       }
     } else {
-      this.resetPingCheck();
+      // this.resetPingCheck();
       this.media.pushData(new Uint8Array(evt.data));
     }
   }
-  startPingCheck() {
-    this.pingCheckInterval = setInterval(() => {
-      const currentTime = Date.now();
-      const elapsedTime = currentTime - this.lastMessageTimestamp;
-      if (elapsedTime > 10000) {
-        message.error(
-          "No message received in the last 10 seconds. Reconnecting..."
-        );
-        this.clearPingCheckInterval();
-        this.websocket.close(3001);
-      }
-    }, 2000);
-  }
+  // startPingCheck() {
+  //   this.pingCheckInterval = setInterval(() => {
+  //     const currentTime = Date.now();
+  //     const elapsedTime = currentTime - this.lastMessageTimestamp;
+  //     if (elapsedTime > 10000) {
+  //       message.error(
+  //         "No message received in the last 10 seconds. Reconnecting..."
+  //       );
+  //       this.clearPingCheckInterval();
+  //       this.websocket.close(3001);
+  //     }
+  //   }, 2000);
+  // }
 
-  resetPingCheck() {
-    this.lastMessageTimestamp = Date.now();
-  }
+  // resetPingCheck() {
+  //   this.lastMessageTimestamp = Date.now();
+  // }
 
-  clearPingCheckInterval() {
-    if (this.pingCheckInterval) clearInterval(this.pingCheckInterval);
-  }
+  // clearPingCheckInterval() {
+  //   if (this.pingCheckInterval) clearInterval(this.pingCheckInterval);
+  // }
 }
 
 export class ChannelMedia {
