@@ -172,7 +172,12 @@ export default (props: IProps) => {
         onCancel={onCancel}
       >
         <p
-          style={{ fontSize: 20, fontWeight: "bold", height: 20 }}
+          style={{
+            fontSize: 20,
+            fontWeight: "bold",
+            height: 20,
+            marginBottom: 20,
+          }}
         >{`${check.type} Task`}</p>
         <ConfigProvider
           theme={{

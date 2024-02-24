@@ -21,18 +21,18 @@ const rendertTskItem = (props: {
   return (
     <div className={styles["list-item"]}>
       <Row>
-        <Col span={3}>
+        <Col span={4}>
           <span className={styles["item-label"]}>Name:</span>
         </Col>
-        <Col span={12}>
+        <Col span={20}>
           <span className={styles["item-content"]}>{name}</span>
         </Col>
       </Row>
       <Row>
-        <Col span={3}>
+        <Col span={4}>
           <span className={styles["item-label"]}>Time:</span>
         </Col>
-        <Col span={12}>
+        <Col span={20}>
           <span className={styles["item-content"]}>{`${time.hour
             .toString()
             .padStart(2, "0")}:${time.minute
@@ -117,9 +117,9 @@ const FiberSensitivity = () => {
           <div className={styles["list"]}>
             <List
               loading={listLoading}
+              className={styles["list-antd"]}
               style={{
                 padding: "10px 30px",
-                width: 700,
                 border: "1px solid #fff",
                 borderRadius: "10px",
                 backgroundColor: "#fff",

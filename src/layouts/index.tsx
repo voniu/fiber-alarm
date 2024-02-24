@@ -36,6 +36,7 @@ const Layout = () => {
   };
   return (
     <ProLayout
+      disableMobile
       layout="mix"
       route={clientRoutes[clientRoutes.length - 1]}
       location={location}

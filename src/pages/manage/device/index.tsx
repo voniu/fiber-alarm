@@ -131,7 +131,11 @@ const DeviceManage = () => {
                 isArchived
               </Checkbox>
             </div>
-            <Form layout={"inline"} onFinish={handleSearch}>
+            <Form
+              layout={"inline"}
+              onFinish={handleSearch}
+              style={{ flexWrap: "nowrap" }}
+            >
               <Form.Item name={"search"}>
                 <Input />
               </Form.Item>
