@@ -29,17 +29,17 @@ export class WebSocketClient {
     // this.startPingCheck();
     // this.resetPingCheck();
     if (this.reconnectTimer) {
-      clearInterval(this.reconnectTimer);
+      clearTimeout(this.reconnectTimer);
     }
   }
 
   private onClose(event: CloseEvent): void {
     // this.clearPingCheckInterval();
     if (event.code !== 1000) {
-      clearInterval(this.reconnectTimer);
+      clearTimeout(this.reconnectTimer);
       console.log("WebSocket connection closed", event.code);
       message.info("WebSocket connection lost. Reconnecting...");
-      this.reconnectTimer = setInterval(() => {
+      this.reconnectTimer = setTimeout(() => {
         this.open();
       }, this.reconnectInterval);
     }

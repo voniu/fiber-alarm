@@ -32,7 +32,7 @@ export class RtspStream {
 
   onOpen(evt) {
     console.log("连接成功", this.wsUrl);
-    if (this.timer) clearInterval(this.timer);
+    if (this.timer) clearTimeout(this.timer);
     // if (this.pingCheckInterval) clearInterval(this.pingCheckInterval);
     // this.startPingCheck();
     // this.resetPingCheck();
