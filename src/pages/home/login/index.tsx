@@ -30,7 +30,7 @@ const Login = () => {
       </div>
       <div className={styles["form-container"]}>
         <div className={styles["title"]}>
-          <span>Duty System</span>
+          <span>Vəzifə sistemi</span>
         </div>
         <div className={styles["form"]}>
           <div className={styles["input-container"]}>
@@ -44,7 +44,7 @@ const Login = () => {
                 setUsername(e.target.value);
               }}
               type="text"
-              placeholder="Username"
+              placeholder="İstifadəçi adı"
             />
           </div>
           <div className={styles["input-container"]}>
@@ -59,7 +59,7 @@ const Login = () => {
                 setPassword(e.target.value);
               }}
               type="password"
-              placeholder="Password"
+              placeholder="Şifrə"
             />
           </div>
           <div className={styles["input-container"]}>
@@ -68,7 +68,7 @@ const Login = () => {
               onClick={submit}
               style={{ pointerEvents: `${loading ? "none" : "auto"}` }}
             >
-              {loading ? <span>loading...</span> : <span>Login</span>}
+              {loading ? <span>yüklənir...</span> : <span>daxil ol</span>}
             </div>
           </div>
         </div>

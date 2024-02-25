@@ -79,7 +79,7 @@ function HomePage() {
                     className="map_title"
                     style={{ backgroundImage: `url(${secondTitlePng})` }}
                   >
-                    Defense Area Info
+                    Müdafiə Bölgəsi Məlumatı
                   </div>
                   <div
                     style={{
@@ -93,8 +93,8 @@ function HomePage() {
                       onChange={handleChange}
                       size="small"
                     >
-                      <Radio.Button value="fiber">fiber</Radio.Button>
-                      <Radio.Button value="camera">camera</Radio.Button>
+                      <Radio.Button value="fiber">lif</Radio.Button>
+                      <Radio.Button value="camera">kamera</Radio.Button>
                     </Radio.Group>
                   </div>
                 </div>
@@ -131,7 +131,7 @@ function HomePage() {
                       className="map_title"
                       style={{ backgroundImage: `url(${firstTitlePng})` }}
                     >
-                      Real-Time Defense Area Map
+                      ahəsinin Xəritəsi(real vaxt)
                     </div>
                   </div>
                 </div>

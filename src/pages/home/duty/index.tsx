@@ -80,7 +80,7 @@ const Duty = () => {
   }, []);
   const columns: ColumnsType<DataType> = [
     {
-      title: "Name",
+      title: "ad",
       dataIndex: "name",
       render: (text) => <a>{text}</a>,
     },
@@ -89,14 +89,14 @@ const Duty = () => {
       render: (_, record) => {
         return (
           <Popconfirm
-            title="Sure to Confirm?"
+            title="Mütləq təsdiq?"
             onConfirm={() => handleConfirm(record.id)}
-            okText="Yes"
-            cancelText="No"
+            okText="bəli"
+            cancelText="xeyr"
           >
             {
               <a style={{ color: "black", fontWeight: "bold" }}>
-                {"Start Duty"}
+                {"vəzifəyə başlamaq"}
               </a>
             }
           </Popconfirm>
@@ -116,14 +116,14 @@ const Duty = () => {
             color: "#fff",
           }}
         >
-          Duty Manage
+          vəzifə idarəetməsi
         </p>
         <div
           className={styles["logout-btn"]}
           onClick={handleLogout}
           style={{ pointerEvents: `${outLoading ? "none" : "auto"}` }}
         >
-          {outLoading ? "Logout.." : "Logout"}
+          {outLoading ? "çıxış.." : "çıxış"}
         </div>
         {!dutyState?.isAnyoneOnDuty && (
           <ConfigProvider
@@ -159,30 +159,30 @@ const Duty = () => {
         {dutyState?.isAnyoneOnDuty && dutyState.isSelfOnDuty && (
           <div className={styles["hint-content"]}>
             <p>
-              The security guard you set is currently on duty, click to resume
-              duty.
+              Təyin etdiyiniz mühafizə hazırda növbətçidir, vəzifəyə davam etmək
+              üçün klikləyin.
             </p>
             <div style={{ color: "#699ef8", marginBottom: 10 }}>
-              <div>Current Guard: {dutyState.guard.name}</div>
+              <div>Cari Mühafizə: {dutyState.guard.name}</div>
             </div>
             <div
               className={styles["resume-btn"]}
               onClick={handleResume}
               style={{ pointerEvents: `${outLoading ? "none" : "auto"}` }}
             >
-              {outLoading ? <span>Resume..</span> : <span>Resume</span>}
+              {outLoading ? <span>Xülasə..</span> : <span>Xülasə</span>}
             </div>
           </div>
         )}
         {dutyState?.isAnyoneOnDuty && !dutyState.isSelfOnDuty && (
           <div className={styles["hint-content"]}>
             <p>
-              There is currently another supervisor on duty, please contact that
-              supervisor.
+              Hazırda vəzifədə başqa nəzarətçi var, zəhmət olmasa nəzarətçi ilə
+              əlaqə saxlayın.
             </p>
             <div style={{ color: "#699ef8" }}>
-              <div>Current Manage: {dutyState.manager.name}</div>
-              <div>Current Guard: {dutyState.guard.name}</div>
+              <div>Cari menecer: {dutyState.manager.name}</div>
+              <div>Cari Mühafizə: {dutyState.guard.name}</div>
             </div>
           </div>
         )}

@@ -58,18 +58,18 @@ const TabContent = (props: { id: number }) => {
   const [alarmDetail, setDetail] = useState<AlarmDetail>();
 
   const { id } = props;
-  const typeMap = ["intrusion", "tamper", "wire Disconnect", "Disconnect"];
+  const typeMap = ["müdaxilə", "saxtakarlıq", "şəbəkə qırılması", "ayırmaq"];
   const processInfo = useRef<TextAreaRef>();
 
   const onSubmit = async () => {
     if (!processInfo.current) return;
     const log = processInfo.current.resizableTextArea?.textArea.value;
     if (!log) {
-      message.info("please input the log");
+      message.info("log daxil edin");
       return;
     }
     handleGuard(id, log);
-    message.success("success");
+    message.success("uğur");
   };
   useEffect(() => {
     if (alarmList.length > 0) {
@@ -96,21 +96,18 @@ const TabContent = (props: { id: number }) => {
     <div className={styles["tab-content"]}>
       <div className={styles["tab-list"]}>
         <span style={{ fontSize: 16, fontWeight: "bold", color: "black" }}>
-          Alarm Info
+          Siqnalı Məlumatı
         </span>
         <div className={styles["tab-info"]}>
           <DescriptionText
-            label="Alarm Time"
+            label="Siqnal vaxtı"
             content={dayjs(alarmDetail?.createTime).format(
               "MMMM D, YYYY h:mm A"
             )}
           />
+          <DescriptionText label="lif adı" content={alarmDetail?.fiber.name} />
           <DescriptionText
-            label="Fiber Name"
-            content={alarmDetail?.fiber.name}
-          />
-          <DescriptionText
-            label="Alarm Type"
+            label="Siqnal növ"
             content={
               typeof alarmDetail?.type === "number"
                 ? typeMap[alarmDetail?.type]
@@ -118,7 +115,7 @@ const TabContent = (props: { id: number }) => {
             }
           />
           <DescriptionText
-            label="Camera Info"
+            label="Kamera Məlumatı"
             Other={() => (
               <div className={styles["camera-scroll"]}>
                 {alarmDetail?.snapshots.map((item) => {
@@ -135,11 +132,11 @@ const TabContent = (props: { id: number }) => {
             )}
           />
         </div>
-        <DescriptionText label="Manager" content={monitor?.name} />
+        <DescriptionText label="Menecer" content={monitor?.name} />
         <div className={styles["tab-sub"]}>
           <TextArea ref={processInfo} />
           <Button style={{ marginTop: 20 }} onClick={onSubmit}>
-            submit
+            təqdim
           </Button>
         </div>
       </div>
@@ -191,7 +188,7 @@ export default function () {
             items={alarmList.map((item: Alarm, i: number) => {
               const id = String(i + 1);
               return {
-                label: `alarm ${id}`,
+                label: `Siqnalı ${id}`,
                 key: id,
                 children: <TabContent id={item.id} />,
               };
@@ -206,7 +203,7 @@ export default function () {
                         setTrumpetOn(false);
                       }}
                     >
-                      click to close
+                      bağlamaq üçün klikləyin
                     </Button>
                   }
                 >

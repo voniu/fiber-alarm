@@ -24,12 +24,12 @@ const Login = () => {
       <div className={styles.form}>
         <Form size="large" form={form} name="login" onFinish={run}>
           <Divider>
-            <span className={styles.title}>{"Duty Admin System"}</span>
+            <span className={styles.title}>{"Vəzifə İdarəetmə Sistemi"}</span>
           </Divider>
 
           <Form.Item
             name="username"
-            label="username"
+            label="İstifadəçi adı"
             labelCol={{ style: { width: 80 } }}
           >
             <Input />
@@ -37,7 +37,7 @@ const Login = () => {
 
           <Form.Item
             name="password"
-            label="password"
+            label="Şifrə"
             labelCol={{ style: { width: 80 } }}
           >
             <Input.Password />
@@ -45,7 +45,7 @@ const Login = () => {
 
           <Form.Item>
             <Button block type="primary" loading={loading} htmlType="submit">
-              Login
+              daxil ol
             </Button>
           </Form.Item>
         </Form>

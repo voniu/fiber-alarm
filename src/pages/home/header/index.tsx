@@ -18,19 +18,19 @@ export default () => {
       </div>
       <div className={styles["select"]}>
         <span className={styles["select-span"]} style={{ color: "#d3d3d3" }}>
-          Manager:
+          menecer:
         </span>
         <span className={styles["select-span"]} style={{ color: "#ffffff" }}>
           {monitor?.name}
         </span>
         <span className={styles["select-span"]} style={{ color: "#d3d3d3" }}>
-          Guard:
+          Mühafizə:
         </span>
         <span className={styles["select-span"]} style={{ color: "#ffffff" }}>
           {guard?.name}
         </span>
         <Button style={{ marginLeft: 20 }} onClick={ExitDuty}>
-          EXIT DUTY
+          çıxış vəzifəsi
         </Button>
       </div>
       <AuthModal

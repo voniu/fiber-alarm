@@ -43,11 +43,11 @@ export const AuthModal = (props: {
         <img className={styles["verify-img"]} src={Verify} />
         <div className={styles["verify-con"]}>
           <div className={styles["verify-form"]}>
-            <span className={styles["label"]}>Manager:</span>
+            <span className={styles["label"]}>menecer:</span>
             <span className={styles["content"]}>{monitor?.name}</span>
           </div>
           <div className={styles["verify-form"]}>
-            <span className={styles["label"]}>Password:</span>
+            <span className={styles["label"]}>Şifrə:</span>
             <Input.Password
               style={{
                 width: 150,

@@ -106,7 +106,7 @@ const Layout = () => {
                   {
                     key: "logout",
                     icon: <LogoutOutlined />,
-                    label: "Logout",
+                    label: "çıxış",
                   },
                   {
                     key: "change password",
