@@ -9,7 +9,6 @@ export class RtspStream {
   }
 
   open() {
-    this.close();
     this.websocket = new WebSocket(this.wsUrl);
     this.websocket.binaryType = "arraybuffer";
     this.websocket.onopen = this.onOpen.bind(this);
@@ -32,25 +31,10 @@ export class RtspStream {
 
   onOpen(evt) {
     console.log("连接成功", this.wsUrl);
-    if (this.timer) clearTimeout(this.timer);
-    // if (this.pingCheckInterval) clearInterval(this.pingCheckInterval);
-    // this.startPingCheck();
-    // this.resetPingCheck();
   }
 
   onClose(evt) {
     console.log("连接关闭", this.wsUrl);
-    // this.clearPingCheckInterval();
-    if (evt.code !== 1000) {
-      message.info("WebSocket connection lost. Reconnecting...");
-      // 尝试重连
-      if (this.timer) clearTimeout(this.timer);
-      this.timer = setTimeout(() => {
-        this.open();
-      }, 5000);
-    } else {
-      console.log("normal close");
-    }
   }
 
   onMessage(evt) {
@@ -66,31 +50,9 @@ export class RtspStream {
         console.log(data.content);
       }
     } else {
-      // this.resetPingCheck();
       this.media.pushData(new Uint8Array(evt.data));
     }
   }
-  // startPingCheck() {
-  //   this.pingCheckInterval = setInterval(() => {
-  //     const currentTime = Date.now();
-  //     const elapsedTime = currentTime - this.lastMessageTimestamp;
-  //     if (elapsedTime > 10000) {
-  //       message.error(
-  //         "No message received in the last 10 seconds. Reconnecting..."
-  //       );
-  //       this.clearPingCheckInterval();
-  //       this.websocket.close(3001);
-  //     }
-  //   }, 2000);
-  // }
-
-  // resetPingCheck() {
-  //   this.lastMessageTimestamp = Date.now();
-  // }
-
-  // clearPingCheckInterval() {
-  //   if (this.pingCheckInterval) clearInterval(this.pingCheckInterval);
-  // }
 }
 
 export class ChannelMedia {

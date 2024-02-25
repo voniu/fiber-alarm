@@ -8,45 +8,56 @@ export class WebSocketClient {
   private pingCheckInterval: any;
   private reconnectInterval = 5000;
   private lastMessageTimestamp: any;
-  constructor(url: string, handlEvent: (e: MessageEvent) => void) {
+  private shouldReconnect: boolean;
+  private timer: any;
+  constructor(
+    url: string,
+    handlEvent: (e: MessageEvent) => void,
+    shouldReconnect: boolean
+  ) {
     this.url = url;
     this.handlEvent = handlEvent;
+    this.shouldReconnect = shouldReconnect;
     this.socket = new WebSocket(this.url);
     this.socket.onopen = this.onOpen.bind(this);
     this.socket.onclose = this.onClose.bind(this);
     this.socket.onerror = this.onError.bind(this);
     this.socket.onmessage = this.onMessage.bind(this);
   }
-  private open() {
+  public open() {
     this.socket = new WebSocket(this.url);
     this.socket.onopen = this.onOpen.bind(this);
     this.socket.onclose = this.onClose.bind(this);
     this.socket.onerror = this.onError.bind(this);
     this.socket.onmessage = this.onMessage.bind(this);
   }
-  private onOpen(event: Event): void {
+  public onOpen(event: Event): void {
     console.log(`WebSocket connection opened `, event);
-    // this.startPingCheck();
-    // this.resetPingCheck();
     if (this.reconnectTimer) {
       clearTimeout(this.reconnectTimer);
     }
   }
 
-  private onClose(event: CloseEvent): void {
-    // this.clearPingCheckInterval();
-    if (event.code !== 1000) {
-      clearTimeout(this.reconnectTimer);
-      console.log("WebSocket connection closed", event.code);
-      message.info("WebSocket connection lost. Reconnecting...");
-      this.reconnectTimer = setTimeout(() => {
+  public onClose(event: CloseEvent): void {
+    console.log(event, "close");
+    if (this.timer) clearTimeout(this.timer);
+    if (this.shouldReconnect) {
+      console.log("GUARD WS CLOSE");
+      this.timer = setTimeout(() => {
         this.open();
-      }, this.reconnectInterval);
+      }, 5000);
     }
   }
 
-  private onError(event: Event): void {
+  public onError(event: Event): void {
     console.log("WebSocket error:", event);
+    if (this.timer) clearTimeout(this.timer);
+    if (this.shouldReconnect) {
+      console.log("GUARD WS CLOSE");
+      this.timer = setTimeout(() => {
+        this.open();
+      }, 5000);
+    }
   }
 
   private onMessage(event: MessageEvent): void {
@@ -54,7 +65,6 @@ export class WebSocketClient {
     if (typeof event.data === "string") {
       let data = JSON.parse(event.data);
       if (data.type === "PING") {
-        // this.resetPingCheck();
       }
     }
   }
@@ -68,28 +78,6 @@ export class WebSocketClient {
   }
 
   public close(): void {
-    this.socket.close();
+    if (this.socket) this.socket.close();
   }
-  // private startPingCheck() {
-  //   this.pingCheckInterval = setInterval(() => {
-  //     const currentTime = Date.now();
-  //     const elapsedTime = currentTime - this.lastMessageTimestamp;
-
-  //     if (elapsedTime > 15000) {
-  //       message.error(
-  //         "No message received in the last 12 seconds. Reconnecting..."
-  //       );
-  //       this.clearPingCheckInterval();
-  //       this.socket.close(3001);
-  //     }
-  //   }, 2000);
-  // }
-
-  // private resetPingCheck() {
-  //   this.lastMessageTimestamp = Date.now();
-  // }
-
-  // private clearPingCheckInterval() {
-  //   if (this.pingCheckInterval) clearInterval(this.pingCheckInterval);
-  // }
 }

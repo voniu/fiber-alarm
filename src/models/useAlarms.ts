@@ -2,7 +2,7 @@ import { wsUrl } from "@/constant";
 import { isHome } from "@/utills";
 import { WebSocketClient } from "@/utills/websocket";
 import { message } from "antd";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useModel } from "umi";
 
 export interface Alarm {
@@ -59,6 +59,8 @@ export default function Alarms() {
   const [manageSocekt, setManageSocket] = useState<WebSocketClient>();
 
   const [messageLoading, setMessageLoading] = useState(true);
+  const shouldReconnect = useRef(true);
+
   const handleGuard = (id: number, log: string) => {
     setMessageLoading(true);
     guardSocekt?.send({
@@ -92,7 +94,8 @@ export default function Alarms() {
             message.error(`error: ${data.content.msg}`);
           }
         }
-      }
+      },
+      shouldReconnect.current
     );
     setManageSocket(socket2);
   };
@@ -109,7 +112,8 @@ export default function Alarms() {
             message.error(`error: ${data.content.msg}`);
           }
         }
-      }
+      },
+      shouldReconnect.current
     );
     setGuardSocket(socket1);
   };
@@ -124,6 +128,9 @@ export default function Alarms() {
     }
 
     return () => {
+      console.log("EXIT");
+
+      shouldReconnect.current = false;
       manageSocekt?.close();
       guardSocekt?.close();
     };

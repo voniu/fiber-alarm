@@ -66,7 +66,7 @@ const Monitor = () => {
     fetchMartix();
   }, []);
   return (
-    <div>
+    <div style={{ minWidth: 1200 }}>
       <p style={{ fontSize: 20, fontWeight: "bold", height: 20 }}>
         Monitor Setting
       </p>

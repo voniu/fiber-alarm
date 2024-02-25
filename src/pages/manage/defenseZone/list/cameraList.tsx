@@ -22,6 +22,7 @@ export default function () {
   return (
     <>
       <Table
+        scroll={{ x: true }}
         rowKey={"id"}
         rowSelection={{
           type: "radio",

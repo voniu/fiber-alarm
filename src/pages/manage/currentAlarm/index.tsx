@@ -74,6 +74,7 @@ const Alarm = () => {
         Current Alarm
       </p>
       <Table
+        scroll={{ x: true }}
         loading={messageLoading}
         rowKey={"id"}
         pagination={{
