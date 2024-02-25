@@ -13,7 +13,6 @@ import CameraList from "@/components/cameraList";
 import RtspVideo from "@/components/map/videoModal/video";
 import { getMatrix } from "@/services/common";
 import { MonitorSetting } from "@/type";
-
 function HomePage() {
   const [listType, setListType] = useState("fiber");
   const [currentCameras, setCurrentCameras] = useState<{
@@ -35,14 +34,17 @@ function HomePage() {
     fetchMartix();
   }, []);
   return (
-    <div className="data_body">
-      <div style={{ height: "8vh", color: "#ccc", paddingTop: 12 }}>
+    <div className={`data_body`} style={{ minWidth: 1300, minHeight: 500 }}>
+      <div style={{ height: 55, color: "#ccc", marginBottom: 5 }}>
         <Header />
       </div>
       <div className="index_tabs">
         <div className="inner" style={{ height: "100%" }}>
           <div className="left_cage">
-            <div className="dataAllBorder01 cage_cl" style={{ height: "48%" }}>
+            <div
+              className={`dataAllBorder01 cage_cl overflow-style`}
+              style={{ height: "48%" }}
+            >
               <div style={{ display: "flex", justifyContent: "center" }}>
                 {currentCameras && (
                   <RtspVideo prefix="home1" id={currentCameras["0-0"]} />

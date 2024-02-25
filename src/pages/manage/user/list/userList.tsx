@@ -181,6 +181,7 @@ export default (props: IProps) => {
   return (
     <>
       <Table
+        scroll={{ x: true }}
         loading={loading}
         rowKey={"id"}
         pagination={{ pageSize: 6, showSizeChanger: false }}

@@ -326,6 +326,7 @@ const HistoryAlarm = () => {
       </ConfigProvider>
 
       <Table
+        scroll={{ x: true }}
         loading={loading}
         rowKey={"id"}
         pagination={{

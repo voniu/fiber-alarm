@@ -11,11 +11,9 @@ interface IProps {
 export default (props: IProps) => {
   const { id, style, prefix } = props;
   const RRef = useRef<RtspStream>();
+  const shouldReconnect = useRef(true);
+  const timer = useRef<any>();
   useEffect(() => {
-    if (RRef.current) {
-      RRef.current.close();
-      console.log("close");
-    }
     if (!id) return;
     if (!document.getElementById(`rtsp-video-${prefix}-${id}`)) return;
 
@@ -23,16 +21,37 @@ export default (props: IProps) => {
       `${wsUrl}/api/common/stream?id=${id}`,
       `rtsp-video-${prefix}-${id}`
     );
-    rtsp.open();
-    console.log(rtsp);
-
-    RRef.current = rtsp;
-    return () => {
-      console.log("video close");
-
-      if (RRef.current) RRef.current.close();
+    rtsp.onOpen = () => {
+      if (timer.current) clearTimeout(timer.current);
     };
-  }, []);
+    rtsp.onClose = () => {
+      if (timer.current) clearTimeout(timer.current);
+      if (shouldReconnect.current) {
+        console.log("WS CLOSE");
+        timer.current = setTimeout(() => {
+          rtsp.open();
+        }, 3000);
+      }
+    };
+    rtsp.onError = () => {
+      if (timer.current) clearTimeout(timer.current);
+      if (shouldReconnect.current) {
+        console.log("WS CLOSE ERROR");
+        timer.current = setTimeout(() => {
+          rtsp.open();
+        }, 5000);
+      }
+    };
+    RRef.current = rtsp;
+    const save = RRef.current;
+    rtsp.open();
+
+    return () => {
+      console.log("video close", save.websocket);
+      shouldReconnect.current = false;
+      if (save) save.close();
+    };
+  }, [id]);
   return (
     <div>
       <div

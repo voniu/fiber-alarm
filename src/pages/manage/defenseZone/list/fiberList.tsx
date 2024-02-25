@@ -28,6 +28,7 @@ export default function () {
   return (
     <>
       <Table
+        scroll={{ x: true }}
         rowSelection={{
           type: "radio",
           onChange: (_, selectedRows) => {
