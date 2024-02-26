@@ -23,9 +23,9 @@ function CameraDetail({ camera }: { camera?: Camera }) {
     <div>
       <div>{camera.name}</div>
       <div style={{ fontSize: 14 }}>ID: {camera.id}</div>
-      <div style={{ fontSize: 14 }}>Location: {camera.location.toString()}</div>
+      <div style={{ fontSize: 14 }}>yer: {camera.location.toString()}</div>
       <Button ghost onClick={() => setOpen(true)}>
-        View Camera
+        Baxın Kamera
       </Button>
       <VideoModal id={camera.id} open={open} onCancel={() => setOpen(false)} />
     </div>
@@ -57,7 +57,7 @@ function FiberDetailList({ fiber }: { fiber?: Fiber }) {
       <div>{fiber?.name}</div>
       <div style={{ fontSize: 14 }}>ID: {fiber.id}</div>
       {fiberDetail?.triggerCameras.map((item) => {
-        return <div key={item.id}>{`camera: ${item.name}`}</div>;
+        return <div key={item.id}>{`Kamera: ${item.name}`}</div>;
       })}
     </div>
   );

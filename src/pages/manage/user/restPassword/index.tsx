@@ -24,7 +24,7 @@ export default (props: IProps) => {
     if (!success) {
       message.error(msg);
     } else {
-      message.success("success");
+      message.success("gözləyir");
     }
     setLoading(false);
     onClose();
@@ -46,7 +46,7 @@ export default (props: IProps) => {
         forceRender
       >
         <p style={{ fontSize: 20, fontWeight: "bold", height: 20 }}>
-          ResetPassword
+          şifrəni sıfırlamaq
         </p>
         <div className={styles["main"]}>
           <ConfigProvider
@@ -71,16 +71,18 @@ export default (props: IProps) => {
             >
               <Form.Item
                 className={styles["form-item"]}
-                label="Password"
+                label="Şifrə"
                 name={"newpassword"}
-                rules={[{ required: true, message: "Please input" }]}
+                rules={[
+                  { required: true, message: "Zəhmət olmasa daxil edin" },
+                ]}
               >
-                <Input.Password placeholder="input" />
+                <Input.Password placeholder="giriş" />
               </Form.Item>
 
               <Form.Item style={{ display: "flex", justifyContent: "center" }}>
                 <Button type="primary" htmlType="submit" loading={loading}>
-                  submit
+                  təqdim
                 </Button>
               </Form.Item>
             </Form>

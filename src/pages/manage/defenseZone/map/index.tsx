@@ -49,7 +49,7 @@ const MapCenter = (props: IProps) => {
       if (!success) {
         message.error(msg);
       } else {
-        message.success("success");
+        message.success("gözləyir");
       }
     }
     setLoading(false);
@@ -80,7 +80,7 @@ const MapCenter = (props: IProps) => {
         width={1100}
         onCancel={afterClose}
       >
-        <p style={{ fontWeight: "bold" }}>{"Map Setting"}</p>
+        <p style={{ fontWeight: "bold" }}>{"Müdafiə zonası"}</p>
 
         <div className={styles["container"]}>
           <div style={{ width: 400 }}>
@@ -93,31 +93,34 @@ const MapCenter = (props: IProps) => {
               onFinish={onFinish}
             >
               <Form.Item
-                label="Zoom"
+                label="böyütmək"
                 name={"zoom"}
                 rules={[
-                  { required: true, message: "Please select zoom level!" },
+                  {
+                    required: true,
+                    message: "Lütfən, böyütmə səviyyəsini seçin!",
+                  },
                 ]}
               >
                 <Select onChange={zoomChange} options={zoomOption(18)}></Select>
               </Form.Item>
 
               <Form.Item
-                label="Center"
+                label="mərkəz"
                 name={"location"}
                 rules={[
-                  { required: true, message: "Please input the location!" },
+                  { required: true, message: "Zəhmət olmasa yeri daxil edin!" },
                 ]}
               >
                 <Input.TextArea
                   autoSize={{ maxRows: 4 }}
                   disabled
-                  placeholder="auto select"
+                  placeholder="avtomatik seçim"
                 />
               </Form.Item>
               <Form.Item wrapperCol={{ offset: 16 }}>
                 <Button type="primary" htmlType="submit" loading={loading}>
-                  Submit
+                  təqdim
                 </Button>
               </Form.Item>
             </Form>

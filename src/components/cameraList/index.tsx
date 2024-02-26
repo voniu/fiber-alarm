@@ -22,7 +22,7 @@ export default function () {
       render: (text) => <span>{text}</span>,
     },
     {
-      title: "Name",
+      title: "ad",
       dataIndex: "name",
       render: (text, record) => <span>{record.name}</span>,
     },

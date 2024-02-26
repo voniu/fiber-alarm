@@ -14,7 +14,8 @@ const Alarm = () => {
   const [dealId, setDealId] = useState<number>(-1);
   // const [loading, setLoading] = useState(false);
   const onClose = () => setOpen(false);
-  const typeMap = ["intrusion", "tamper", "wire Disconnect", "Disconnect"];
+  const typeMap = ["müdaxilə", "saxtakarlıq", "şəbəkə qırılması", "ayırmaq"];
+
   const { manageAlarm, messageLoading } = useModel("useAlarms");
 
   const columns: ColumnsType<AlarmDetail> = [
@@ -24,12 +25,12 @@ const Alarm = () => {
       render: (text) => <a>{text}</a>,
     },
     {
-      title: "Fiber",
+      title: "lif",
       dataIndex: "fiber",
       render: (text, record) => <a>{record.fiber.name}</a>,
     },
     {
-      title: "Type",
+      title: "növ",
       dataIndex: "type",
       width: 150,
       render: (_, record) => (
@@ -37,12 +38,12 @@ const Alarm = () => {
       ),
     },
     {
-      title: "guard",
+      title: "mühafizə",
       dataIndex: "guard",
       render: (_, record) => <a>{record.guard?.name}</a>,
     },
     {
-      title: "Time",
+      title: "vaxt",
       dataIndex: "createTime",
       render: (_, record) => (
         <a>{dayjs(record.createTime).format("MMMM D, YYYY h:mm A")}</a>
@@ -60,7 +61,7 @@ const Alarm = () => {
               setDealId(record.id);
             }}
           >
-            {"deal with"}
+            {"ilə məşğul olmaq"}
           </a>
         );
       },
@@ -71,7 +72,7 @@ const Alarm = () => {
   return (
     <div className={styles["container"]}>
       <p style={{ fontSize: 20, fontWeight: "bold", height: 20 }}>
-        Current Alarm
+        Cari Siqnalı
       </p>
       <Table
         scroll={{ x: true }}

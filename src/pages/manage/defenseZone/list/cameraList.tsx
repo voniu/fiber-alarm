@@ -13,7 +13,7 @@ export default function () {
       render: (text) => <a>{text}</a>,
     },
     {
-      title: "Name",
+      title: "ad",
       dataIndex: "name",
       render: (text, record) => <a>{record.name}</a>,
     },

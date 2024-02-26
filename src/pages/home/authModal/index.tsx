@@ -31,6 +31,8 @@ export const AuthModal = (props: {
       keyboard={false}
       maskClosable={false}
       open={isModalOpen}
+      okText="bəli"
+      cancelText="xeyr"
       onCancel={() => {
         onCancel();
         setPassword("");
@@ -54,7 +56,7 @@ export const AuthModal = (props: {
               }}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="input password"
+              placeholder="giriş Şifrə"
             />
           </div>
         </div>

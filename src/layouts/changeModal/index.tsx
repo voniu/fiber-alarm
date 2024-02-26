@@ -20,7 +20,7 @@ export default (props: IProps) => {
     setLoading(false);
     form.resetFields();
     onCancel();
-    message.success("success");
+    message.success("uğur");
   };
 
   const onFinishFailed = (errorInfo: any) => {
@@ -30,7 +30,7 @@ export default (props: IProps) => {
   return (
     <Modal
       style={{ top: 120 }}
-      title={"Change Password"}
+      title={"Şifrəni dəyiş"}
       footer={null}
       keyboard={false}
       open={open}
@@ -45,33 +45,40 @@ export default (props: IProps) => {
         layout="vertical"
       >
         <Form.Item
-          label="current password"
+          label="Cari şifrə"
           name="currentPassword"
-          rules={[{ required: true, message: "Please input current password" }]}
+          rules={[
+            { required: true, message: "zəhmət olmasa giriş current password" },
+          ]}
         >
           <Input.Password />
         </Form.Item>
 
         <Form.Item
-          label="new password"
+          label="Yeni şifrə"
           name="newPassword"
-          rules={[{ required: true, message: "Please input new password" }]}
+          rules={[
+            { required: true, message: "zəhmət olmasa giriş Yeni şifrə" },
+          ]}
         >
           <Input.Password />
         </Form.Item>
 
         <Form.Item
-          label="confirm password"
+          label="Şifrəni təsdiqləyin"
           name="confirmNewPassword"
           dependencies={["newPassword"]}
           rules={[
-            { required: true, message: "please confirm password" },
+            {
+              required: true,
+              message: "zəhmət olmasa giriş Şifrəni təsdiqləyin",
+            },
             ({ getFieldValue }) => ({
               validator(_, value) {
                 if (!value || getFieldValue("newPassword") === value) {
                   return Promise.resolve();
                 }
-                return Promise.reject("Two inputs are inconsistent");
+                return Promise.reject("İki giriş uyğunsuzdur");
               },
             }),
           ]}
@@ -81,7 +88,7 @@ export default (props: IProps) => {
 
         <Form.Item>
           <Button type="primary" htmlType="submit" loading={loading}>
-            Submit
+            təqdim
           </Button>
         </Form.Item>
       </Form>

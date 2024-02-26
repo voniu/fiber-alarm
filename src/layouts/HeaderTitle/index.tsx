@@ -6,7 +6,7 @@ export default function HeaderTitle() {
       <div className={styles["logo-img"]}>
         <img src={Logo} />
       </div>
-      <span className={styles["header-title"]}>Duty Manage System</span>
+      <span className={styles["header-title"]}>Vəzifə İdarəetmə Sistemi</span>
     </div>
   );
 }

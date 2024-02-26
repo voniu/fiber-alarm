@@ -42,12 +42,12 @@ export default (props: IProps) => {
     flush,
   } = props;
   const titleMap: any = {
-    "add-camera": "Add Camera",
-    "add-fiber": "Add fiber",
-    "add-fiber-control": "Add Fiber Control",
-    "edit-camera": "Edit Camera",
-    "edit-fiber": "Edit Fiber",
-    "edit-fiber-control": "Edit Fiber Control",
+    "add-camera": "kamera əlavə et",
+    "add-fiber": "fiber əlavə et",
+    "add-fiber-control": "fiber kontrol əlavə et",
+    "edit-camera": "kameranı redaktə et",
+    "edit-fiber": "fiberi redaktə et",
+    "edit-fiber-control": "fiber kontrolu redaktə et",
   };
   const [form] = Form.useForm();
   const [fiberControl, setFiberControl] = useState<{
@@ -271,61 +271,65 @@ export default (props: IProps) => {
             >
               <Form.Item
                 className={styles["form-item"]}
-                label="Name"
+                label="ad"
                 name={"name"}
-                rules={[{ required: true, message: "Please input the name!" }]}
+                rules={[
+                  { required: true, message: "Zəhmət olmasa daxil edin!" },
+                ]}
               >
-                <Input placeholder="input" />
+                <Input placeholder="giriş" />
               </Form.Item>
               <Form.Item
                 className={styles["form-item"]}
-                label="Host"
+                label="Ev sahibi"
                 name={"host"}
-                rules={[{ required: true, message: "Please input the Host" }]}
+                rules={[
+                  { required: true, message: "Zəhmət olmasa daxil edin!" },
+                ]}
               >
-                <Input placeholder="input" />
+                <Input placeholder="giriş" />
               </Form.Item>
               <Form.Item
                 className={styles["form-item"]}
-                label="Username"
+                label="İstifadəçi adı"
                 name={"username"}
                 rules={[
-                  { required: true, message: "Please input the username!" },
+                  { required: true, message: "Zəhmət olmasa daxil edin!" },
                 ]}
               >
-                <Input placeholder="input" />
+                <Input placeholder="giriş" />
               </Form.Item>
               <Form.Item
                 className={styles["form-item"]}
-                label="Password"
+                label="Şifrə"
                 name={"password"}
                 rules={[
-                  { required: true, message: "Please input the password!" },
+                  { required: true, message: "Zəhmət olmasa daxil edin!" },
                 ]}
               >
-                <Input placeholder="input" />
+                <Input placeholder="giriş" />
               </Form.Item>
               <Form.Item
                 className={styles["form-item"]}
-                label="SnapshotPath"
+                label="anlıq görüntü yolu"
                 name={"snapshotPath"}
                 rules={[
-                  { required: true, message: "Please input the snapshotPath!" },
+                  { required: true, message: "Zəhmət olmasa daxil edin!" },
                 ]}
               >
                 <Input placeholder="" />
               </Form.Item>
               <Form.Item
                 className={styles["form-item"]}
-                label="SnapshotPort"
+                label="anlıq görüntü yolu"
                 name={"snapshotPort"}
                 rules={[
-                  { required: true, message: "Please input snapshotPort!" },
+                  { required: true, message: "Zəhmət olmasa daxil edin!" },
                   {
                     validator: async (_, value) => {
                       const regex = /^\d+$/;
                       if (!regex.test(value)) {
-                        return Promise.reject("Please input numbers only!");
+                        return Promise.reject("Zəhmət olmasa daxil edin!");
                       }
                       return Promise.resolve();
                     },
@@ -336,25 +340,25 @@ export default (props: IProps) => {
               </Form.Item>
               <Form.Item
                 className={styles["form-item"]}
-                label="StreamPath"
+                label="axış yolu"
                 name={"streamPath"}
                 rules={[
-                  { required: true, message: "Please input streamPath!" },
+                  { required: true, message: "Zəhmət olmasa daxil edin!" },
                 ]}
               >
                 <Input placeholder="" />
               </Form.Item>
               <Form.Item
                 className={styles["form-item"]}
-                label="StreamPort"
+                label="axış portu"
                 name={"streamPort"}
                 rules={[
-                  { required: true, message: "Please input streamPort!" },
+                  { required: true, message: "Zəhmət olmasa daxil edin!" },
                   {
                     validator: async (_, value) => {
                       const regex = /^\d+$/;
                       if (!regex.test(value)) {
-                        return Promise.reject("Please input numbers only!");
+                        return Promise.reject("Zəhmət olmasa daxil edin!");
                       }
                       return Promise.resolve();
                     },
@@ -365,11 +369,17 @@ export default (props: IProps) => {
               </Form.Item>
               <Form.Item
                 className={styles["form-item"]}
-                label="Location"
+                label="yer"
                 name={"location"}
-                rules={[{ required: true, message: "Please input location!" }]}
+                rules={[
+                  { required: true, message: "Zəhmət olmasa daxil edin!" },
+                ]}
               >
-                <Input.TextArea autoSize disabled placeholder="auto select" />
+                <Input.TextArea
+                  autoSize
+                  disabled
+                  placeholder="avtomatik seçim"
+                />
               </Form.Item>
 
               <Form.Item
@@ -377,7 +387,7 @@ export default (props: IProps) => {
                 wrapperCol={{ offset: 16 }}
               >
                 <Button type="primary" htmlType="submit" loading={loading}>
-                  Submit
+                  təqdim
                 </Button>
               </Form.Item>
             </Form>
@@ -393,18 +403,20 @@ export default (props: IProps) => {
             >
               <Form.Item
                 className={styles["form-item"]}
-                label="Name"
+                label="ad"
                 name={"name"}
-                rules={[{ required: true, message: "Please input the name!" }]}
+                rules={[
+                  { required: true, message: "Zəhmət olmasa daxil edin!" },
+                ]}
               >
-                <Input placeholder="input" />
+                <Input placeholder="giriş" />
               </Form.Item>
               <Form.Item
                 className={styles["form-item"]}
-                label="control"
+                label="nəzarət"
                 name={"fiberControl"}
                 rules={[
-                  { required: true, message: "Please select fiber control!" },
+                  { required: true, message: "Zəhmət olmasa daxil edin!" },
                 ]}
               >
                 <Select
@@ -419,41 +431,45 @@ export default (props: IProps) => {
                 <>
                   <Form.Item
                     className={styles["form-item"]}
-                    label="Zone"
+                    label="zona"
                     name={"zone"}
                     rules={[
-                      { required: true, message: "Please input the zone!" },
+                      { required: true, message: "Zəhmət olmasa daxil edin!" },
                       {
                         validator: async (_, value) => {
                           const regex = /^\d+$/;
                           if (!regex.test(value)) {
-                            return Promise.reject("Please input numbers only!");
+                            return Promise.reject(
+                              "Zəhmət olmasa, yalnız nömrələri daxil edin!"
+                            );
                           }
                           return Promise.resolve();
                         },
                       },
                     ]}
                   >
-                    <Input placeholder="input" />
+                    <Input placeholder="giriş" />
                   </Form.Item>
                   <Form.Item
                     className={styles["form-item"]}
-                    label="Sub Zone"
+                    label="alt zona"
                     name={"subzone"}
                     rules={[
-                      { required: true, message: "Please input the sub zone!" },
+                      { required: true, message: "Zəhmət olmasa daxil edin!" },
                       {
                         validator: async (_, value) => {
                           const regex = /^\d+$/;
                           if (!regex.test(value)) {
-                            return Promise.reject("Please input numbers only!");
+                            return Promise.reject(
+                              "Zəhmət olmasa, yalnız nömrələri daxil edin!"
+                            );
                           }
                           return Promise.resolve();
                         },
                       },
                     ]}
                   >
-                    <Input placeholder="input" />
+                    <Input placeholder="giriş" />
                   </Form.Item>
                 </>
               )}
@@ -461,28 +477,31 @@ export default (props: IProps) => {
                 <>
                   <Form.Item
                     className={styles["form-item"]}
-                    label="Zone"
+                    label="zona"
                     name={"zone"}
                     rules={[
-                      { required: true, message: "Please input the zone!" },
+                      {
+                        required: true,
+                        message: "Zəhmət olmasa, yalnız nömrələri daxil edin!",
+                      },
                     ]}
                   >
-                    <Input placeholder="input" />
+                    <Input placeholder="giriş" />
                   </Form.Item>
                 </>
               )}
               <Form.Item
                 className={styles["form-item"]}
-                label="Location"
+                label="yer"
                 name={"location"}
                 rules={[
-                  { required: true, message: "Please input the location!" },
+                  { required: true, message: "Zəhmət olmasa daxil edin!" },
                 ]}
               >
                 <Input.TextArea
                   autoSize={{ maxRows: 4 }}
                   disabled
-                  placeholder="auto select"
+                  placeholder="avtomatik seçim"
                 />
               </Form.Item>
               <Form.Item
@@ -490,7 +509,7 @@ export default (props: IProps) => {
                 wrapperCol={{ offset: 16 }}
               >
                 <Button type="primary" htmlType="submit" loading={loading}>
-                  Submit
+                  təqdim
                 </Button>
               </Form.Item>
             </Form>
@@ -506,46 +525,50 @@ export default (props: IProps) => {
             >
               <Form.Item
                 className={styles["form-item"]}
-                label="Name"
+                label="ad"
                 name={"name"}
-                rules={[{ required: true, message: "Please input your name!" }]}
+                rules={[
+                  { required: true, message: "Zəhmət olmasa daxil edin!" },
+                ]}
               >
-                <Input placeholder="input" />
+                <Input placeholder="giriş" />
               </Form.Item>
               <Form.Item
                 className={styles["form-item"]}
-                label="Host Name"
+                label="Ev sahibi"
                 name={"host"}
                 rules={[
-                  { required: true, message: "Please input the host name!" },
+                  { required: true, message: "Zəhmət olmasa daxil edin!" },
                 ]}
               >
-                <Input placeholder="input" />
+                <Input placeholder="giriş" />
               </Form.Item>
               <Form.Item
                 className={styles["form-item"]}
                 label="Port"
                 name={"port"}
                 rules={[
-                  { required: true, message: "Please input the port!" },
+                  { required: true, message: "Zəhmət olmasa daxil edin!" },
                   {
                     validator: async (_, value) => {
                       const regex = /^\d+$/;
                       if (!regex.test(value)) {
-                        return Promise.reject("Please input numbers only!");
+                        return Promise.reject(
+                          "Zəhmət olmasa, yalnız nömrələri daxil edin!"
+                        );
                       }
                       return Promise.resolve();
                     },
                   },
                 ]}
               >
-                <Input placeholder="input" />
+                <Input placeholder="giriş" />
               </Form.Item>
               <Form.Item
                 className={styles["form-item"]}
-                label="Type"
+                label="növ"
                 name={"type"}
-                rules={[{ required: true, message: "Please select the type!" }]}
+                rules={[{ required: true, message: "zəhmət olmasa seçin!" }]}
               >
                 <Select
                   disabled={operator === "edit"}
@@ -560,7 +583,7 @@ export default (props: IProps) => {
                 wrapperCol={{ offset: 16 }}
               >
                 <Button type="primary" htmlType="submit" loading={loading}>
-                  Submit
+                  təqdim
                 </Button>
               </Form.Item>
             </Form>

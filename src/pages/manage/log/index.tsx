@@ -31,7 +31,7 @@ const LogPage = () => {
   return (
     <div className={styles["container"]}>
       <p style={{ fontSize: 20, fontWeight: "bold", height: 20 }}>
-        Log Information
+        Giriş Məlumatı
       </p>
       <List
         loading={loading}

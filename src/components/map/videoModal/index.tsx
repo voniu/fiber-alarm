@@ -13,7 +13,7 @@ export default (props: IProps) => {
     <>
       <Modal
         style={{ top: 120 }}
-        title={`Monitor(cameraId:${id})`}
+        title={`Monitor(kamera id:${id})`}
         footer={null}
         open={open}
         onCancel={onCancel}

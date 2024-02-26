@@ -10,12 +10,12 @@ const columns: TableColumnsType<Fiber> = [
     render: (text) => <a>{text}</a>,
   },
   {
-    title: "Name",
+    title: "ad",
     dataIndex: "name",
     render: (text, record) => <a>{record.name}</a>,
   },
   {
-    title: "Device",
+    title: "cihaz",
     dataIndex: "device",
     render: (text, record) => <a>{record.device.name}</a>,
   },

@@ -29,7 +29,7 @@ const Login = () => {
 
           <Form.Item
             name="username"
-            label="İstifadəçi adı"
+            label="adı"
             labelCol={{ style: { width: 80 } }}
           >
             <Input />

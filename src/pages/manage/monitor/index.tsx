@@ -51,7 +51,7 @@ const Monitor = () => {
     if (!success) {
       message.error(msg);
     } else {
-      message.success("Success");
+      message.success("gözləyir");
     }
     setLoading(false);
     setCurrentCameras(undefined);
@@ -68,7 +68,7 @@ const Monitor = () => {
   return (
     <div style={{ minWidth: 1200 }}>
       <p style={{ fontSize: 20, fontWeight: "bold", height: 20 }}>
-        Monitor Setting
+        Monitor Parametrləri
       </p>
       <div className={styles["main"]}>
         <div style={{ flexShrink: 0, width: 600 }}>
@@ -90,7 +90,7 @@ const Monitor = () => {
           </div>
         </div>
         <div className={styles["right-form"]}>
-          <p className={styles["title"]}>Set up monitoring matrix</p>
+          <p className={styles["title"]}>Monitorinq matriksini qur</p>
           <div className={styles["form-container"]}>
             <Form
               form={form}
@@ -100,34 +100,34 @@ const Monitor = () => {
               layout="horizontal"
               onFinish={onFinsh}
             >
-              <Form.Item label="Left Top" name={"0-0"}>
+              <Form.Item label="sol yuxarı" name={"0-0"}>
                 <Select
                   size={"middle"}
-                  placeholder="Please select"
+                  placeholder="seçin"
                   style={{ width: "150px" }}
                   options={cameraOptions}
                 />
               </Form.Item>
-              <Form.Item label="Right Top" name={"0-1"}>
+              <Form.Item label="sağ yuxarı" name={"0-1"}>
                 <Select
                   size={"middle"}
-                  placeholder="Please select"
+                  placeholder="seçin"
                   style={{ width: "150px" }}
                   options={cameraOptions}
                 />
               </Form.Item>
-              <Form.Item label="Left Bottom" name={"1-0"}>
+              <Form.Item label="sol aşağı" name={"1-0"}>
                 <Select
                   size={"middle"}
-                  placeholder="Please select"
+                  placeholder="seçin"
                   style={{ width: "150px" }}
                   options={cameraOptions}
                 />
               </Form.Item>
-              <Form.Item label="Right Bottom" name={"1-1"}>
+              <Form.Item label="sağ aşağı" name={"1-1"}>
                 <Select
                   size={"middle"}
-                  placeholder="Please select"
+                  placeholder="seçin"
                   style={{ width: "150px" }}
                   options={cameraOptions}
                 />
@@ -140,7 +140,7 @@ const Monitor = () => {
                   Test
                 </Button> */}
                 <Button type="primary" htmlType="submit" loading={loading}>
-                  Submit
+                  təqdim
                 </Button>
               </Form.Item>
             </Form>

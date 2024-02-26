@@ -51,23 +51,23 @@ const UserManage = () => {
   return (
     <div>
       <p style={{ fontSize: 20, fontWeight: "bold", height: 20 }}>
-        User Manage
+        stifadəçi İdarəetməsi
       </p>
       <div className={styles["main"]}>
         <div className={styles["header"]}>
           <Radio.Group value={listType} onChange={handleChange} size="middle">
-            <Radio.Button value="user">user</Radio.Button>
-            <Radio.Button value="guard">guard</Radio.Button>
+            <Radio.Button value="user">istifadəçi</Radio.Button>
+            <Radio.Button value="guard">mühafizə</Radio.Button>
           </Radio.Group>
           <div className={styles["operator"]}>
             <div>
               <Checkbox style={{ fontWeight: "bold" }} onChange={handleArchive}>
-                isArchived
+                arxivləşdirilmişdir
               </Checkbox>
             </div>
             <div>
               <Button type="primary" onClick={() => setIsOpen(true)}>
-                Add
+                əlavə et
               </Button>
             </div>
           </div>

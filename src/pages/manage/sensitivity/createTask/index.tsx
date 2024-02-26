@@ -91,7 +91,7 @@ export default (props: IProps) => {
     if (!success) {
       message.error(msg);
     } else {
-      message.success("success");
+      message.success("gözləyir");
     }
     setLoading(false);
     onCancel();
@@ -178,7 +178,7 @@ export default (props: IProps) => {
             height: 20,
             marginBottom: 20,
           }}
-        >{`${check.type} Task`}</p>
+        >{`${check.type === "Create" ? "yarat" : "yoxla"} Tapşırıq`}</p>
         <ConfigProvider
           theme={{
             components: {
@@ -199,10 +199,10 @@ export default (props: IProps) => {
             <div className={styles["form-top"]}>
               <div className={styles["form-top-item-l"]}>
                 <Form.Item
-                  label={"Name"}
+                  label={"ad"}
                   name={"name"}
                   rules={[
-                    { required: true, message: "Please input the name!" },
+                    { required: true, message: "Zəhmət olmasa daxil edin!" },
                   ]}
                 >
                   <Input style={{ width: 200 }} />
@@ -210,10 +210,10 @@ export default (props: IProps) => {
 
                 {check.type === "Check" && (
                   <Form.Item
-                    label={"Fibers"}
+                    label={"lif"}
                     name={"fibers"}
                     rules={[
-                      { required: true, message: "Please select the fiber!" },
+                      { required: true, message: "Zəhmət olmasa seçin!" },
                     ]}
                   >
                     <Typography.Text
@@ -225,9 +225,14 @@ export default (props: IProps) => {
                   </Form.Item>
                 )}
                 <Form.Item
-                  label={"Time"}
+                  label={"vaxt"}
                   name={"time"}
-                  rules={[{ required: true, message: "Please set the time!" }]}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Zəhmət olmasa vaxtı təyin edin!",
+                    },
+                  ]}
                 >
                   <TimePicker
                     locale={locale}
@@ -239,10 +244,10 @@ export default (props: IProps) => {
               <div className={styles["form-top-item-r"]}>
                 {check.type === "Create" && (
                   <Form.Item
-                    label={"Fibers"}
+                    label={"lif"}
                     name={"fibers"}
                     rules={[
-                      { required: true, message: "Please select the fiber!" },
+                      { required: true, message: "Zəhmət olmasa seçin!" },
                     ]}
                   >
                     <FiberTable
@@ -259,16 +264,16 @@ export default (props: IProps) => {
               </div>
             </div>
             {
-              <Form.Item label={"config"} name={"config"}>
+              <Form.Item label={"konfiqurasiya"} name={"config"}>
                 <Tabs
                   type="card"
                   size={"middle"}
                   defaultActiveKey={configType["0"] ? "1" : "2"}
                 >
                   {configType["0"] && (
-                    <Tabs.TabPane tab="config-a" key={"1"} forceRender>
+                    <Tabs.TabPane tab="konfiqurasiya-a" key={"1"} forceRender>
                       <Form.Item
-                        label={"vibeCount"}
+                        label={"görüntü sayı"}
                         name={"vibeCount"}
                         tooltip={{
                           title: "Optional",
@@ -286,7 +291,7 @@ export default (props: IProps) => {
                           title: "Optional",
                           icon: <InfoCircleOutlined />,
                         }}
-                        label={"vibeAmplitude"}
+                        label={"görüntü amplituda"}
                         name={"vibeAmplitude"}
                         className={styles["config-item"]}
                       >
@@ -301,7 +306,7 @@ export default (props: IProps) => {
                           icon: <InfoCircleOutlined />,
                         }}
                         className={styles["config-item"]}
-                        label={"vibeWidth"}
+                        label={"görüntü eni"}
                         name={"vibeWidth"}
                       >
                         <Select
@@ -315,7 +320,7 @@ export default (props: IProps) => {
                           title: "Optional",
                           icon: <InfoCircleOutlined />,
                         }}
-                        label={"vibeGap"}
+                        label={"görüntü boşluğu"}
                         name={"vibeGap"}
                       >
                         <Select
@@ -326,14 +331,14 @@ export default (props: IProps) => {
                     </Tabs.TabPane>
                   )}
                   {configType["1"] && (
-                    <Tabs.TabPane forceRender tab="config-b" key={"2"}>
+                    <Tabs.TabPane forceRender tab="konfiqurasiya-b" key={"2"}>
                       <Form.Item
                         className={styles["config-item"]}
                         tooltip={{
                           title: "Optional",
                           icon: <InfoCircleOutlined />,
                         }}
-                        label={"alarmSensitivity"}
+                        label={"həyəcan həssaslığı"}
                         name={"alarmSensitivity"}
                       >
                         <Select
@@ -347,7 +352,7 @@ export default (props: IProps) => {
                           title: "Optional",
                           icon: <InfoCircleOutlined />,
                         }}
-                        label={"systemSensitivity"}
+                        label={"sistem həssaslığı"}
                         name={"systemSensitivity"}
                       >
                         <Select
@@ -361,7 +366,7 @@ export default (props: IProps) => {
                           title: "Optional",
                           icon: <InfoCircleOutlined />,
                         }}
-                        label={"groupWidth"}
+                        label={"qrup eni"}
                         name={"groupWidth"}
                       >
                         <Select
@@ -375,7 +380,7 @@ export default (props: IProps) => {
                           title: "Optional",
                           icon: <InfoCircleOutlined />,
                         }}
-                        label={"groupGap"}
+                        label={"qrup boşluğu"}
                         name={"groupGap"}
                       >
                         <Select
@@ -389,7 +394,7 @@ export default (props: IProps) => {
                           title: "Optional",
                           icon: <InfoCircleOutlined />,
                         }}
-                        label={"groupEntity"}
+                        label={"qrup qurumu"}
                         name={"groupEntity"}
                       >
                         <Select
@@ -405,7 +410,7 @@ export default (props: IProps) => {
             {check.type === "Create" && (
               <Form.Item>
                 <Button type="primary" htmlType="submit" loading={loading}>
-                  submit
+                  təqdim
                 </Button>
               </Form.Item>
             )}

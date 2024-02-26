@@ -34,7 +34,7 @@ export default function (props: IProps) {
     if (!success) {
       message.error(msg);
     } else {
-      message.success("success");
+      message.success("gözləyir");
     }
     flush();
   };
@@ -43,7 +43,7 @@ export default function (props: IProps) {
     if (!success) {
       message.error(msg);
     } else {
-      message.success("success");
+      message.success("gözləyir");
     }
     flush();
   };
@@ -61,12 +61,12 @@ export default function (props: IProps) {
       render: (text) => <a>{text}</a>,
     },
     {
-      title: "Name",
+      title: "ad",
       dataIndex: "name",
       render: (text, record) => <a>{record.name}</a>,
     },
     {
-      title: "Location",
+      title: "yer",
       dataIndex: "location",
       render: (_, record) => {
         return (
@@ -76,7 +76,7 @@ export default function (props: IProps) {
               setMapModal({ id: record.id, type: "fiber", isModalOpen: true });
             }}
           >
-            Check Map
+            Xəritəni yoxlayın
           </Button>
         );
       },
@@ -94,7 +94,7 @@ export default function (props: IProps) {
                 edit(record.id, "fiber");
               }}
             >
-              {"Edit"}
+              {"redaktə et"}
             </Button>
             <Button
               type="primary"
@@ -103,44 +103,44 @@ export default function (props: IProps) {
                 setRelation(true, { id: record.id, name: record.name });
               }}
             >
-              {"Relation"}
+              {"münasibət"}
             </Button>
             {isArchived && (
               <Popconfirm
-                title="Undo archive the fiber"
-                description="Are you sure to Undo archive the fiber?"
-                okText="Yes"
-                cancelText="No"
+                title="Arxivi geri qaytarın"
+                description="Fiberi arxivdən çıxaracağınıza əminsiniz?"
+                okText="bəli"
+                cancelText="xeyr"
                 onConfirm={() => setArchive(record.id, false)}
               >
-                <Button size="small">Undo archive</Button>
+                <Button size="small">Arxivi geri</Button>
               </Popconfirm>
             )}
             {!isArchived && (
               <Popconfirm
-                title="archive the fiber"
-                description="Are you sure to archive the fiber?"
-                okText="Yes"
-                cancelText="No"
+                title="fiberi arxivləşdir"
+                description="Fiberi arxivləşdirməyə əminsiniz?"
+                okText="bəli"
+                cancelText="xeyr"
                 onConfirm={() => setArchive(record.id, true)}
               >
                 <Button type="primary" size="small">
-                  Archive
+                  arxivləşdir
                 </Button>
               </Popconfirm>
             )}
             {isArchived && admin?.type === 0 && (
               <Popconfirm
-                title="Delete the Fiber"
-                description="Are you sure to delete this Fiber?"
-                okText="Yes"
-                cancelText="No"
+                title="Fiberi sil"
+                description="Bu Fiberi silməyinizə əminsiniz?"
+                okText="bəli"
+                cancelText="xeyr"
                 onConfirm={() => {
                   deleteFiber(record.id);
                 }}
               >
                 <Button danger size="small">
-                  Delete
+                  silmək
                 </Button>
               </Popconfirm>
             )}

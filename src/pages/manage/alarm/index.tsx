@@ -70,12 +70,12 @@ const HistoryAlarm = () => {
   const deleteAlarm = async (id: number) => {
     console.log(id);
     await delAlarmDetail(id);
-    message.success("success");
+    message.success("gözləyir");
     fetchList(1, 6);
   };
-  const statusMap = ["pending", "processing", "solved"];
+  const statusMap = ["gözləyir", "emal olunur", "həll olundu"];
   const colorMap = ["default", "processing", "success"];
-  const typeMap = ["intrusion", "tamper", "wire Disconnect", "Disconnect"];
+  const typeMap = ["müdaxilə", "saxtakarlıq", "şəbəkə qırılması", "ayırmaq"];
   const onClose = () => setOpen(false);
 
   const [fiberOptions, setFiberOp] = useState();
@@ -88,7 +88,7 @@ const HistoryAlarm = () => {
       render: (text) => <a>{text}</a>,
     },
     {
-      title: "Fiber",
+      title: "lif",
       dataIndex: "fiber",
       render: (text, record) => <a>{record.fiber.name}</a>,
     },
@@ -101,7 +101,7 @@ const HistoryAlarm = () => {
       ),
     },
     {
-      title: "Type",
+      title: "növ",
       dataIndex: "type",
       width: 150,
       render: (_, record) => (
@@ -109,12 +109,12 @@ const HistoryAlarm = () => {
       ),
     },
     {
-      title: "manager",
+      title: "menecer",
       dataIndex: "manager",
       render: (_, record) => <a>{record.manager?.name}</a>,
     },
     {
-      title: "guard",
+      title: "mühafizə",
       dataIndex: "guard",
       render: (_, record) => <a>{record.guard?.name}</a>,
     },
@@ -130,18 +130,18 @@ const HistoryAlarm = () => {
                 setDealId(record.id);
               }}
             >
-              {"Detail"}
+              {"detal"}
             </a>
             {admin?.type === 0 && record.status === 2 && (
               <Popconfirm
-                title="delete the alarm"
-                description="Are you sure to delete the alarm?"
-                okText="Yes"
-                cancelText="No"
+                title="siləcəyinizə əminsiniz"
+                description="siqnalı siləcəyinizə əminsiniz?"
+                okText="bəli"
+                cancelText="xeyr"
                 onConfirm={() => deleteAlarm(record.id)}
               >
                 <Button danger size="small">
-                  Delete
+                  silmək
                 </Button>
               </Popconfirm>
             )}
@@ -192,7 +192,9 @@ const HistoryAlarm = () => {
   };
   return (
     <div className={styles["container"]}>
-      <p style={{ fontSize: 20, fontWeight: "bold", height: 20 }}>AlarmList</p>
+      <p style={{ fontSize: 20, fontWeight: "bold", height: 20 }}>
+        Siqnal Siyahısı
+      </p>
       <ConfigProvider
         theme={{
           components: {
@@ -216,12 +218,12 @@ const HistoryAlarm = () => {
         >
           <Row gutter={24} style={{ height: 45, flexWrap: "nowrap" }}>
             <Col style={{ flexShrink: 0 }}>
-              <Form.Item name={`fiberId`} label={`fiber`}>
+              <Form.Item name={`fiberId`} label={`lif`}>
                 <Select
                   optionFilterProp="label"
                   mode="multiple"
                   size={"middle"}
-                  placeholder="Please select"
+                  placeholder="seçin"
                   style={{ width: "230px" }}
                   options={fiberOptions}
                   maxTagCount={1}
@@ -234,22 +236,22 @@ const HistoryAlarm = () => {
                 <Select
                   style={{ width: 150 }}
                   options={[
-                    { value: -1, label: "all" },
-                    { value: 0, label: "happen" },
-                    { value: 1, label: "guard processed" },
-                    { value: 2, label: "manager processed" },
+                    { value: -1, label: "bütün" },
+                    { value: 0, label: "baş vermək" },
+                    { value: 1, label: "qoruyucu işlənmişdir" },
+                    { value: 2, label: "menecer işlənmişdir" },
                   ]}
                 />
               </Form.Item>
             </Col>
             <Col style={{ flexShrink: 0 }}>
-              <Form.Item name={`timeType`} label={`timeType`}>
+              <Form.Item name={`timeType`} label={`vaxt növü`}>
                 <Select
                   style={{ width: 100 }}
                   options={[
-                    { value: "CREATE", label: "CREATE" },
-                    { value: "GUARD", label: "GUARD" },
-                    { value: "MANAGER", label: "MANAGER" },
+                    { value: "CREATE", label: "yaratmaq" },
+                    { value: "GUARD", label: "mühafizə" },
+                    { value: "MANAGER", label: "menecer" },
                   ]}
                 />
               </Form.Item>
@@ -267,49 +269,52 @@ const HistoryAlarm = () => {
           </Row>
           <Row gutter={24} style={{ flexWrap: "nowrap" }}>
             <Col style={{ flexShrink: 0 }}>
-              <Form.Item name={`type`} label={`type`}>
+              <Form.Item name={`type`} label={`növ`}>
                 <Select
                   // mode="multiple"
                   size={"middle"}
-                  placeholder="Please select"
+                  placeholder="zəhmət olmasa seçin"
                   style={{ width: "230px" }}
                   maxTagCount={1}
                   options={[
-                    { value: "all", label: "all" },
-                    { value: 0, label: "intrusion" },
-                    { value: 1, label: "tamper" },
-                    { value: 2, label: "wire Disconnect" },
-                    { value: 3, label: "Disconnect" },
+                    { value: "all", label: "bütün" },
+                    { value: 0, label: "müdaxilə" },
+                    { value: 1, label: "saxtakarlıq" },
+                    { value: 2, label: "şəbəkə qırılması" },
+                    { value: 3, label: "ayırmaq" },
                   ]}
                 />
               </Form.Item>
             </Col>
             <Col style={{ flexShrink: 0 }}>
-              <Form.Item name={`managerId`} label={`manager`}>
+              <Form.Item name={`managerId`} label={`menecer`}>
                 <Select
                   // mode="multiple"
                   size={"middle"}
-                  placeholder="Please select"
+                  placeholder="seçin"
                   showSearch
                   optionFilterProp="label"
                   style={{ width: "230px" }}
                   maxTagCount={1}
-                  options={[{ value: "all", label: "all" }, ...managerOptions]}
+                  options={[
+                    { value: "all", label: "bütün" },
+                    ...managerOptions,
+                  ]}
                   loading={optionLoading}
                 />
               </Form.Item>
             </Col>
             <Col style={{ flexShrink: 0 }}>
-              <Form.Item name={`guardId`} label={`guard`}>
+              <Form.Item name={`guardId`} label={`mühafizə`}>
                 <Select
                   // mode="multiple"
                   size={"middle"}
                   showSearch
                   optionFilterProp="label"
-                  placeholder="Please select"
+                  placeholder="seçin"
                   style={{ width: "230px" }}
                   maxTagCount={1}
-                  options={[{ value: "all", label: "all" }, ...guardOptions]}
+                  options={[{ value: "all", label: "bütün" }, ...guardOptions]}
                   loading={optionLoading}
                 />
               </Form.Item>
@@ -317,7 +322,7 @@ const HistoryAlarm = () => {
             <Col style={{ flexShrink: 0 }}>
               <Form.Item>
                 <Button type="primary" loading={loading} htmlType="submit">
-                  Search
+                  axtar
                 </Button>
               </Form.Item>
             </Col>

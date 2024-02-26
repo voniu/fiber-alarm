@@ -28,7 +28,7 @@ export default function (props: IProps) {
     if (!success) {
       message.error(msg);
     } else {
-      message.success("success");
+      message.success("gözləyir");
     }
     flush();
   };
@@ -37,7 +37,7 @@ export default function (props: IProps) {
     if (!success) {
       message.error(msg);
     } else {
-      message.success("success");
+      message.success("gözləyir");
     }
     flush();
   };
@@ -55,12 +55,12 @@ export default function (props: IProps) {
       render: (text) => <a>{text}</a>,
     },
     {
-      title: "Name",
+      title: "ad",
       dataIndex: "name",
       render: (text, record) => <a>{record.name}</a>,
     },
     {
-      title: "Location",
+      title: "yer",
       dataIndex: "location",
       render: (_, record) => {
         return (
@@ -70,7 +70,7 @@ export default function (props: IProps) {
               setMapModal({ id: record.id, type: "camera", isModalOpen: true });
             }}
           >
-            Check Map
+            Xəritəni yoxlayın
           </Button>
         );
       },
@@ -87,29 +87,29 @@ export default function (props: IProps) {
                 edit(record.id, "camera");
               }}
             >
-              {"Edit"}
+              {"redaktə et"}
             </Button>
             {isArchived && (
               <Popconfirm
-                title="Undo archive the camera"
-                description="Are you sure to Undo archive the camera?"
-                okText="Yes"
-                cancelText="No"
+                title="Arxivi geri qaytarın"
+                description="Kameranın arxivdən çıxaracağınıza əminsiniz?"
+                okText="bəli"
+                cancelText="xeyr"
                 onConfirm={() => setArchive(record.id, false)}
               >
-                <Button size="small">Undo archive</Button>
+                <Button size="small">Arxivi geri</Button>
               </Popconfirm>
             )}
             {!isArchived && (
               <Popconfirm
-                title="archive the camera"
-                description="Are you sure to archive the camera?"
-                okText="Yes"
-                cancelText="No"
+                title="Kameranın arxivləşdir"
+                description=" Kameranın arxivləşdirməyə əminsiniz?"
+                okText="bəli"
+                cancelText="xeyr"
                 onConfirm={() => setArchive(record.id, true)}
               >
                 <Button type="primary" size="small">
-                  Archive
+                  arxiv
                 </Button>
               </Popconfirm>
             )}
@@ -125,17 +125,17 @@ export default function (props: IProps) {
             </Button>
             {isArchived && admin?.type === 0 && (
               <Popconfirm
-                title="Delete the camera"
-                description="Are you sure to delete this camera?"
-                okText="Yes"
-                cancelText="No"
+                title="kamera sil"
+                description="Bu kamera nəzarətini silməyə əminsiniz?"
+                okText="bəli"
+                cancelText="xeyr"
                 onConfirm={() => {
                   deleteCamera(record.id);
                   flush();
                 }}
               >
                 <Button danger size="small">
-                  Delete
+                  silmək
                 </Button>
               </Popconfirm>
             )}

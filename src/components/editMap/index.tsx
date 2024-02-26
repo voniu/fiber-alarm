@@ -218,19 +218,19 @@ export default function ({
   return (
     <>
       {type === "Point" && (
-        <div style={{ position: "absolute", top: 25 }}>
+        <div style={{ position: "absolute", top: 15 }}>
           <Button type="primary" onClick={() => resetCamera(isEdit!)}>
-            reset
+            sıfırla
           </Button>
-          {!isEdit && <span>(only allow draw a Point)</span>}
+          {!isEdit && <span>(yalnız bir Nöqtə çəkməyə icazə verin)</span>}
         </div>
       )}
       {type === "LineString" && (
-        <div style={{ position: "absolute", top: 25 }}>
+        <div style={{ position: "absolute", top: 15 }}>
           <Button type="primary" onClick={() => resetFiber(isEdit!)}>
-            reset
+            sıfırla
           </Button>
-          {!isEdit && <span>(only allow draw a fiber)</span>}
+          {!isEdit && <span>(yalnız bir lif çəkməyə icazə verin)</span>}
         </div>
       )}
       <div

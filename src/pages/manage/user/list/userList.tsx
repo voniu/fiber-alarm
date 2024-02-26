@@ -36,7 +36,7 @@ export default (props: IProps) => {
     if (!success) {
       message.error(msg);
     } else {
-      message.success("success");
+      message.success("gözləyir");
     }
     flush();
   };
@@ -48,7 +48,7 @@ export default (props: IProps) => {
     if (!success) {
       message.error(msg);
     } else {
-      message.success("success");
+      message.success("gözləyir");
     }
     flush();
   };
@@ -57,7 +57,7 @@ export default (props: IProps) => {
     if (!success) {
       message.error(msg);
     } else {
-      message.success("success");
+      message.success("gözləyir");
     }
   };
   const setArchive = async (id: number, archived: boolean) => {
@@ -65,7 +65,7 @@ export default (props: IProps) => {
     if (!success) {
       message.error(msg);
     } else {
-      message.success("success");
+      message.success("gözləyir");
     }
     flush();
   };
@@ -76,12 +76,12 @@ export default (props: IProps) => {
       render: (text) => <a>{text}</a>,
     },
     {
-      title: "Name",
+      title: "ad",
       dataIndex: "name",
       render: (text, record) => <a>{record.name}</a>,
     },
     {
-      title: "NickName",
+      title: "ləqəb",
       dataIndex: "nickname",
       width: 200,
       render: (text, record) =>
@@ -91,6 +91,7 @@ export default (props: IProps) => {
           <Typography.Text
             style={{ width: "100px" }}
             editable={{
+              tooltip: "redaktə et",
               onChange: (val) => changeNickname(val, record),
             }}
           >
@@ -101,12 +102,12 @@ export default (props: IProps) => {
         ),
     },
     {
-      title: "Identity",
+      title: "şəxsiyyət",
       dataIndex: "type",
       render: (_, record) => <div>{identity[record.type]}</div>,
     },
     {
-      title: "CreateTime",
+      title: "yaratma tarix",
       dataIndex: "createTime",
       render: (_, record) => (
         <div>{dayjs(record.createTime).format("YYYY/MM/DD")}</div>
@@ -123,13 +124,13 @@ export default (props: IProps) => {
               (admin?.type === 0 ||
                 (admin?.type === 1 && record.type === 2)) && (
                 <Popconfirm
-                  title="Undo archive the user"
-                  description="Are you sure to Undo archive the user?"
-                  okText="Yes"
-                  cancelText="No"
+                  title="Arxivi geri qaytarın"
+                  description="arxivdən çıxaracağınıza əminsiniz?"
+                  okText="bəli"
+                  cancelText="xeyr"
                   onConfirm={() => setArchive(record.id, false)}
                 >
-                  <Button size="small">Undo archive</Button>
+                  <Button size="small">Arxivi geri</Button>
                 </Popconfirm>
               )}
             {!isArchived &&
@@ -137,14 +138,14 @@ export default (props: IProps) => {
               (admin?.type === 0 ||
                 (admin?.type === 1 && record.type === 2)) && (
                 <Popconfirm
-                  title="archive the user"
-                  description="Are you sure to archive the user?"
-                  okText="Yes"
-                  cancelText="No"
+                  title="arxivləşdir"
+                  description="arxivləşdirməyə əminsiniz?"
+                  okText="bəli"
+                  cancelText="xeyr"
                   onConfirm={() => setArchive(record.id, true)}
                 >
                   <Button type="primary" size="small">
-                    Archive
+                    arxivləşdir
                   </Button>
                 </Popconfirm>
               )}
@@ -154,7 +155,7 @@ export default (props: IProps) => {
                 size="small"
                 onClick={() => setRest({ open: true, id: record.id })}
               >
-                Reset Password
+                şifrəni sıfırlamaq
               </Button>
             )}
             {isArchived &&
@@ -162,14 +163,14 @@ export default (props: IProps) => {
               record.id !== admin?.id &&
               admin?.type === 0 && (
                 <Popconfirm
-                  title="delete the user"
-                  description="Are you sure to delete the user?"
-                  okText="Yes"
-                  cancelText="No"
+                  title="sil"
+                  description="silməyinizə əminsiniz?"
+                  okText="bəli"
+                  cancelText="xeyr"
                   onConfirm={() => deleteUser(record.id)}
                 >
                   <Button danger size="small">
-                    Delete
+                    silmək
                   </Button>
                 </Popconfirm>
               )}

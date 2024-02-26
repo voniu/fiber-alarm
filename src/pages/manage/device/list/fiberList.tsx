@@ -19,7 +19,7 @@ export default function (props: IProps) {
     if (!success) {
       message.error(msg);
     } else {
-      message.success("success");
+      message.success("gözləyir");
     }
     flush();
   };
@@ -30,12 +30,12 @@ export default function (props: IProps) {
       render: (text) => <a>{text}</a>,
     },
     {
-      title: "Name",
+      title: "ad",
       dataIndex: "name",
       render: (text, record) => <a>{record.name}</a>,
     },
     {
-      title: "Host",
+      title: "Ev sahibi",
       dataIndex: "host",
       render: (text, record) => <a>{record.host}</a>,
     },
@@ -45,7 +45,7 @@ export default function (props: IProps) {
       render: (text, record) => <a>{record.port}</a>,
     },
     {
-      title: "Type",
+      title: "növ",
       dataIndex: "type",
       render: (text, record) => <a>{deviceType[record.type]}</a>,
     },
@@ -61,50 +61,50 @@ export default function (props: IProps) {
                 edit(record.id, "fiber-control", record);
               }}
             >
-              {"Edit"}
+              {"redaktə et"}
             </Button>
             {isArchived && (
               <Popconfirm
-                title="Undo archive the fiber control"
-                description="Are you sure to Undo archive the fiber control?"
-                okText="Yes"
-                cancelText="No"
+                title="Fiber nəzarətini arxivdən çıxarın"
+                description="Fiber nəzarətini arxivdən çıxarmağa əminsiniz?"
+                okText="bəli"
+                cancelText="xeyr"
                 onConfirm={() => setArchive(record.id, false)}
               >
-                <Button size="small">Undo archive</Button>
+                <Button size="small">Arxivi ləğv edin</Button>
               </Popconfirm>
             )}
             {!isArchived && (
               <Popconfirm
-                title="archive the fiber control"
-                description="Are you sure to archive the fiber control?"
-                okText="Yes"
-                cancelText="No"
+                title="fiber nəzarətini arxivləşdirin"
+                description="Fiber nəzarətini arxivləşdirməyə əminsiniz?"
+                okText="bəli"
+                cancelText="xeyr"
                 onConfirm={() => setArchive(record.id, true)}
               >
                 <Button type="primary" size="small">
-                  Archive
+                  arxiv
                 </Button>
               </Popconfirm>
             )}
             {isArchived && admin?.type === 0 && (
               <Popconfirm
-                title="Delete the Fiber control"
-                description="Are you sure to delete this Fiber control?"
-                okText="Yes"
-                cancelText="No"
+                title="Fiber nəzarətini silin"
+                description="Bu Fiber nəzarətini silməyə əminsiniz?"
+                okText="bəli"
+                cancelText="xeyr"
                 onConfirm={async () => {
                   const { success, msg } = await delControl(record.id);
                   if (!success) {
                     message.error(msg);
                   } else {
-                    message.success("success");
+                    message.success("gözləyir");
                   }
                   flush();
                 }}
               >
                 <Button danger size="small">
-                  Delete
+                  silmək
                 </Button>
               </Popconfirm>
             )}

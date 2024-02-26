@@ -73,7 +73,7 @@ const Layout = () => {
           <Popover
             key={"d"}
             placement="left"
-            content={`There are ${manageAlarm.length} pending alarms`}
+            content={`Gözləyən həyəcan siqnalı ${manageAlarm.length}-dır`}
           >
             <Badge
               count={manageAlarm.length}
@@ -111,7 +111,7 @@ const Layout = () => {
                   {
                     key: "change password",
                     icon: <KeyOutlined />,
-                    label: "Change Password",
+                    label: "Şifrəni dəyiş",
                   },
                 ],
                 onClick: handleClick,

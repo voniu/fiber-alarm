@@ -22,7 +22,7 @@ const rendertTskItem = (props: {
     <div className={styles["list-item"]}>
       <Row>
         <Col span={4}>
-          <span className={styles["item-label"]}>Name:</span>
+          <span className={styles["item-label"]}>ad:</span>
         </Col>
         <Col span={20}>
           <span className={styles["item-content"]}>{name}</span>
@@ -30,7 +30,7 @@ const rendertTskItem = (props: {
       </Row>
       <Row>
         <Col span={4}>
-          <span className={styles["item-label"]}>Time:</span>
+          <span className={styles["item-label"]}>vaxt:</span>
         </Col>
         <Col span={20}>
           <span className={styles["item-content"]}>{`${time.hour
@@ -81,7 +81,7 @@ const FiberSensitivity = () => {
     if (!success) {
       message.error(msg);
     } else {
-      message.success("success");
+      message.success("gözləyir");
     }
     setLoading(false);
     fetchTask();
@@ -96,7 +96,7 @@ const FiberSensitivity = () => {
   return (
     <div>
       <p style={{ fontSize: 20, fontWeight: "bold", height: 20 }}>
-        Fiber Sensitivity
+        Fiber Həssaslığı
       </p>
       <div className={styles["container"]}>
         <div className={styles["list-container"]}>
@@ -111,7 +111,7 @@ const FiberSensitivity = () => {
                 });
               }}
             >
-              Create
+              yarat
             </Button>
           </div>
           <div className={styles["list"]}>
@@ -129,7 +129,7 @@ const FiberSensitivity = () => {
               }}
               header={
                 <p style={{ fontSize: 20, fontWeight: "bold", height: 20 }}>
-                  Task List
+                  Tapşırıq siyahısı
                 </p>
               }
               pagination={{ pageSize: 3, showSizeChanger: false }}
@@ -145,17 +145,17 @@ const FiberSensitivity = () => {
                         type="primary"
                         onClick={() => handleCheck(item.id)}
                       >
-                        check
+                        yoxla
                       </Button>,
                       <Popconfirm
                         key="delete-task"
-                        title={"Delete the task?"}
-                        okText="Yes"
-                        cancelText="No"
+                        title={"Tapşırığı silin?"}
+                        okText="bəli"
+                        cancelText="xeyr"
                         onConfirm={() => handleDelete(item.id)}
                       >
                         <Button danger loading={loading}>
-                          Delete
+                          sil
                         </Button>
                       </Popconfirm>,
                     ]}

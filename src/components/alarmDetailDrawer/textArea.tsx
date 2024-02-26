@@ -18,7 +18,7 @@ export default forwardRef((props: IProps, ref: any) => {
       maxLength={100}
       value={value}
       onChange={onChange}
-      placeholder="input processInfo"
+      placeholder="giriş"
       style={{ height: 120, resize: "none" }}
       ref={ref}
     />

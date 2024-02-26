@@ -15,7 +15,7 @@ export default (props: IProps) => {
     if (!success) {
       message.error(msg);
     } else {
-      message.success("success");
+      message.success("gözləyir");
     }
     setIsChange(!isChange);
     flush();
@@ -37,20 +37,20 @@ export default (props: IProps) => {
             actions={[
               <Popconfirm
                 key={"cancel-trigger-camera"}
-                title="Delete the Fiber"
-                description="Are you sure to delete this Fiber?"
-                okText="Yes"
-                cancelText="No"
+                title="Kameranı açın"
+                description="Kameranı çıxarmaq istədiyinizə əminsiniz?"
+                okText="bəli"
+                cancelText="xeyr"
                 onConfirm={() => dissolve(item.id)}
               >
                 <Button type="link" size="small" danger>
-                  Dissolve
+                  ayırmaq
                 </Button>
               </Popconfirm>,
             ]}
           >
             <div>
-              <span>camera info</span>
+              <span>kamera məlumatları</span>
             </div>
             <div>
               <span>{item.id}</span>

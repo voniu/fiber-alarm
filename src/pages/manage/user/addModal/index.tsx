@@ -51,7 +51,7 @@ export default (props: IProps) => {
         return;
       }
     }
-    message.success("success");
+    message.success("gözləyir");
     onClose();
     flush();
   };
@@ -71,7 +71,7 @@ export default (props: IProps) => {
         forceRender
       >
         <p style={{ fontSize: 20, fontWeight: "bold", height: 20 }}>
-          Add {`${listType === "user" ? "Manager" : "Guard"}`}
+          əlavə et {`${listType === "user" ? "menecer" : "mühafizə"}`}
         </p>
         <div className={styles["main"]}>
           <ConfigProvider
@@ -96,9 +96,11 @@ export default (props: IProps) => {
               initialValues={{ type: 2 }}
             >
               <Form.Item
-                label={"Name"}
+                label={"ad"}
                 name={"name"}
-                rules={[{ required: true, message: "Please input" }]}
+                rules={[
+                  { required: true, message: "Zəhmət olmasa daxil edin" },
+                ]}
               >
                 <Input />
               </Form.Item>
@@ -106,39 +108,45 @@ export default (props: IProps) => {
               {listType === "user" && (
                 <>
                   <Form.Item
-                    label={"NickName"}
+                    label={"ləqəb"}
                     name={"nickname"}
-                    rules={[{ required: true, message: "Please input" }]}
+                    rules={[
+                      { required: true, message: "Zəhmət olmasa daxil edin" },
+                    ]}
                   >
                     <Input />
                   </Form.Item>
                   <Form.Item
-                    label={"Identity"}
+                    label={"şəxsiyyət"}
                     name={"type"}
-                    rules={[{ required: true, message: "Please input" }]}
+                    rules={[
+                      { required: true, message: "Zəhmət olmasa daxil edin" },
+                    ]}
                   >
                     <Select
                       disabled={admin?.type !== 0}
                       options={[
                         { value: 1, label: "admin" },
-                        { value: 2, label: "manager" },
+                        { value: 2, label: "menecer" },
                       ]}
                     />
                   </Form.Item>
                   <Form.Item
                     className={styles["form-item"]}
-                    label="Password"
+                    label="Şifrə"
                     name={"password"}
-                    rules={[{ required: true, message: "Please input" }]}
+                    rules={[
+                      { required: true, message: "Zəhmət olmasa daxil edint" },
+                    ]}
                   >
-                    <Input.Password placeholder="input" />
+                    <Input.Password placeholder="giriş" />
                   </Form.Item>
                 </>
               )}
 
               <Form.Item style={{ display: "flex", justifyContent: "center" }}>
                 <Button type="primary" htmlType="submit" loading={loading}>
-                  submit
+                  təqdim
                 </Button>
               </Form.Item>
             </Form>

@@ -18,7 +18,7 @@ export default (props: IProps) => {
     if (!success) {
       message.error(msg);
     } else {
-      message.success("success");
+      message.success("gözləyir");
     }
     flush();
   };
@@ -27,7 +27,7 @@ export default (props: IProps) => {
     if (!success) {
       message.error(msg);
     } else {
-      message.success("success");
+      message.success("gözləyir");
     }
     flush();
   };
@@ -38,12 +38,12 @@ export default (props: IProps) => {
       render: (text) => <a>{text}</a>,
     },
     {
-      title: "Name",
+      title: "ad",
       dataIndex: "name",
       render: (text, record) => <a>{record.name}</a>,
     },
     {
-      title: "CreateTime",
+      title: "yaratma tarixi",
       dataIndex: "createTime",
       render: (_, record) => (
         <div>{dayjs(record.createTime).format("YYYY/MM/DD")}</div>
@@ -56,38 +56,38 @@ export default (props: IProps) => {
           <div style={{ display: "flex", gap: 10 }}>
             {isArchived && (
               <Popconfirm
-                title="Undo archive the guard"
-                description="Are you sure to Undo archive the guard?"
-                okText="Yes"
-                cancelText="No"
+                title="Arxivi geri qaytarın"
+                description="arxivdən çıxaracağınıza əminsiniz?"
+                okText="bəli"
+                cancelText="xeyr"
                 onConfirm={() => setArchive(record.id, false)}
               >
-                <Button size="small">Undo archive</Button>
+                <Button size="small">Arxivi geri</Button>
               </Popconfirm>
             )}
             {!isArchived && (
               <Popconfirm
-                title="archive the guard"
-                description="Are you sure to archive the user?"
-                okText="Yes"
-                cancelText="No"
+                title="arxivləşdir"
+                description="arxivləşdirməyə əminsiniz?"
+                okText="bəli"
+                cancelText="xeyr"
                 onConfirm={() => setArchive(record.id, true)}
               >
                 <Button type="primary" size="small">
-                  Archive
+                  arxivləşdir
                 </Button>
               </Popconfirm>
             )}
             {isArchived && admin?.type === 0 && (
               <Popconfirm
-                title="delete the guard"
-                description="Are you sure to delete the guard?"
-                okText="Yes"
-                cancelText="No"
+                title="sil"
+                description="silməyinizə əminsiniz?"
+                okText="bəli"
+                cancelText="xeyr"
                 onConfirm={() => deleteUser(record.id)}
               >
                 <Button danger size="small">
-                  Delete
+                  silmək
                 </Button>
               </Popconfirm>
             )}
