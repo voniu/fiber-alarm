@@ -10,14 +10,14 @@ function locationConverter<T>(item: any): T {
 
 // admin后台 登陆, 登出
 export const adminLogin = async (username: string, password: string) => {
-  const { data, msg } = await request(`${prefix}/login`, {
+  const { success, data, msg } = await request(`${prefix}/login`, {
     method: "POST",
     data: {
       username,
       password,
     },
   });
-  return { data, msg };
+  return { success, data, msg };
 };
 
 export const adminLoginState = async () => {

@@ -41,13 +41,12 @@ export default function AdminInfo() {
   }, []);
 
   const login = async (username: string, password: string) => {
-    const { data, msg } = await adminLogin(username, password);
-    if (!data) {
-      message.info(msg);
-      return;
+    const { success, data, msg } = await adminLogin(username, password);
+    if (success) {
+      setIsLogin(true);
+      setAdmin(data.user);
     }
-    setIsLogin(true);
-    setAdmin(data.user);
+    return { success, data, msg };
   };
   const logout = async () => {
     await adminLogout();
