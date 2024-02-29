@@ -1,4 +1,4 @@
-import { Button, Form, Input, Divider } from "antd";
+import { Button, Form, Input, Divider, message } from "antd";
 import styles from "./index.less";
 import { useEffect, useState } from "react";
 import { history, useModel } from "umi";
@@ -12,7 +12,12 @@ const Login = () => {
     console.log(val);
     const { username, password } = val;
     setLoading(true);
-    await login(username, password);
+    const { success, msg } = await login(username, password);
+    if (!success) {
+      message.error(msg);
+      setLoading(false);
+      return;
+    }
     setLoading(false);
     history.push("/manage/alarm");
   };
