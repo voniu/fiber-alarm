@@ -1,4 +1,3 @@
-// import { message } from "antd";
 import { message } from "antd";
 import type { RequestConfig } from "umi";
 import { baseUrl } from "./constant";
@@ -26,12 +25,8 @@ export const request: RequestConfig = {
   requestInterceptors: [],
   responseInterceptors: [
     (res: any) => {
-      // const { success, msg } = res;
-      // console.log(res);
-
-      // if (!success) {
-      //   message.error(msg);
-      // }
+      // TODO: 这里加上检测登录态过期的逻辑
+      // const { success, msg, data } = res;
       return res;
     },
   ],

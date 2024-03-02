@@ -95,7 +95,6 @@ export default defineConfig({
       component: "@/pages/manage/login",
       layout: false,
     },
-    // { path: "/test", component: "test" },
     { path: "/*", component: "@/pages/404", layout: false },
   ],
   plugins: [
@@ -103,10 +102,16 @@ export default defineConfig({
     "@umijs/plugins/dist/initial-state",
     "@umijs/plugins/dist/model",
     "@umijs/plugins/dist/request",
+    "@umijs/plugins/dist/locale",
   ],
   model: {},
   request: {
     dataField: "data",
+  },
+  locale: {
+    // 默认使用 src/locales/az-AZ.ts 作为多语言文件
+    default: 'az-AZ',
+    baseSeparator: '-',
   },
   mock: MOCK,
   npmClient: "pnpm",
