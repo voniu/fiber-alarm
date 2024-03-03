@@ -7,5 +7,4 @@ export const mapUrl = `${
     ? "http://fiber.natapp1.cc"
     : document.location.origin
 }/maptile/{z}/{x}/{y}.jpg`;
-export const homeTitle = "Intelligent Security Alarm Platform";
 export const deviceType = ["DD-L-F2", "DD-J-S2A"];

@@ -13,6 +13,8 @@ import CameraList from "@/components/cameraList";
 import RtspVideo from "@/components/map/videoModal/video";
 import { getMatrix } from "@/services/common";
 import { MonitorSetting } from "@/type";
+import { FormattedMessage } from 'umi';
+
 function HomePage() {
   const [listType, setListType] = useState("fiber");
   const [currentCameras, setCurrentCameras] = useState<{
@@ -81,7 +83,7 @@ function HomePage() {
                     className="map_title"
                     style={{ backgroundImage: `url(${secondTitlePng})` }}
                   >
-                    Defense Area Info
+                    <FormattedMessage id="Defense Area Info" />
                   </div>
                   <div
                     style={{
@@ -133,7 +135,7 @@ function HomePage() {
                       className="map_title"
                       style={{ backgroundImage: `url(${firstTitlePng})` }}
                     >
-                      Real-Time Defense Area Map
+                      <FormattedMessage id="Real-Time Defense Area Map" />
                     </div>
                   </div>
                 </div>
