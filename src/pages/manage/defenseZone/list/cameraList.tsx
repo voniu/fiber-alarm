@@ -6,6 +6,8 @@ export default function () {
   const { cameraList, centerTo } = useModel("useItems");
   const { selectFeature, getFeaturesByTypeAndId } = useModel("useMap");
   const { showPopup } = useModel("useModel");
+  const { Name } = useModel("useLocaleText");
+
   const columns: TableColumnsType<Camera> = [
     {
       title: "ID",
@@ -13,7 +15,7 @@ export default function () {
       render: (text) => <a>{text}</a>,
     },
     {
-      title: "Name",
+      title: Name,
       dataIndex: "name",
       render: (text, record) => <a>{record.name}</a>,
     },

@@ -9,6 +9,7 @@ export default function () {
   const { selectFeature, getFeaturesByTypeAndId, highLightTrigger } =
     useModel("useMap");
   const { showPopup } = useModel("useModel");
+  const { Name } = useModel("useLocaleText");
 
   const columns: TableColumnsType<Fiber> = [
     {
@@ -17,7 +18,7 @@ export default function () {
       render: (text) => <a>{text}</a>,
     },
     {
-      title: "Name",
+      title: Name,
       dataIndex: "name",
       render: (text, record) => <a>{record.name}</a>,
     },

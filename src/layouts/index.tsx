@@ -7,6 +7,9 @@ import {
   useModel,
   history,
   useAccess,
+  useIntl,
+  FormattedMessage,
+  SelectLang,
 } from "umi";
 import MenuHeader from "./HeaderTitle";
 import { Badge, Dropdown, Popover } from "antd";
@@ -34,6 +37,11 @@ const Layout = () => {
       history.push("/manage/login");
     }
   };
+  const intl = useIntl();
+  const ThereAre = intl.formatMessage({ id: "There are" });
+  const PendingAlarms = intl.formatMessage({ id: "pending alarms" });
+  const Logout = intl.formatMessage({ id: "Logout" });
+  const ChangePassword = intl.formatMessage({ id: "Change Password" });
   return (
     <ProLayout
       disableMobile
@@ -68,12 +76,12 @@ const Layout = () => {
       }}
       siderWidth={220}
       actionsRender={() => {
-        if (admin?.type !== 2) return [];
+        if (admin?.type !== 2) return [<SelectLang key={"lang"} />];
         return [
           <Popover
             key={"d"}
             placement="left"
-            content={`There are ${manageAlarm.length} pending alarms`}
+            content={`${ThereAre} ${manageAlarm.length} ${PendingAlarms}`}
           >
             <Badge
               count={manageAlarm.length}
@@ -92,6 +100,7 @@ const Layout = () => {
               </div>
             </Badge>
           </Popover>,
+          <SelectLang key={"lang"} />,
         ];
       }}
       avatarProps={{
@@ -106,12 +115,12 @@ const Layout = () => {
                   {
                     key: "logout",
                     icon: <LogoutOutlined />,
-                    label: "Logout",
+                    label: Logout,
                   },
                   {
                     key: "change password",
                     icon: <KeyOutlined />,
-                    label: "Change Password",
+                    label: ChangePassword,
                   },
                 ],
                 onClick: handleClick,
@@ -147,7 +156,10 @@ const Layout = () => {
               <div style={{ display: "flex", gap: 20, paddingLeft: 10 }}>
                 {/* @ts-ignore */}
                 {Icons[menuItemProps.path]}
-                {defaultDom}
+                {/* {defaultDom} */}
+                <span>
+                  <FormattedMessage id={menuItemProps.name} />
+                </span>
               </div>
             </NavLink>
           );
@@ -156,7 +168,10 @@ const Layout = () => {
           <div style={{ display: "flex", gap: 20, paddingLeft: 10 }}>
             {/* @ts-ignore */}
             {Icons[menuItemProps.path]}
-            {defaultDom}
+            {/* {defaultDom} */}
+            <span>
+              <FormattedMessage id={menuItemProps.name} />
+            </span>
           </div>
         );
       }}

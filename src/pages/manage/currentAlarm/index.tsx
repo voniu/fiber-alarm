@@ -14,7 +14,21 @@ const Alarm = () => {
   const [dealId, setDealId] = useState<number>(-1);
   // const [loading, setLoading] = useState(false);
   const onClose = () => setOpen(false);
-  const typeMap = ["intrusion", "tamper", "wire Disconnect", "Disconnect"];
+
+  const {
+    Intrusion,
+    Tamper,
+    WireDisconnect,
+    Disconnect,
+    Zone,
+    Guarder,
+    Time,
+    Remark,
+    AlarmType,
+    DealWith,
+    CurrentAlarm,
+  } = useModel("useLocaleText");
+  const typeMap = [Intrusion, Tamper, WireDisconnect, Disconnect];
   const { manageAlarm, messageLoading } = useModel("useAlarms");
 
   const columns: ColumnsType<AlarmDetail> = [
@@ -24,12 +38,12 @@ const Alarm = () => {
       render: (text) => <a>{text}</a>,
     },
     {
-      title: "Fiber",
+      title: Zone,
       dataIndex: "fiber",
       render: (text, record) => <a>{record.fiber.name}</a>,
     },
     {
-      title: "Type",
+      title: AlarmType,
       dataIndex: "type",
       width: 150,
       render: (_, record) => (
@@ -37,19 +51,19 @@ const Alarm = () => {
       ),
     },
     {
-      title: "guard",
+      title: Guarder,
       dataIndex: "guard",
       render: (_, record) => <a>{record.guard?.name}</a>,
     },
     {
-      title: "Time",
+      title: Time,
       dataIndex: "createTime",
       render: (_, record) => (
         <a>{dayjs(record.createTime).format("MMMM D, YYYY h:mm A")}</a>
       ),
     },
     {
-      title: "Operator",
+      title: Remark,
       dataIndex: "Operator",
       render: (_, record) => {
         return (
@@ -60,7 +74,7 @@ const Alarm = () => {
               setDealId(record.id);
             }}
           >
-            {"deal with"}
+            {DealWith}
           </a>
         );
       },
@@ -71,7 +85,7 @@ const Alarm = () => {
   return (
     <div className={styles["container"]}>
       <p style={{ fontSize: 20, fontWeight: "bold", height: 20 }}>
-        Current Alarm
+        {CurrentAlarm}
       </p>
       <Table
         scroll={{ x: true }}

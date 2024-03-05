@@ -52,7 +52,30 @@ export default (props: IProps) => {
   const [detail, setDetail] = useState<AlarmDetail>();
   const { handleManage, messageLoading } = useModel("useAlarms");
   const processInfo = useRef<TextAreaRef>();
-  const typeMap = ["intrusion", "tamper", "wire Disconnect", "Disconnect"];
+  const {
+    Intrusion,
+    Tamper,
+    WireDisconnect,
+    Disconnect,
+    Zone,
+    Guarder,
+    Officer,
+    AlarmType,
+    Pending,
+    Processing,
+    Solved,
+    Success,
+    AlarmDetail,
+    Location,
+    CheckMap,
+    AlarmTime,
+    GuardTime,
+    Status,
+    CameraNo,
+    Submit,
+    PleaseInput,
+  } = useModel("useLocaleText");
+  const typeMap = [Intrusion, Tamper, WireDisconnect, Disconnect];
 
   const [mapModal, setMapModal] = useState({
     id: -1,
@@ -67,7 +90,7 @@ export default (props: IProps) => {
   }, [alarmID]);
 
   const renderStatus = (status: number) => {
-    const statusMap = ["pending", "processing", "solved"];
+    const statusMap = [Pending, Processing, Solved];
     const colorMap = ["default", "processing", "success"];
     if (status === -1) return <div>not found</div>;
     return <Tag color={colorMap[status]}>{statusMap[status]}</Tag>;
@@ -76,11 +99,11 @@ export default (props: IProps) => {
     if (!processInfo.current) return;
     const log = processInfo.current.resizableTextArea?.textArea.value;
     if (!log) {
-      message.info("please input the log");
+      message.info(PleaseInput);
       return;
     }
     handleManage(id, log);
-    message.success("success");
+    message.success(Success);
     if (flush) flush();
     onClose();
   };
@@ -94,7 +117,7 @@ export default (props: IProps) => {
   return (
     <Drawer
       destroyOnClose
-      title="Alarm Detail"
+      title={AlarmDetail}
       onClose={() => {
         onClose();
       }}
@@ -103,15 +126,15 @@ export default (props: IProps) => {
     >
       <div>
         <DescriptionText label="ID" content={detail?.id.toString()} />
-        <DescriptionText label="FiberName" content={detail?.fiber.name} />
+        <DescriptionText label={Zone} content={detail?.fiber.name} />
         <DescriptionText
-          label="Type"
+          label={AlarmType}
           content={
             typeof detail?.type === "number" ? typeMap[detail?.type] : ""
           }
         />
         <DescriptionText
-          label="Location"
+          label={Location}
           Other={() => (
             <Button
               type="primary"
@@ -124,20 +147,20 @@ export default (props: IProps) => {
                 });
               }}
             >
-              <span style={{ fontSize: 12, color: "#fff" }}>Check Map</span>
+              <span style={{ fontSize: 12, color: "#fff" }}>{CheckMap}</span>
             </Button>
           )}
         />
         <DescriptionText
-          label="Alarm Time"
+          label={AlarmTime}
           content={dayjs(detail?.createTime).format("MMMM D, YYYY h:mm A")}
         />
         <DescriptionText
-          label="Guard Time"
+          label={GuardTime}
           content={dayjs(detail?.createTime).format("MMMM D, YYYY h:mm A")}
         />
         <DescriptionText
-          label="status"
+          label={Status}
           Other={() =>
             renderStatus(
               typeof detail?.status === "undefined" ? -1 : detail?.status
@@ -146,7 +169,7 @@ export default (props: IProps) => {
         />
 
         <DescriptionText
-          label="Camera Info"
+          label={CameraNo}
           Other={() => (
             <div className={styles["camera-scroll"]}>
               {detail?.snapshots.map((item) => {
@@ -162,9 +185,9 @@ export default (props: IProps) => {
             </div>
           )}
         />
-        <DescriptionText label="guard" content={detail?.guard?.log} />
+        <DescriptionText label={Guarder} content={detail?.guard?.log} />
         <DescriptionText
-          label="manage"
+          label={Officer}
           Other={() => (
             <TextArea
               status={detail?.status || -1}
@@ -181,7 +204,7 @@ export default (props: IProps) => {
                 onClick={() => handleSubmit(detail?.id)}
                 loading={messageLoading}
               >
-                submit
+                {Submit}
               </Button>
             )}
           </div>

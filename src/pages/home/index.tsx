@@ -13,7 +13,7 @@ import CameraList from "@/components/cameraList";
 import RtspVideo from "@/components/map/videoModal/video";
 import { getMatrix } from "@/services/common";
 import { MonitorSetting } from "@/type";
-import { FormattedMessage } from 'umi';
+import { FormattedMessage } from "umi";
 
 function HomePage() {
   const [listType, setListType] = useState("fiber");
@@ -83,7 +83,11 @@ function HomePage() {
                     className="map_title"
                     style={{ backgroundImage: `url(${secondTitlePng})` }}
                   >
-                    <FormattedMessage id="Defense Area Info" />
+                    {listType === "fiber" ? (
+                      <FormattedMessage id="Zone list - Fiber" />
+                    ) : (
+                      <FormattedMessage id="Zone list - Camera" />
+                    )}
                   </div>
                   <div
                     style={{
@@ -97,8 +101,12 @@ function HomePage() {
                       onChange={handleChange}
                       size="small"
                     >
-                      <Radio.Button value="fiber">fiber</Radio.Button>
-                      <Radio.Button value="camera">camera</Radio.Button>
+                      <Radio.Button value="fiber">
+                        <FormattedMessage id="fiber" />
+                      </Radio.Button>
+                      <Radio.Button value="camera">
+                        <FormattedMessage id="camera" />
+                      </Radio.Button>
                     </Radio.Group>
                   </div>
                 </div>
@@ -135,7 +143,7 @@ function HomePage() {
                       className="map_title"
                       style={{ backgroundImage: `url(${firstTitlePng})` }}
                     >
-                      <FormattedMessage id="Real-Time Defense Area Map" />
+                      <FormattedMessage id="Real-time Zone Map" />
                     </div>
                   </div>
                 </div>

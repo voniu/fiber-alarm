@@ -38,6 +38,16 @@ const DeviceManage = () => {
   const [loading, setLoading] = useState(false);
   const [isArchived, setArchived] = useState(false);
 
+  const {
+    DeviceOperation,
+    AddDevice: AddDeviceText,
+    FiberOpticHost,
+    Camera,
+    Zone,
+    SuspendDevice,
+    Search,
+  } = useModel("useLocaleText");
+
   const handleChange = (e: any) => {
     setListType(e.target.value);
   };
@@ -111,16 +121,18 @@ const DeviceManage = () => {
   return (
     <div className={styles["container"]}>
       <p style={{ fontSize: 20, fontWeight: "bold", height: 20 }}>
-        DeviceManage
+        {DeviceOperation}
       </p>
 
       <div className={styles["main"]}>
         <div className={styles["list-operator"]}>
           <div className={styles["list-type"]}>
             <Radio.Group value={listType} onChange={handleChange} size="middle">
-              <Radio.Button value="fiber-control">fiberControl</Radio.Button>
-              <Radio.Button value="fiber">fiber</Radio.Button>
-              <Radio.Button value="camera">camera</Radio.Button>
+              <Radio.Button value="fiber-control">
+                {FiberOpticHost}
+              </Radio.Button>
+              <Radio.Button value="fiber">{Zone}</Radio.Button>
+              <Radio.Button value="camera">{Camera}</Radio.Button>
             </Radio.Group>
           </div>
         </div>
@@ -128,7 +140,7 @@ const DeviceManage = () => {
           <div className={styles["search"]}>
             <div>
               <Checkbox style={{ fontWeight: "bold" }} onChange={handleArchive}>
-                isArchived
+                {SuspendDevice}
               </Checkbox>
             </div>
             <Form
@@ -141,7 +153,7 @@ const DeviceManage = () => {
               </Form.Item>
               <Form.Item>
                 <Button type="primary" htmlType="submit" loading={loading}>
-                  Search
+                  {Search}
                 </Button>
               </Form.Item>
             </Form>
@@ -152,7 +164,7 @@ const DeviceManage = () => {
               setDevice({ operator: "add", type: listType, isModalOpen: true });
             }}
           >
-            Add Device
+            {AddDeviceText}
           </Button>
         </div>
         <div className={styles["list"]}>

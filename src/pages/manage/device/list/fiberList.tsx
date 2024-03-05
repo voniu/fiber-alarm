@@ -14,12 +14,29 @@ interface IProps {
 export default function (props: IProps) {
   const { edit, data, flush, loading, isArchived } = props;
   const { admin } = useModel("useAdminInfo");
+  const {
+    Success,
+    Name,
+    Edit,
+    Suspend,
+    UndoSuspend,
+    Delete,
+    Host,
+    Port,
+    Type,
+    Operator,
+    AreYouSureToSuspend,
+    AreYouSureToUndoSuspend,
+    AreYouSureToDelete,
+    Yes,
+    No,
+  } = useModel("useLocaleText");
   const setArchive = async (id: number, archived: boolean) => {
     const { success, msg } = await setControlArchive(id, archived);
     if (!success) {
       message.error(msg);
     } else {
-      message.success("success");
+      message.success(Success);
     }
     flush();
   };
@@ -30,27 +47,27 @@ export default function (props: IProps) {
       render: (text) => <a>{text}</a>,
     },
     {
-      title: "Name",
+      title: Name,
       dataIndex: "name",
       render: (text, record) => <a>{record.name}</a>,
     },
     {
-      title: "Host",
+      title: Host,
       dataIndex: "host",
       render: (text, record) => <a>{record.host}</a>,
     },
     {
-      title: "Port",
+      title: Port,
       dataIndex: "port",
       render: (text, record) => <a>{record.port}</a>,
     },
     {
-      title: "Type",
+      title: Type,
       dataIndex: "type",
       render: (text, record) => <a>{deviceType[record.type]}</a>,
     },
     {
-      title: "Operator",
+      title: Operator,
       render: (_, record) => {
         return (
           <div style={{ display: "flex", gap: 10 }}>
@@ -61,50 +78,50 @@ export default function (props: IProps) {
                 edit(record.id, "fiber-control", record);
               }}
             >
-              {"Edit"}
+              {Edit}
             </Button>
             {isArchived && (
               <Popconfirm
-                title="Undo archive the fiber control"
-                description="Are you sure to Undo archive the fiber control?"
-                okText="Yes"
-                cancelText="No"
+                title={UndoSuspend}
+                description={`${AreYouSureToUndoSuspend}?`}
+                okText={Yes}
+                cancelText={No}
                 onConfirm={() => setArchive(record.id, false)}
               >
-                <Button size="small">Undo archive</Button>
+                <Button size="small">{UndoSuspend}</Button>
               </Popconfirm>
             )}
             {!isArchived && (
               <Popconfirm
-                title="archive the fiber control"
-                description="Are you sure to archive the fiber control?"
-                okText="Yes"
-                cancelText="No"
+                title={Suspend}
+                description={`${AreYouSureToSuspend}`}
+                okText={Yes}
+                cancelText={No}
                 onConfirm={() => setArchive(record.id, true)}
               >
                 <Button type="primary" size="small">
-                  Archive
+                  {Suspend}
                 </Button>
               </Popconfirm>
             )}
             {isArchived && admin?.type === 0 && (
               <Popconfirm
-                title="Delete the Fiber control"
-                description="Are you sure to delete this Fiber control?"
-                okText="Yes"
-                cancelText="No"
+                title={Delete}
+                description={`${AreYouSureToDelete}?`}
+                okText={Yes}
+                cancelText={No}
                 onConfirm={async () => {
                   const { success, msg } = await delControl(record.id);
                   if (!success) {
                     message.error(msg);
                   } else {
-                    message.success("success");
+                    message.success(Success);
                   }
                   flush();
                 }}
               >
                 <Button danger size="small">
-                  Delete
+                  {Delete}
                 </Button>
               </Popconfirm>
             )}

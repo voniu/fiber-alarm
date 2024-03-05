@@ -39,6 +39,41 @@ const HistoryAlarm = () => {
   const [total, setTotal] = useState(0);
   const [form] = Form.useForm();
   const [optionLoading, setOptionLoading] = useState(false);
+  console.log(useModel("useLocaleText"));
+
+  const {
+    Pending,
+    Processing,
+    Solved,
+    Intrusion,
+    Tamper,
+    WireDisconnect,
+    Disconnect,
+    Happen,
+    Zone,
+    GuarderProcessed,
+    OfficerProcessed,
+    CREATE,
+    GUARDER,
+    OFFICER,
+    Guarder,
+    Officer,
+    Status,
+    Time,
+    All,
+    Remark,
+    AlarmType,
+    Success,
+    Delete,
+    Detail,
+    AlarmFiltering,
+    Search,
+    DeleteTheAlarm,
+    AreYouSureToDelete,
+    Yes,
+    No,
+    PleaseSelect,
+  } = useModel("useLocaleText");
 
   const fetchList = (page: number, pageSize: number) => {
     setPage(page);
@@ -70,12 +105,12 @@ const HistoryAlarm = () => {
   const deleteAlarm = async (id: number) => {
     console.log(id);
     await delAlarmDetail(id);
-    message.success("success");
+    message.success(Success);
     fetchList(1, 6);
   };
-  const statusMap = ["pending", "processing", "solved"];
+  const statusMap = [Pending, Processing, Solved];
   const colorMap = ["default", "processing", "success"];
-  const typeMap = ["intrusion", "tamper", "wire Disconnect", "Disconnect"];
+  const typeMap = [Intrusion, Tamper, WireDisconnect, Disconnect];
   const onClose = () => setOpen(false);
 
   const [fiberOptions, setFiberOp] = useState();
@@ -88,12 +123,12 @@ const HistoryAlarm = () => {
       render: (text) => <a>{text}</a>,
     },
     {
-      title: "Fiber",
+      title: Zone,
       dataIndex: "fiber",
       render: (text, record) => <a>{record.fiber.name}</a>,
     },
     {
-      title: "Status",
+      title: Status,
       dataIndex: "status",
       width: 150,
       render: (_, record) => (
@@ -101,7 +136,7 @@ const HistoryAlarm = () => {
       ),
     },
     {
-      title: "Type",
+      title: AlarmType,
       dataIndex: "type",
       width: 150,
       render: (_, record) => (
@@ -109,17 +144,17 @@ const HistoryAlarm = () => {
       ),
     },
     {
-      title: "manager",
+      title: Officer,
       dataIndex: "manager",
       render: (_, record) => <a>{record.manager?.name}</a>,
     },
     {
-      title: "guard",
+      title: Guarder,
       dataIndex: "guard",
       render: (_, record) => <a>{record.guard?.name}</a>,
     },
     {
-      title: "Operator",
+      title: Remark,
       render: (_, record) => {
         return (
           <>
@@ -130,18 +165,18 @@ const HistoryAlarm = () => {
                 setDealId(record.id);
               }}
             >
-              {"Detail"}
+              {Detail}
             </a>
             {admin?.type === 0 && record.status === 2 && (
               <Popconfirm
-                title="delete the alarm"
-                description="Are you sure to delete the alarm?"
-                okText="Yes"
-                cancelText="No"
+                title={DeleteTheAlarm}
+                description={`${AreYouSureToDelete}?`}
+                okText={Yes}
+                cancelText={No}
                 onConfirm={() => deleteAlarm(record.id)}
               >
                 <Button danger size="small">
-                  Delete
+                  {Delete}
                 </Button>
               </Popconfirm>
             )}
@@ -192,7 +227,9 @@ const HistoryAlarm = () => {
   };
   return (
     <div className={styles["container"]}>
-      <p style={{ fontSize: 20, fontWeight: "bold", height: 20 }}>AlarmList</p>
+      <p style={{ fontSize: 20, fontWeight: "bold", height: 20 }}>
+        {AlarmFiltering}
+      </p>
       <ConfigProvider
         theme={{
           components: {
@@ -216,12 +253,12 @@ const HistoryAlarm = () => {
         >
           <Row gutter={24} style={{ height: 45, flexWrap: "nowrap" }}>
             <Col style={{ flexShrink: 0 }}>
-              <Form.Item name={`fiberId`} label={`fiber`}>
+              <Form.Item name={`fiberId`} label={Zone}>
                 <Select
                   optionFilterProp="label"
                   mode="multiple"
                   size={"middle"}
-                  placeholder="Please select"
+                  placeholder={PleaseSelect}
                   style={{ width: "230px" }}
                   options={fiberOptions}
                   maxTagCount={1}
@@ -230,26 +267,26 @@ const HistoryAlarm = () => {
               </Form.Item>
             </Col>
             <Col style={{ flexShrink: 0 }}>
-              <Form.Item name={`status`} label={`status`}>
+              <Form.Item name={`status`} label={Status}>
                 <Select
                   style={{ width: 150 }}
                   options={[
-                    { value: -1, label: "all" },
-                    { value: 0, label: "happen" },
-                    { value: 1, label: "guard processed" },
-                    { value: 2, label: "manager processed" },
+                    { value: -1, label: All },
+                    { value: 0, label: Happen },
+                    { value: 1, label: GuarderProcessed },
+                    { value: 2, label: OfficerProcessed },
                   ]}
                 />
               </Form.Item>
             </Col>
             <Col style={{ flexShrink: 0 }}>
-              <Form.Item name={`timeType`} label={`timeType`}>
+              <Form.Item name={`timeType`} label={Time}>
                 <Select
                   style={{ width: 100 }}
                   options={[
-                    { value: "CREATE", label: "CREATE" },
-                    { value: "GUARD", label: "GUARD" },
-                    { value: "MANAGER", label: "MANAGER" },
+                    { value: "CREATE", label: CREATE },
+                    { value: "GUARD", label: GUARDER },
+                    { value: "MANAGER", label: OFFICER },
                   ]}
                 />
               </Form.Item>
@@ -267,49 +304,49 @@ const HistoryAlarm = () => {
           </Row>
           <Row gutter={24} style={{ flexWrap: "nowrap" }}>
             <Col style={{ flexShrink: 0 }}>
-              <Form.Item name={`type`} label={`type`}>
+              <Form.Item name={`type`} label={AlarmType}>
                 <Select
                   // mode="multiple"
                   size={"middle"}
-                  placeholder="Please select"
+                  placeholder={PleaseSelect}
                   style={{ width: "230px" }}
                   maxTagCount={1}
                   options={[
-                    { value: "all", label: "all" },
-                    { value: 0, label: "intrusion" },
-                    { value: 1, label: "tamper" },
-                    { value: 2, label: "wire Disconnect" },
-                    { value: 3, label: "Disconnect" },
+                    { value: "all", label: All },
+                    { value: 0, label: Intrusion },
+                    { value: 1, label: Tamper },
+                    { value: 2, label: WireDisconnect },
+                    { value: 3, label: Disconnect },
                   ]}
                 />
               </Form.Item>
             </Col>
             <Col style={{ flexShrink: 0 }}>
-              <Form.Item name={`managerId`} label={`manager`}>
+              <Form.Item name={`managerId`} label={Officer}>
                 <Select
                   // mode="multiple"
                   size={"middle"}
-                  placeholder="Please select"
+                  placeholder={PleaseSelect}
                   showSearch
                   optionFilterProp="label"
                   style={{ width: "230px" }}
                   maxTagCount={1}
-                  options={[{ value: "all", label: "all" }, ...managerOptions]}
+                  options={[{ value: "all", label: All }, ...managerOptions]}
                   loading={optionLoading}
                 />
               </Form.Item>
             </Col>
             <Col style={{ flexShrink: 0 }}>
-              <Form.Item name={`guardId`} label={`guard`}>
+              <Form.Item name={`guardId`} label={Guarder}>
                 <Select
                   // mode="multiple"
                   size={"middle"}
                   showSearch
                   optionFilterProp="label"
-                  placeholder="Please select"
+                  placeholder={PleaseSelect}
                   style={{ width: "230px" }}
                   maxTagCount={1}
-                  options={[{ value: "all", label: "all" }, ...guardOptions]}
+                  options={[{ value: "all", label: All }, ...guardOptions]}
                   loading={optionLoading}
                 />
               </Form.Item>
@@ -317,7 +354,7 @@ const HistoryAlarm = () => {
             <Col style={{ flexShrink: 0 }}>
               <Form.Item>
                 <Button type="primary" loading={loading} htmlType="submit">
-                  Search
+                  {Search}
                 </Button>
               </Form.Item>
             </Col>

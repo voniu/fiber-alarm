@@ -11,6 +11,9 @@ import MapCenter from "./map";
 const DefenseZone = () => {
   const { setTarget } = useModel("useMap");
   const [listType, setListType] = useState("fiber");
+
+  const { MapSetting, Fiber, Camera } = useModel("useLocaleText");
+
   const handleChange = (e: any) => {
     setListType(e.target.value);
   };
@@ -28,11 +31,11 @@ const DefenseZone = () => {
   return (
     <div className={styles["container"]}>
       <p style={{ fontSize: 20, fontWeight: "bold", height: 20 }}>
-        DefenseZone
+        {MapSetting}
       </p>
       <div className={styles["map-setting"]}>
         <Button type="primary" onClick={() => setOpen(true)}>
-          Map Setting
+          {MapSetting}
         </Button>
       </div>
       <MapCenter open={open} onClose={() => setOpen(false)} />
@@ -40,8 +43,8 @@ const DefenseZone = () => {
         <div className={styles["left"]}>
           <div style={{}}>
             <Radio.Group value={listType} onChange={handleChange} size="middle">
-              <Radio.Button value="fiber">fiber</Radio.Button>
-              <Radio.Button value="camera">camera</Radio.Button>
+              <Radio.Button value="fiber">{Fiber}</Radio.Button>
+              <Radio.Button value="camera">{Camera}</Radio.Button>
             </Radio.Group>
           </div>
           <div className={styles["left-list"]}>

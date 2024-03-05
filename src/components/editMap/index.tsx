@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useModel } from "umi";
+import { useModel, FormattedMessage } from "umi";
 import VectorSource from "ol/source/Vector";
 import Draw, { DrawEvent } from "ol/interaction/Draw";
 import VectorLayer from "ol/layer/Vector";
@@ -220,17 +220,25 @@ export default function ({
       {type === "Point" && (
         <div style={{ position: "absolute", top: 25 }}>
           <Button type="primary" onClick={() => resetCamera(isEdit!)}>
-            reset
+            <FormattedMessage id={"reset"} />
           </Button>
-          {!isEdit && <span>(only allow draw a Point)</span>}
+          {!isEdit && (
+            <span>
+              (<FormattedMessage id={"only allow draw a Point"} />)
+            </span>
+          )}
         </div>
       )}
       {type === "LineString" && (
         <div style={{ position: "absolute", top: 25 }}>
           <Button type="primary" onClick={() => resetFiber(isEdit!)}>
-            reset
+            <FormattedMessage id={"reset"} />
           </Button>
-          {!isEdit && <span>(only allow draw a fiber)</span>}
+          {!isEdit && (
+            <span>
+              (<FormattedMessage id={"only allow draw a fiber"} />)
+            </span>
+          )}
         </div>
       )}
       <div

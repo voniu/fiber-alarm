@@ -17,6 +17,7 @@ import dayjs from "@/utills/day";
 import locale from "antd/es/date-picker/locale/en_GB";
 import FiberTable from "./fiberTable";
 import styles from "./index.less";
+import { useModel } from "umi";
 interface IProps {
   isModalOpen: boolean;
   onCancel: () => void;
@@ -29,6 +30,27 @@ interface IProps {
 export default (props: IProps) => {
   const { isModalOpen, onCancel, fetchTask, check } = props;
   const [form] = Form.useForm();
+  const {
+    Success,
+    Create,
+    Check,
+    Task,
+    Name,
+    Fiber,
+    Time,
+    Config,
+    VibeCount,
+    VibeAmplitude,
+    VibeWidth,
+    VibeGap,
+    AlarmSensitivity,
+    SystemSensitivity,
+    GroupWidth,
+    GroupGap,
+    GroupEntity,
+    Submit,
+    Optional,
+  } = useModel("useLocaleText");
   const [selectdFiber, setSelectFiber] = useState<
     {
       id: number;
@@ -91,7 +113,7 @@ export default (props: IProps) => {
     if (!success) {
       message.error(msg);
     } else {
-      message.success("success");
+      message.success(Success);
     }
     setLoading(false);
     onCancel();
@@ -178,7 +200,7 @@ export default (props: IProps) => {
             height: 20,
             marginBottom: 20,
           }}
-        >{`${check.type} Task`}</p>
+        >{`${check.type === "Check" ? Check : Create} ${Task}`}</p>
         <ConfigProvider
           theme={{
             components: {
@@ -199,22 +221,18 @@ export default (props: IProps) => {
             <div className={styles["form-top"]}>
               <div className={styles["form-top-item-l"]}>
                 <Form.Item
-                  label={"Name"}
+                  label={Name}
                   name={"name"}
-                  rules={[
-                    { required: true, message: "Please input the name!" },
-                  ]}
+                  rules={[{ required: true }]}
                 >
                   <Input style={{ width: 200 }} />
                 </Form.Item>
 
                 {check.type === "Check" && (
                   <Form.Item
-                    label={"Fibers"}
+                    label={Fiber}
                     name={"fibers"}
-                    rules={[
-                      { required: true, message: "Please select the fiber!" },
-                    ]}
+                    rules={[{ required: true }]}
                   >
                     <Typography.Text
                       ellipsis={{ tooltip: true }}
@@ -225,9 +243,9 @@ export default (props: IProps) => {
                   </Form.Item>
                 )}
                 <Form.Item
-                  label={"Time"}
+                  label={Time}
                   name={"time"}
-                  rules={[{ required: true, message: "Please set the time!" }]}
+                  rules={[{ required: true }]}
                 >
                   <TimePicker
                     locale={locale}
@@ -239,11 +257,9 @@ export default (props: IProps) => {
               <div className={styles["form-top-item-r"]}>
                 {check.type === "Create" && (
                   <Form.Item
-                    label={"Fibers"}
+                    label={Fiber}
                     name={"fibers"}
-                    rules={[
-                      { required: true, message: "Please select the fiber!" },
-                    ]}
+                    rules={[{ required: true }]}
                   >
                     <FiberTable
                       setSelectFiber={(fibers: any) => {
@@ -259,19 +275,23 @@ export default (props: IProps) => {
               </div>
             </div>
             {
-              <Form.Item label={"config"} name={"config"}>
+              <Form.Item label={Config} name={"config"}>
                 <Tabs
                   type="card"
                   size={"middle"}
                   defaultActiveKey={configType["0"] ? "1" : "2"}
                 >
                   {configType["0"] && (
-                    <Tabs.TabPane tab="config-a" key={"1"} forceRender>
+                    <Tabs.TabPane
+                      tab={`${Config}-a(00:00-24:00)`}
+                      key={"1"}
+                      forceRender
+                    >
                       <Form.Item
-                        label={"vibeCount"}
+                        label={VibeCount}
                         name={"vibeCount"}
                         tooltip={{
-                          title: "Optional",
+                          title: Optional,
                           icon: <InfoCircleOutlined />,
                         }}
                         className={styles["config-item"]}
@@ -283,10 +303,10 @@ export default (props: IProps) => {
                       </Form.Item>
                       <Form.Item
                         tooltip={{
-                          title: "Optional",
+                          title: Optional,
                           icon: <InfoCircleOutlined />,
                         }}
-                        label={"vibeAmplitude"}
+                        label={VibeAmplitude}
                         name={"vibeAmplitude"}
                         className={styles["config-item"]}
                       >
@@ -297,11 +317,11 @@ export default (props: IProps) => {
                       </Form.Item>
                       <Form.Item
                         tooltip={{
-                          title: "Optional",
+                          title: Optional,
                           icon: <InfoCircleOutlined />,
                         }}
                         className={styles["config-item"]}
-                        label={"vibeWidth"}
+                        label={VibeWidth}
                         name={"vibeWidth"}
                       >
                         <Select
@@ -312,10 +332,10 @@ export default (props: IProps) => {
                       <Form.Item
                         className={styles["config-item"]}
                         tooltip={{
-                          title: "Optional",
+                          title: Optional,
                           icon: <InfoCircleOutlined />,
                         }}
-                        label={"vibeGap"}
+                        label={VibeGap}
                         name={"vibeGap"}
                       >
                         <Select
@@ -330,10 +350,10 @@ export default (props: IProps) => {
                       <Form.Item
                         className={styles["config-item"]}
                         tooltip={{
-                          title: "Optional",
+                          title: Optional,
                           icon: <InfoCircleOutlined />,
                         }}
-                        label={"alarmSensitivity"}
+                        label={AlarmSensitivity}
                         name={"alarmSensitivity"}
                       >
                         <Select
@@ -344,10 +364,10 @@ export default (props: IProps) => {
                       <Form.Item
                         className={styles["config-item"]}
                         tooltip={{
-                          title: "Optional",
+                          title: Optional,
                           icon: <InfoCircleOutlined />,
                         }}
-                        label={"systemSensitivity"}
+                        label={SystemSensitivity}
                         name={"systemSensitivity"}
                       >
                         <Select
@@ -358,10 +378,10 @@ export default (props: IProps) => {
                       <Form.Item
                         className={styles["config-item"]}
                         tooltip={{
-                          title: "Optional",
+                          title: Optional,
                           icon: <InfoCircleOutlined />,
                         }}
-                        label={"groupWidth"}
+                        label={GroupWidth}
                         name={"groupWidth"}
                       >
                         <Select
@@ -372,10 +392,10 @@ export default (props: IProps) => {
                       <Form.Item
                         className={styles["config-item"]}
                         tooltip={{
-                          title: "Optional",
+                          title: Optional,
                           icon: <InfoCircleOutlined />,
                         }}
-                        label={"groupGap"}
+                        label={GroupGap}
                         name={"groupGap"}
                       >
                         <Select
@@ -386,10 +406,10 @@ export default (props: IProps) => {
                       <Form.Item
                         className={styles["config-item"]}
                         tooltip={{
-                          title: "Optional",
+                          title: Optional,
                           icon: <InfoCircleOutlined />,
                         }}
-                        label={"groupEntity"}
+                        label={GroupEntity}
                         name={"groupEntity"}
                       >
                         <Select
@@ -405,7 +425,7 @@ export default (props: IProps) => {
             {check.type === "Create" && (
               <Form.Item>
                 <Button type="primary" htmlType="submit" loading={loading}>
-                  submit
+                  {Submit}
                 </Button>
               </Form.Item>
             )}

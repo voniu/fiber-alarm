@@ -1,6 +1,6 @@
 import styles from "./index.less";
 import { useState } from "react";
-import { history, useModel } from "umi";
+import { history, useModel, FormattedMessage, useIntl } from "umi";
 import earth from "@/assets/dutyLogin/earth.png";
 import userpng from "@/assets/dutyLogin/user.png";
 import passwordpng from "@/assets/dutyLogin/password.png";
@@ -11,6 +11,9 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const intl = useIntl();
+  const Account = intl.formatMessage({ id: "Account" });
+  const Password = intl.formatMessage({ id: "Password" });
   const submit = async () => {
     setLoading(true);
     const { success, msg } = await login(username, password);
@@ -30,7 +33,9 @@ const Login = () => {
       </div>
       <div className={styles["form-container"]}>
         <div className={styles["title"]}>
-          <span>Duty System</span>
+          <span>
+            <FormattedMessage id={"Integrated Security Operation Platform"} />
+          </span>
         </div>
         <div className={styles["form"]}>
           <div className={styles["input-container"]}>
@@ -44,7 +49,7 @@ const Login = () => {
                 setUsername(e.target.value);
               }}
               type="text"
-              placeholder="Username"
+              placeholder={Account}
             />
           </div>
           <div className={styles["input-container"]}>
@@ -59,7 +64,7 @@ const Login = () => {
                 setPassword(e.target.value);
               }}
               type="password"
-              placeholder="Password"
+              placeholder={Password}
             />
           </div>
           <div className={styles["input-container"]}>
@@ -68,7 +73,16 @@ const Login = () => {
               onClick={submit}
               style={{ pointerEvents: `${loading ? "none" : "auto"}` }}
             >
-              {loading ? <span>loading...</span> : <span>Login</span>}
+              {loading ? (
+                <span>
+                  <FormattedMessage id={"loading"} />
+                  ...
+                </span>
+              ) : (
+                <span>
+                  <FormattedMessage id={"Login"} />
+                </span>
+              )}
             </div>
           </div>
         </div>

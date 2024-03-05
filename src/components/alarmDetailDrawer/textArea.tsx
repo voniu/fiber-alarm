@@ -1,5 +1,6 @@
 import { Input } from "antd";
 import { forwardRef, useState } from "react";
+import { useModel } from "umi";
 import styles from "./index.less";
 interface IProps {
   status: number;
@@ -9,6 +10,7 @@ interface IProps {
 export default forwardRef((props: IProps, ref: any) => {
   const [value, setValue] = useState();
   const { status, info, isHistory } = props;
+  const { InputProcessInfo } = useModel("useLocaleText");
   const onChange = (e: any) => {
     setValue(e.target.value);
   };
@@ -18,7 +20,7 @@ export default forwardRef((props: IProps, ref: any) => {
       maxLength={100}
       value={value}
       onChange={onChange}
-      placeholder="input processInfo"
+      placeholder={InputProcessInfo}
       style={{ height: 120, resize: "none" }}
       ref={ref}
     />

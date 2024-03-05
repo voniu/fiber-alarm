@@ -1,7 +1,7 @@
 import { Input, Modal, message } from "antd";
 import Verify from "@/assets/verify.svg";
 import { useState } from "react";
-import { useModel, history } from "umi";
+import { useModel, history, FormattedMessage } from "umi";
 import styles from "./index.less";
 
 export const AuthModal = (props: {
@@ -43,18 +43,22 @@ export const AuthModal = (props: {
         <img className={styles["verify-img"]} src={Verify} />
         <div className={styles["verify-con"]}>
           <div className={styles["verify-form"]}>
-            <span className={styles["label"]}>Manager:</span>
+            <span className={styles["label"]}>
+              <FormattedMessage id={"Officer"} />:
+            </span>
             <span className={styles["content"]}>{monitor?.name}</span>
           </div>
           <div className={styles["verify-form"]}>
-            <span className={styles["label"]}>Password:</span>
+            <span className={styles["label"]}>
+              <FormattedMessage id={"Password"} />:
+            </span>
             <Input.Password
               style={{
                 width: 150,
               }}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="input password"
+              placeholder=""
             />
           </div>
         </div>

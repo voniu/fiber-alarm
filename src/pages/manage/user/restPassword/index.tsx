@@ -1,6 +1,7 @@
 import { Button, ConfigProvider, Form, Modal, Input, message } from "antd";
 import { useEffect, useState } from "react";
 import styles from "./index.less";
+import { useModel } from "umi";
 interface IProps {
   id: number;
   isModalOpen: boolean;
@@ -11,6 +12,9 @@ interface IProps {
 export default (props: IProps) => {
   const { isModalOpen, onCancel, reset, flush, id } = props;
   const [form] = Form.useForm();
+
+  const { ResetPassword, Success, Password, Submit } =
+    useModel("useLocaleText");
   const onClose = () => {
     onCancel();
     form.resetFields();
@@ -24,7 +28,7 @@ export default (props: IProps) => {
     if (!success) {
       message.error(msg);
     } else {
-      message.success("success");
+      message.success(Success);
     }
     setLoading(false);
     onClose();
@@ -46,7 +50,7 @@ export default (props: IProps) => {
         forceRender
       >
         <p style={{ fontSize: 20, fontWeight: "bold", height: 20 }}>
-          ResetPassword
+          {ResetPassword}
         </p>
         <div className={styles["main"]}>
           <ConfigProvider
@@ -61,26 +65,19 @@ export default (props: IProps) => {
               },
             }}
           >
-            <Form
-              style={{
-                width: 250,
-              }}
-              form={form}
-              onFinish={onFinish}
-              labelAlign="right"
-            >
+            <Form form={form} onFinish={onFinish} labelAlign="right">
               <Form.Item
                 className={styles["form-item"]}
-                label="Password"
+                label={Password}
                 name={"newpassword"}
-                rules={[{ required: true, message: "Please input" }]}
+                rules={[{ required: true }]}
               >
-                <Input.Password placeholder="input" />
+                <Input.Password placeholder="" />
               </Form.Item>
 
               <Form.Item style={{ display: "flex", justifyContent: "center" }}>
                 <Button type="primary" htmlType="submit" loading={loading}>
-                  submit
+                  {Submit}
                 </Button>
               </Form.Item>
             </Form>

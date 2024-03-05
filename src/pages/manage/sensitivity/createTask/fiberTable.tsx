@@ -3,23 +3,8 @@ import { Table, message } from "antd";
 import type { TableColumnsType } from "antd";
 import { Fiber } from "@/models/useItems";
 import { getFiber } from "@/services/admin";
-const columns: TableColumnsType<Fiber> = [
-  {
-    title: "ID",
-    dataIndex: "id",
-    render: (text) => <a>{text}</a>,
-  },
-  {
-    title: "Name",
-    dataIndex: "name",
-    render: (text, record) => <a>{record.name}</a>,
-  },
-  {
-    title: "Device",
-    dataIndex: "device",
-    render: (text, record) => <a>{record.device.name}</a>,
-  },
-];
+import { useModel } from "umi";
+
 interface IProps {
   setSelectFiber: (fibers: any) => void;
 }
@@ -28,6 +13,24 @@ export default (props: IProps) => {
   const [data, setData] = useState([]);
   const { setSelectFiber } = props;
   const [loading, setLoading] = useState(false);
+  const { Name, Device } = useModel("useLocaleText");
+  const columns: TableColumnsType<Fiber> = [
+    {
+      title: "ID",
+      dataIndex: "id",
+      render: (text) => <a>{text}</a>,
+    },
+    {
+      title: Name,
+      dataIndex: "name",
+      render: (text, record) => <a>{record.name}</a>,
+    },
+    {
+      title: Device,
+      dataIndex: "device",
+      render: (text, record) => <a>{record.device.name}</a>,
+    },
+  ];
   const getFiberData = async () => {
     setLoading(true);
     const { success, msg, data: allFiber } = await getFiber("", false);

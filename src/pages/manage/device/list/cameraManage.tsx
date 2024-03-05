@@ -23,12 +23,29 @@ export default function (props: IProps) {
   });
   const [test, setTest] = useState(false);
   const [testID, setTestID] = useState<number>();
+  const {
+    Success,
+    Name,
+    Location,
+    CheckMap,
+    Edit,
+    Suspend,
+    UndoSuspend,
+    Delete,
+    Test,
+    Yes,
+    No,
+    AreYouSureToSuspend,
+    AreYouSureToUndoSuspend,
+    AreYouSureToDelete,
+  } = useModel("useLocaleText");
+
   const setArchive = async (id: number, archived: boolean) => {
     const { success, msg } = await setCameraArchive(id, archived);
     if (!success) {
       message.error(msg);
     } else {
-      message.success("success");
+      message.success(Success);
     }
     flush();
   };
@@ -37,7 +54,7 @@ export default function (props: IProps) {
     if (!success) {
       message.error(msg);
     } else {
-      message.success("success");
+      message.success(Success);
     }
     flush();
   };
@@ -55,12 +72,12 @@ export default function (props: IProps) {
       render: (text) => <a>{text}</a>,
     },
     {
-      title: "Name",
+      title: Name,
       dataIndex: "name",
       render: (text, record) => <a>{record.name}</a>,
     },
     {
-      title: "Location",
+      title: Location,
       dataIndex: "location",
       render: (_, record) => {
         return (
@@ -70,7 +87,7 @@ export default function (props: IProps) {
               setMapModal({ id: record.id, type: "camera", isModalOpen: true });
             }}
           >
-            Check Map
+            {CheckMap}
           </Button>
         );
       },
@@ -87,29 +104,29 @@ export default function (props: IProps) {
                 edit(record.id, "camera");
               }}
             >
-              {"Edit"}
+              {Edit}
             </Button>
             {isArchived && (
               <Popconfirm
-                title="Undo archive the camera"
-                description="Are you sure to Undo archive the camera?"
-                okText="Yes"
-                cancelText="No"
+                title={UndoSuspend}
+                description={`${AreYouSureToUndoSuspend}?`}
+                okText={Yes}
+                cancelText={No}
                 onConfirm={() => setArchive(record.id, false)}
               >
-                <Button size="small">Undo archive</Button>
+                <Button size="small">{UndoSuspend}</Button>
               </Popconfirm>
             )}
             {!isArchived && (
               <Popconfirm
-                title="archive the camera"
-                description="Are you sure to archive the camera?"
-                okText="Yes"
-                cancelText="No"
+                title={Suspend}
+                description={`${AreYouSureToSuspend}`}
+                okText={Yes}
+                cancelText={No}
                 onConfirm={() => setArchive(record.id, true)}
               >
                 <Button type="primary" size="small">
-                  Archive
+                  {Suspend}
                 </Button>
               </Popconfirm>
             )}
@@ -121,21 +138,21 @@ export default function (props: IProps) {
                 setTestID(record.id);
               }}
             >
-              {"Test"}
+              {Test}
             </Button>
             {isArchived && admin?.type === 0 && (
               <Popconfirm
-                title="Delete the camera"
-                description="Are you sure to delete this camera?"
-                okText="Yes"
-                cancelText="No"
+                title={Delete}
+                description={`${AreYouSureToDelete}?`}
+                okText={Yes}
+                cancelText={No}
                 onConfirm={() => {
                   deleteCamera(record.id);
                   flush();
                 }}
               >
                 <Button danger size="small">
-                  Delete
+                  {Delete}
                 </Button>
               </Popconfirm>
             )}

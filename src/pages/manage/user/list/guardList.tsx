@@ -13,12 +13,25 @@ interface IProps {
 export default (props: IProps) => {
   const { data, flush, loading, isArchived } = props;
   const { admin } = useModel("useAdminInfo");
+  const {
+    Delete,
+    Success,
+    UndoSuspend,
+    Suspend,
+    Name,
+    CreateTime,
+    Yes,
+    No,
+    AreYouSureToSuspend,
+    AreYouSureToUndoSuspend,
+    AreYouSureToDelete,
+  } = useModel("useLocaleText");
   const deleteUser = async (id: number) => {
     const { success, msg } = await delGuard(id);
     if (!success) {
       message.error(msg);
     } else {
-      message.success("success");
+      message.success(Success);
     }
     flush();
   };
@@ -27,7 +40,7 @@ export default (props: IProps) => {
     if (!success) {
       message.error(msg);
     } else {
-      message.success("success");
+      message.success(Success);
     }
     flush();
   };
@@ -38,12 +51,12 @@ export default (props: IProps) => {
       render: (text) => <a>{text}</a>,
     },
     {
-      title: "Name",
+      title: Name,
       dataIndex: "name",
       render: (text, record) => <a>{record.name}</a>,
     },
     {
-      title: "CreateTime",
+      title: CreateTime,
       dataIndex: "createTime",
       render: (_, record) => (
         <div>{dayjs(record.createTime).format("YYYY/MM/DD")}</div>
@@ -56,38 +69,38 @@ export default (props: IProps) => {
           <div style={{ display: "flex", gap: 10 }}>
             {isArchived && (
               <Popconfirm
-                title="Undo archive the guard"
-                description="Are you sure to Undo archive the guard?"
-                okText="Yes"
-                cancelText="No"
+                title={UndoSuspend}
+                description={`${AreYouSureToUndoSuspend}?`}
+                okText={Yes}
+                cancelText={No}
                 onConfirm={() => setArchive(record.id, false)}
               >
-                <Button size="small">Undo archive</Button>
+                <Button size="small">{UndoSuspend}</Button>
               </Popconfirm>
             )}
             {!isArchived && (
               <Popconfirm
-                title="archive the guard"
-                description="Are you sure to archive the user?"
-                okText="Yes"
-                cancelText="No"
+                title={Suspend}
+                description={`${AreYouSureToSuspend}`}
+                okText={Yes}
+                cancelText={No}
                 onConfirm={() => setArchive(record.id, true)}
               >
                 <Button type="primary" size="small">
-                  Archive
+                  {Suspend}
                 </Button>
               </Popconfirm>
             )}
             {isArchived && admin?.type === 0 && (
               <Popconfirm
-                title="delete the guard"
-                description="Are you sure to delete the guard?"
-                okText="Yes"
-                cancelText="No"
+                title={Delete}
+                description={`${AreYouSureToDelete}?`}
+                okText={Yes}
+                cancelText={No}
                 onConfirm={() => deleteUser(record.id)}
               >
                 <Button danger size="small">
-                  Delete
+                  {Delete}
                 </Button>
               </Popconfirm>
             )}

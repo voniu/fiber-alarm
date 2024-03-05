@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { delFiberCamera, getFiberDetail } from "@/services/admin";
 import { Button, List, Popconfirm, message } from "antd";
 import type { Camera } from "@/models/useItems";
+import { useModel } from "umi";
 interface IProps {
   id: number;
   flush: () => void;
@@ -10,12 +11,14 @@ export default (props: IProps) => {
   const [list, setList] = useState<Camera[]>();
   const [isChange, setIsChange] = useState(false);
   const { id, flush } = props;
+  const { Success, Dissolve, CameraNo, AreYouSureToDelete, Delete, Yes, No } =
+    useModel("useLocaleText");
   const dissolve = async (cameraId: number) => {
     const { success, msg } = await delFiberCamera(id, cameraId);
     if (!success) {
       message.error(msg);
     } else {
-      message.success("success");
+      message.success(Success);
     }
     setIsChange(!isChange);
     flush();
@@ -37,20 +40,20 @@ export default (props: IProps) => {
             actions={[
               <Popconfirm
                 key={"cancel-trigger-camera"}
-                title="Delete the Fiber"
-                description="Are you sure to delete this Fiber?"
-                okText="Yes"
-                cancelText="No"
+                title={Delete}
+                description={`${AreYouSureToDelete}?`}
+                okText={Yes}
+                cancelText={No}
                 onConfirm={() => dissolve(item.id)}
               >
                 <Button type="link" size="small" danger>
-                  Dissolve
+                  {Dissolve}
                 </Button>
               </Popconfirm>,
             ]}
           >
             <div>
-              <span>camera info</span>
+              <span>{CameraNo}</span>
             </div>
             <div>
               <span>{item.id}</span>

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { getCamera, getFiberDetail, setFiberCamera } from "@/services/admin";
 import styles from "./index.less";
 import { Camera } from "@/models/useItems";
+import { useModel } from "umi";
 interface IProps {
   fiber: { id: number; name: string };
   isModalOpen: boolean;
@@ -14,6 +15,16 @@ export default function (props: IProps) {
   const [value, setValue] = useState<string[]>([]);
   const [options, setOptions] = useState();
   const [loading, setLoading] = useState(false);
+
+  const {
+    AddAssociatedCamera,
+    ZoneName,
+    Cameras,
+    Submit,
+    Success,
+    PleaseSelect,
+  } = useModel("useLocaleText");
+
   const handleChange = (value: string[]) => {
     console.log(value);
     setValue(value);
@@ -38,14 +49,14 @@ export default function (props: IProps) {
   };
   const handleSubmit = async () => {
     if (value.length === 0) {
-      message.info("Please Select Camera");
+      message.info(PleaseSelect);
       return;
     }
 
     value.forEach((item) => {
       setFiberCamera(fiber.id, Number(item));
     });
-    message.success("success");
+    message.success(Success);
     setRelation(false, { id: -1, name: "" });
     flush();
   };
@@ -66,11 +77,11 @@ export default function (props: IProps) {
           setValue([]);
         }}
       >
-        <div className={styles["title"]}>Add Associated Camera</div>
+        <div className={styles["title"]}>{AddAssociatedCamera}</div>
         <div className={styles["content"]}>
           <Row justify={"center"} style={{ margin: "10px 0" }}>
             <Col span={4}>
-              <span className={styles["label"]}>fiber:</span>
+              <span className={styles["label"]}>{ZoneName}:</span>
             </Col>
             <Col span={6}>
               <span className={styles["label"]}>{fiber.name}</span>
@@ -78,14 +89,14 @@ export default function (props: IProps) {
           </Row>
           <Row justify={"center"}>
             <Col span={4}>
-              <span className={styles["label"]}>cameras:</span>
+              <span className={styles["label"]}>{Cameras}:</span>
             </Col>
             <Col span={12}>
               <Select
                 loading={loading}
                 mode="multiple"
                 optionFilterProp="label"
-                placeholder="Please select"
+                placeholder={PleaseSelect}
                 defaultValue={[]}
                 value={value}
                 onChange={handleChange}
@@ -98,7 +109,7 @@ export default function (props: IProps) {
         </div>
         <div className={styles["submit"]}>
           <Button type="primary" onClick={handleSubmit}>
-            submit
+            {Submit}
           </Button>
         </div>
       </Modal>

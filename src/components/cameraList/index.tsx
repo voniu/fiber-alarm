@@ -9,6 +9,8 @@ export default function () {
   const { cameraList, centerTo } = useModel("useItems");
   const { selectFeature, getFeaturesByTypeAndId } = useModel("useMap");
   const { showPopup } = useModel("useModel");
+
+  const { Name } = useModel("useLocaleText");
   if (!cameraList.length) return <div>No Data</div>;
   const columns: TableColumnsType<Camera> = [
     {
@@ -22,7 +24,7 @@ export default function () {
       render: (text) => <span>{text}</span>,
     },
     {
-      title: "Name",
+      title: Name,
       dataIndex: "name",
       render: (text, record) => <span>{record.name}</span>,
     },

@@ -8,7 +8,7 @@ import {
   Popover,
   message,
 } from "antd";
-import { useModel } from "umi";
+import { useModel, FormattedMessage, useIntl } from "umi";
 import { useEffect, useRef, useState } from "react";
 import styles from "./index.less";
 import { getAlarmDetail } from "@/services/monitor";
@@ -57,19 +57,33 @@ const TabContent = (props: { id: number }) => {
   const { centerTo } = useModel("useItems");
   const [alarmDetail, setDetail] = useState<AlarmDetail>();
 
+  const intl = useIntl();
+  const AlarmTime = intl.formatMessage({ id: "Alarm Time" });
+  const ZoneNO = intl.formatMessage({ id: "Zone No." });
+  const AlarmType = intl.formatMessage({ id: "Alarm Type" });
+  const CameraNO = intl.formatMessage({ id: "Camera No." });
+  const Officer = intl.formatMessage({ id: "Officer" });
+
+  const Intrusion = intl.formatMessage({ id: "intrusion" });
+  const Tamper = intl.formatMessage({ id: "tamper" });
+  const WireDisconnect = intl.formatMessage({ id: "wire Disconnect" });
+  const Disconnect = intl.formatMessage({ id: "Disconnect" });
+  const PleaseInput = intl.formatMessage({ id: "Please Input" });
+  const Success = intl.formatMessage({ id: "success" });
+
   const { id } = props;
-  const typeMap = ["intrusion", "tamper", "wire Disconnect", "Disconnect"];
+  const typeMap = [Intrusion, Tamper, WireDisconnect, Disconnect];
   const processInfo = useRef<TextAreaRef>();
 
   const onSubmit = async () => {
     if (!processInfo.current) return;
     const log = processInfo.current.resizableTextArea?.textArea.value;
     if (!log) {
-      message.info("please input the log");
+      message.info(PleaseInput);
       return;
     }
     handleGuard(id, log);
-    message.success("success");
+    message.success(Success);
   };
   useEffect(() => {
     if (alarmList.length > 0) {
@@ -96,21 +110,18 @@ const TabContent = (props: { id: number }) => {
     <div className={styles["tab-content"]}>
       <div className={styles["tab-list"]}>
         <span style={{ fontSize: 16, fontWeight: "bold", color: "black" }}>
-          Alarm Info
+          <FormattedMessage id={"Alarm Info"} />
         </span>
         <div className={styles["tab-info"]}>
           <DescriptionText
-            label="Alarm Time"
+            label={AlarmTime}
             content={dayjs(alarmDetail?.createTime).format(
               "MMMM D, YYYY h:mm A"
             )}
           />
+          <DescriptionText label={ZoneNO} content={alarmDetail?.fiber.name} />
           <DescriptionText
-            label="Fiber Name"
-            content={alarmDetail?.fiber.name}
-          />
-          <DescriptionText
-            label="Alarm Type"
+            label={AlarmType}
             content={
               typeof alarmDetail?.type === "number"
                 ? typeMap[alarmDetail?.type]
@@ -118,7 +129,7 @@ const TabContent = (props: { id: number }) => {
             }
           />
           <DescriptionText
-            label="Camera Info"
+            label={CameraNO}
             Other={() => (
               <div className={styles["camera-scroll"]}>
                 {alarmDetail?.snapshots.map((item) => {
@@ -135,11 +146,11 @@ const TabContent = (props: { id: number }) => {
             )}
           />
         </div>
-        <DescriptionText label="Manager" content={monitor?.name} />
+        <DescriptionText label={Officer} content={monitor?.name} />
         <div className={styles["tab-sub"]}>
           <TextArea ref={processInfo} />
           <Button style={{ marginTop: 20 }} onClick={onSubmit}>
-            submit
+            <FormattedMessage id={"submit & close"} />
           </Button>
         </div>
       </div>
@@ -206,7 +217,7 @@ export default function () {
                         setTrumpetOn(false);
                       }}
                     >
-                      click to close
+                      <FormattedMessage id={"click to close"} />
                     </Button>
                   }
                 >

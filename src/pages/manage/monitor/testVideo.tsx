@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import RtspVideo from "@/components/map/videoModal/video";
 import { Modal } from "antd";
+import { useModel } from "umi";
 interface IProps {
   cameras: any;
   open: boolean;
@@ -8,12 +9,13 @@ interface IProps {
 }
 export default (props: IProps) => {
   const { cameras, open, onCancel } = props;
+  const { Monitor } = useModel("useLocaleText");
   useEffect(() => {}, []);
   return (
     <>
       <Modal
         style={{ top: 100 }}
-        title={`Monitor`}
+        title={Monitor}
         footer={null}
         open={open}
         onCancel={onCancel}

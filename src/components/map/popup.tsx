@@ -1,4 +1,4 @@
-import { useModel } from "umi";
+import { useModel, FormattedMessage } from "umi";
 import { useEffect, useState } from "react";
 import { Overlay } from "ol";
 import { Camera, Fiber } from "@/models/useItems";
@@ -23,9 +23,11 @@ function CameraDetail({ camera }: { camera?: Camera }) {
     <div>
       <div>{camera.name}</div>
       <div style={{ fontSize: 14 }}>ID: {camera.id}</div>
-      <div style={{ fontSize: 14 }}>Location: {camera.location.toString()}</div>
+      <div style={{ fontSize: 14 }}>
+        <FormattedMessage id={"Location"} />: {camera.location.toString()}
+      </div>
       <Button ghost onClick={() => setOpen(true)}>
-        View Camera
+        <FormattedMessage id={"View Camera"} />
       </Button>
       <VideoModal id={camera.id} open={open} onCancel={() => setOpen(false)} />
     </div>
@@ -57,7 +59,12 @@ function FiberDetailList({ fiber }: { fiber?: Fiber }) {
       <div>{fiber?.name}</div>
       <div style={{ fontSize: 14 }}>ID: {fiber.id}</div>
       {fiberDetail?.triggerCameras.map((item) => {
-        return <div key={item.id}>{`camera: ${item.name}`}</div>;
+        return (
+          <div key={item.id}>
+            <FormattedMessage id={"camera"} />
+            {`: ${item.name}`}
+          </div>
+        );
       })}
     </div>
   );

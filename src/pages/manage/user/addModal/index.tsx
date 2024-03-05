@@ -22,6 +22,18 @@ export default (props: IProps) => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const { admin } = useModel("useAdminInfo");
+  const {
+    Add,
+    Success,
+    Officer,
+    Submit,
+    Guarder,
+    Name,
+    NickName,
+    Identity,
+    Password,
+    Admin,
+  } = useModel("useLocaleText");
   const onClose = () => {
     onCancel();
     form.resetFields();
@@ -51,7 +63,7 @@ export default (props: IProps) => {
         return;
       }
     }
-    message.success("success");
+    message.success(Success);
     onClose();
     flush();
   };
@@ -71,7 +83,7 @@ export default (props: IProps) => {
         forceRender
       >
         <p style={{ fontSize: 20, fontWeight: "bold", height: 20 }}>
-          Add {`${listType === "user" ? "Manager" : "Guard"}`}
+          {Add} {`${listType === "user" ? Officer : Guarder}`}
         </p>
         <div className={styles["main"]}>
           <ConfigProvider
@@ -96,9 +108,9 @@ export default (props: IProps) => {
               initialValues={{ type: 2 }}
             >
               <Form.Item
-                label={"Name"}
+                label={Name}
                 name={"name"}
-                rules={[{ required: true, message: "Please input" }]}
+                rules={[{ required: true }]}
               >
                 <Input />
               </Form.Item>
@@ -106,39 +118,39 @@ export default (props: IProps) => {
               {listType === "user" && (
                 <>
                   <Form.Item
-                    label={"NickName"}
+                    label={NickName}
                     name={"nickname"}
-                    rules={[{ required: true, message: "Please input" }]}
+                    rules={[{ required: true }]}
                   >
                     <Input />
                   </Form.Item>
                   <Form.Item
-                    label={"Identity"}
+                    label={Identity}
                     name={"type"}
-                    rules={[{ required: true, message: "Please input" }]}
+                    rules={[{ required: true }]}
                   >
                     <Select
                       disabled={admin?.type !== 0}
                       options={[
-                        { value: 1, label: "admin" },
-                        { value: 2, label: "manager" },
+                        { value: 1, label: Admin },
+                        { value: 2, label: Officer },
                       ]}
                     />
                   </Form.Item>
                   <Form.Item
                     className={styles["form-item"]}
-                    label="Password"
+                    label={Password}
                     name={"password"}
-                    rules={[{ required: true, message: "Please input" }]}
+                    rules={[{ required: true }]}
                   >
-                    <Input.Password placeholder="input" />
+                    <Input.Password placeholder="" />
                   </Form.Item>
                 </>
               )}
 
               <Form.Item style={{ display: "flex", justifyContent: "center" }}>
                 <Button type="primary" htmlType="submit" loading={loading}>
-                  submit
+                  {Submit}
                 </Button>
               </Form.Item>
             </Form>

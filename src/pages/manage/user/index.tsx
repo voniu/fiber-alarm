@@ -7,6 +7,7 @@ import { User } from "@/type";
 import UserList from "./list/userList";
 import GuardList from "./list/guardList";
 import AddModal from "./addModal";
+import { useModel } from "umi";
 
 const UserManage = () => {
   const [data, setData] = useState<User[]>();
@@ -15,6 +16,8 @@ const UserManage = () => {
   const [loading1, setLoading1] = useState(false);
   const [loading2, setLoading2] = useState(false);
   const [isArchived, setArchived] = useState(false);
+  const { Guarder, SuspendedUser, Add, UserManage, User } =
+    useModel("useLocaleText");
   const onCancel = () => {
     setIsOpen(false);
   };
@@ -51,23 +54,23 @@ const UserManage = () => {
   return (
     <div>
       <p style={{ fontSize: 20, fontWeight: "bold", height: 20 }}>
-        User Manage
+        {UserManage}
       </p>
       <div className={styles["main"]}>
         <div className={styles["header"]}>
           <Radio.Group value={listType} onChange={handleChange} size="middle">
-            <Radio.Button value="user">user</Radio.Button>
-            <Radio.Button value="guard">guard</Radio.Button>
+            <Radio.Button value="user">{User}</Radio.Button>
+            <Radio.Button value="guard">{Guarder}</Radio.Button>
           </Radio.Group>
           <div className={styles["operator"]}>
             <div>
               <Checkbox style={{ fontWeight: "bold" }} onChange={handleArchive}>
-                isArchived
+                {SuspendedUser}
               </Checkbox>
             </div>
             <div>
               <Button type="primary" onClick={() => setIsOpen(true)}>
-                Add
+                {Add}
               </Button>
             </div>
           </div>

@@ -24,6 +24,23 @@ interface IProps {
 export default function (props: IProps) {
   const { edit, setRelation, data, flush, loading, isArchived } = props;
   const { admin } = useModel("useAdminInfo");
+  const {
+    Success,
+    Name,
+    Location,
+    CheckMap,
+    Operator,
+    Edit,
+    Suspend,
+    UndoSuspend,
+    Delete,
+    Relation,
+    Yes,
+    No,
+    AreYouSureToSuspend,
+    AreYouSureToUndoSuspend,
+    AreYouSureToDelete,
+  } = useModel("useLocaleText");
   const [mapModal, setMapModal] = useState({
     id: -1,
     type: "",
@@ -34,7 +51,7 @@ export default function (props: IProps) {
     if (!success) {
       message.error(msg);
     } else {
-      message.success("success");
+      message.success(Success);
     }
     flush();
   };
@@ -43,7 +60,7 @@ export default function (props: IProps) {
     if (!success) {
       message.error(msg);
     } else {
-      message.success("success");
+      message.success(Success);
     }
     flush();
   };
@@ -61,12 +78,12 @@ export default function (props: IProps) {
       render: (text) => <a>{text}</a>,
     },
     {
-      title: "Name",
+      title: Name,
       dataIndex: "name",
       render: (text, record) => <a>{record.name}</a>,
     },
     {
-      title: "Location",
+      title: Location,
       dataIndex: "location",
       render: (_, record) => {
         return (
@@ -76,13 +93,13 @@ export default function (props: IProps) {
               setMapModal({ id: record.id, type: "fiber", isModalOpen: true });
             }}
           >
-            Check Map
+            {CheckMap}
           </Button>
         );
       },
     },
     {
-      title: "Operator",
+      title: Operator,
       key: "operator",
       render: (_, record) => {
         return (
@@ -94,7 +111,7 @@ export default function (props: IProps) {
                 edit(record.id, "fiber");
               }}
             >
-              {"Edit"}
+              {Edit}
             </Button>
             <Button
               type="primary"
@@ -103,44 +120,44 @@ export default function (props: IProps) {
                 setRelation(true, { id: record.id, name: record.name });
               }}
             >
-              {"Relation"}
+              {Relation}
             </Button>
             {isArchived && (
               <Popconfirm
-                title="Undo archive the fiber"
-                description="Are you sure to Undo archive the fiber?"
-                okText="Yes"
-                cancelText="No"
+                title={UndoSuspend}
+                description={`${AreYouSureToUndoSuspend}?`}
+                okText={Yes}
+                cancelText={No}
                 onConfirm={() => setArchive(record.id, false)}
               >
-                <Button size="small">Undo archive</Button>
+                <Button size="small">{UndoSuspend}</Button>
               </Popconfirm>
             )}
             {!isArchived && (
               <Popconfirm
-                title="archive the fiber"
-                description="Are you sure to archive the fiber?"
-                okText="Yes"
-                cancelText="No"
+                title={Suspend}
+                description={`${AreYouSureToSuspend}`}
+                okText={Yes}
+                cancelText={No}
                 onConfirm={() => setArchive(record.id, true)}
               >
                 <Button type="primary" size="small">
-                  Archive
+                  {Suspend}
                 </Button>
               </Popconfirm>
             )}
             {isArchived && admin?.type === 0 && (
               <Popconfirm
-                title="Delete the Fiber"
-                description="Are you sure to delete this Fiber?"
-                okText="Yes"
-                cancelText="No"
+                title={Delete}
+                description={`${AreYouSureToDelete}?`}
+                okText={Yes}
+                cancelText={No}
                 onConfirm={() => {
                   deleteFiber(record.id);
                 }}
               >
                 <Button danger size="small">
-                  Delete
+                  {Delete}
                 </Button>
               </Popconfirm>
             )}

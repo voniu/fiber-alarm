@@ -1,4 +1,4 @@
-import { useModel } from "umi";
+import { useModel, FormattedMessage } from "umi";
 import { changeSelfPass } from "@/services/admin";
 import { Form, Input, Button, message, Modal } from "antd";
 import { useState } from "react";
@@ -11,6 +11,16 @@ export default (props: IProps) => {
   const [loading, setLoading] = useState(false);
   const { open, onCancel } = props;
   const { admin } = useModel("useAdminInfo");
+
+  const {
+    ChangePassword,
+    CurrentPassword,
+    NewPassword,
+    ConfirmPassword,
+    TwoInputsAreInConsistent,
+    Success,
+  } = useModel("useLocaleText");
+
   const onFinish = async (values: any) => {
     console.log(values);
 
@@ -20,7 +30,7 @@ export default (props: IProps) => {
     setLoading(false);
     form.resetFields();
     onCancel();
-    message.success("success");
+    message.success(Success);
   };
 
   const onFinishFailed = (errorInfo: any) => {
@@ -30,7 +40,7 @@ export default (props: IProps) => {
   return (
     <Modal
       style={{ top: 120 }}
-      title={"Change Password"}
+      title={ChangePassword}
       footer={null}
       keyboard={false}
       open={open}
@@ -45,33 +55,33 @@ export default (props: IProps) => {
         layout="vertical"
       >
         <Form.Item
-          label="current password"
+          label={CurrentPassword}
           name="currentPassword"
-          rules={[{ required: true, message: "Please input current password" }]}
+          rules={[{ required: true }]}
         >
           <Input.Password />
         </Form.Item>
 
         <Form.Item
-          label="new password"
+          label={NewPassword}
           name="newPassword"
-          rules={[{ required: true, message: "Please input new password" }]}
+          rules={[{ required: true }]}
         >
           <Input.Password />
         </Form.Item>
 
         <Form.Item
-          label="confirm password"
+          label={ConfirmPassword}
           name="confirmNewPassword"
           dependencies={["newPassword"]}
           rules={[
-            { required: true, message: "please confirm password" },
+            { required: true },
             ({ getFieldValue }) => ({
               validator(_, value) {
                 if (!value || getFieldValue("newPassword") === value) {
                   return Promise.resolve();
                 }
-                return Promise.reject("Two inputs are inconsistent");
+                return Promise.reject(TwoInputsAreInConsistent);
               },
             }),
           ]}
@@ -81,7 +91,7 @@ export default (props: IProps) => {
 
         <Form.Item>
           <Button type="primary" htmlType="submit" loading={loading}>
-            Submit
+            <FormattedMessage id={"submit"} />
           </Button>
         </Form.Item>
       </Form>

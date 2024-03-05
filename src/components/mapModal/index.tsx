@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Modal } from "antd";
 import Map from "./map";
+import { FormattedMessage } from "umi";
 interface IProps {
   id: number;
   type: string;
@@ -21,7 +22,9 @@ export default (props: IProps) => {
       onCancel={onClose}
       afterClose={onClose}
     >
-      <p style={{ fontWeight: "bold" }}>{"Location"}</p>
+      <p style={{ fontWeight: "bold" }}>
+        <FormattedMessage id={"Location"} />
+      </p>
       <Map id={id} type={type} />
     </Modal>
   );

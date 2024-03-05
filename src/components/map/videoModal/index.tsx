@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import RtspVideo from "./video";
 import { Modal } from "antd";
+import { useIntl } from "umi";
 interface IProps {
   id?: number;
   open: boolean;
@@ -8,12 +9,14 @@ interface IProps {
 }
 export default (props: IProps) => {
   const { id, open, onCancel } = props;
+  const intl = useIntl();
+  const camera = intl.formatMessage({ id: "camera" });
   useEffect(() => {}, []);
   return (
     <>
       <Modal
         style={{ top: 120 }}
-        title={`Monitor(cameraId:${id})`}
+        title={`Monitor(${camera}:${id})`}
         footer={null}
         open={open}
         onCancel={onCancel}

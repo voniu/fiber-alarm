@@ -4,6 +4,7 @@ import { Button, Col, Empty, List, Popconfirm, Row, message } from "antd";
 import CreateTask from "./createTask";
 import { useEffect, useState } from "react";
 import { delTask, getTask } from "@/services/admin";
+import { FormattedMessage, useModel } from "umi";
 const rendertTskItem = (props: {
   // fibers: Fiber[];
   time: { hour: number; minute: number };
@@ -11,6 +12,7 @@ const rendertTskItem = (props: {
   // level: number;
 }) => {
   const { time, name } = props;
+
   // const getFibersName = (fibers: Fiber[]) => {
   //   return fibers
   //     .map((item) => {
@@ -22,7 +24,9 @@ const rendertTskItem = (props: {
     <div className={styles["list-item"]}>
       <Row>
         <Col span={4}>
-          <span className={styles["item-label"]}>Name:</span>
+          <span className={styles["item-label"]}>
+            <FormattedMessage id={"Name"} />:
+          </span>
         </Col>
         <Col span={20}>
           <span className={styles["item-content"]}>{name}</span>
@@ -30,7 +34,9 @@ const rendertTskItem = (props: {
       </Row>
       <Row>
         <Col span={4}>
-          <span className={styles["item-label"]}>Time:</span>
+          <span className={styles["item-label"]}>
+            <FormattedMessage id={"Time"} />:
+          </span>
         </Col>
         <Col span={20}>
           <span className={styles["item-content"]}>{`${time.hour
@@ -67,7 +73,17 @@ const FiberSensitivity = () => {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(false);
   const [listLoading, setListLoading] = useState(false);
-
+  const {
+    Success,
+    FiberSensitivity,
+    Create,
+    TaskList,
+    Delete,
+    Check,
+    AreYouSureToDelete,
+    Yes,
+    No,
+  } = useModel("useLocaleText");
   const fetchTask = async () => {
     setListLoading(true);
     const { data } = await getTask();
@@ -81,7 +97,7 @@ const FiberSensitivity = () => {
     if (!success) {
       message.error(msg);
     } else {
-      message.success("success");
+      message.success(Success);
     }
     setLoading(false);
     fetchTask();
@@ -96,7 +112,7 @@ const FiberSensitivity = () => {
   return (
     <div>
       <p style={{ fontSize: 20, fontWeight: "bold", height: 20 }}>
-        Fiber Sensitivity
+        {FiberSensitivity}
       </p>
       <div className={styles["container"]}>
         <div className={styles["list-container"]}>
@@ -111,7 +127,7 @@ const FiberSensitivity = () => {
                 });
               }}
             >
-              Create
+              {Create}
             </Button>
           </div>
           <div className={styles["list"]}>
@@ -129,7 +145,7 @@ const FiberSensitivity = () => {
               }}
               header={
                 <p style={{ fontSize: 20, fontWeight: "bold", height: 20 }}>
-                  Task List
+                  {TaskList}
                 </p>
               }
               pagination={{ pageSize: 3, showSizeChanger: false }}
@@ -145,17 +161,17 @@ const FiberSensitivity = () => {
                         type="primary"
                         onClick={() => handleCheck(item.id)}
                       >
-                        check
+                        {Check}
                       </Button>,
                       <Popconfirm
                         key="delete-task"
-                        title={"Delete the task?"}
-                        okText="Yes"
-                        cancelText="No"
+                        title={`${AreYouSureToDelete}?`}
+                        okText={Yes}
+                        cancelText={No}
                         onConfirm={() => handleDelete(item.id)}
                       >
                         <Button danger loading={loading}>
-                          Delete
+                          {Delete}
                         </Button>
                       </Popconfirm>,
                     ]}

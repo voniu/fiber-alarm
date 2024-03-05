@@ -14,6 +14,7 @@ import {
   updateControl,
 } from "@/services/admin";
 import { deviceType } from "@/constant";
+import { useModel } from "umi";
 interface IProps {
   operator: string;
   isModalOpen: boolean;
@@ -41,13 +42,39 @@ export default (props: IProps) => {
     setLayer,
     flush,
   } = props;
+  const {
+    AddCamera,
+    AddFiber,
+    AddFiberOpticHost,
+    EditCamera,
+    EditFiber,
+    EditFiberOpticHost,
+    Name,
+    Host,
+    Username,
+    SnapshotPort,
+    SnapshotChannel,
+    StreamPort,
+    StreamChannel,
+    Port,
+    Password,
+    Location,
+    Submit,
+    FiberOpticHost,
+    ZoneNo,
+    SubZoneNo,
+    AutoSelect,
+    Type,
+    PleaseInputNumber,
+  } = useModel("useLocaleText");
+
   const titleMap: any = {
-    "add-camera": "Add Camera",
-    "add-fiber": "Add fiber",
-    "add-fiber-control": "Add Fiber Control",
-    "edit-camera": "Edit Camera",
-    "edit-fiber": "Edit Fiber",
-    "edit-fiber-control": "Edit Fiber Control",
+    "add-camera": AddCamera,
+    "add-fiber": AddFiber,
+    "add-fiber-control": AddFiberOpticHost,
+    "edit-camera": EditCamera,
+    "edit-fiber": EditFiber,
+    "edit-fiber-control": EditFiberOpticHost,
   };
   const [form] = Form.useForm();
   const [fiberControl, setFiberControl] = useState<{
@@ -271,61 +298,55 @@ export default (props: IProps) => {
             >
               <Form.Item
                 className={styles["form-item"]}
-                label="Name"
+                label={Name}
                 name={"name"}
-                rules={[{ required: true, message: "Please input the name!" }]}
-              >
-                <Input placeholder="input" />
-              </Form.Item>
-              <Form.Item
-                className={styles["form-item"]}
-                label="Host"
-                name={"host"}
-                rules={[{ required: true, message: "Please input the Host" }]}
-              >
-                <Input placeholder="input" />
-              </Form.Item>
-              <Form.Item
-                className={styles["form-item"]}
-                label="Username"
-                name={"username"}
-                rules={[
-                  { required: true, message: "Please input the username!" },
-                ]}
-              >
-                <Input placeholder="input" />
-              </Form.Item>
-              <Form.Item
-                className={styles["form-item"]}
-                label="Password"
-                name={"password"}
-                rules={[
-                  { required: true, message: "Please input the password!" },
-                ]}
-              >
-                <Input placeholder="input" />
-              </Form.Item>
-              <Form.Item
-                className={styles["form-item"]}
-                label="SnapshotPath"
-                name={"snapshotPath"}
-                rules={[
-                  { required: true, message: "Please input the snapshotPath!" },
-                ]}
+                rules={[{ required: true }]}
               >
                 <Input placeholder="" />
               </Form.Item>
               <Form.Item
                 className={styles["form-item"]}
-                label="SnapshotPort"
+                label={Host}
+                name={"host"}
+                rules={[{ required: true }]}
+              >
+                <Input placeholder="" />
+              </Form.Item>
+              <Form.Item
+                className={styles["form-item"]}
+                label={Username}
+                name={"username"}
+                rules={[{ required: true }]}
+              >
+                <Input placeholder="" />
+              </Form.Item>
+              <Form.Item
+                className={styles["form-item"]}
+                label={Password}
+                name={"password"}
+                rules={[{ required: true }]}
+              >
+                <Input placeholder="" />
+              </Form.Item>
+              <Form.Item
+                className={styles["form-item"]}
+                label={SnapshotChannel}
+                name={"snapshotPath"}
+                rules={[{ required: true }]}
+              >
+                <Input placeholder="" />
+              </Form.Item>
+              <Form.Item
+                className={styles["form-item"]}
+                label={SnapshotPort}
                 name={"snapshotPort"}
                 rules={[
-                  { required: true, message: "Please input snapshotPort!" },
+                  { required: true },
                   {
                     validator: async (_, value) => {
                       const regex = /^\d+$/;
                       if (!regex.test(value)) {
-                        return Promise.reject("Please input numbers only!");
+                        return Promise.reject(`${PleaseInputNumber}!`);
                       }
                       return Promise.resolve();
                     },
@@ -336,25 +357,23 @@ export default (props: IProps) => {
               </Form.Item>
               <Form.Item
                 className={styles["form-item"]}
-                label="StreamPath"
+                label={StreamChannel}
                 name={"streamPath"}
-                rules={[
-                  { required: true, message: "Please input streamPath!" },
-                ]}
+                rules={[{ required: true }]}
               >
                 <Input placeholder="" />
               </Form.Item>
               <Form.Item
                 className={styles["form-item"]}
-                label="StreamPort"
+                label={StreamPort}
                 name={"streamPort"}
                 rules={[
-                  { required: true, message: "Please input streamPort!" },
+                  { required: true },
                   {
                     validator: async (_, value) => {
                       const regex = /^\d+$/;
                       if (!regex.test(value)) {
-                        return Promise.reject("Please input numbers only!");
+                        return Promise.reject(`${PleaseInputNumber}!`);
                       }
                       return Promise.resolve();
                     },
@@ -365,11 +384,11 @@ export default (props: IProps) => {
               </Form.Item>
               <Form.Item
                 className={styles["form-item"]}
-                label="Location"
+                label={Location}
                 name={"location"}
-                rules={[{ required: true, message: "Please input location!" }]}
+                rules={[{ required: true }]}
               >
-                <Input.TextArea autoSize disabled placeholder="auto select" />
+                <Input.TextArea autoSize disabled placeholder={AutoSelect} />
               </Form.Item>
 
               <Form.Item
@@ -377,7 +396,7 @@ export default (props: IProps) => {
                 wrapperCol={{ offset: 16 }}
               >
                 <Button type="primary" htmlType="submit" loading={loading}>
-                  Submit
+                  {Submit}
                 </Button>
               </Form.Item>
             </Form>
@@ -393,19 +412,17 @@ export default (props: IProps) => {
             >
               <Form.Item
                 className={styles["form-item"]}
-                label="Name"
+                label={Name}
                 name={"name"}
-                rules={[{ required: true, message: "Please input the name!" }]}
+                rules={[{ required: true }]}
               >
-                <Input placeholder="input" />
+                <Input placeholder="" />
               </Form.Item>
               <Form.Item
                 className={styles["form-item"]}
-                label="control"
+                label={FiberOpticHost}
                 name={"fiberControl"}
-                rules={[
-                  { required: true, message: "Please select fiber control!" },
-                ]}
+                rules={[{ required: true }]}
               >
                 <Select
                   optionLabelProp="label"
@@ -419,41 +436,41 @@ export default (props: IProps) => {
                 <>
                   <Form.Item
                     className={styles["form-item"]}
-                    label="Zone"
+                    label={ZoneNo}
                     name={"zone"}
                     rules={[
-                      { required: true, message: "Please input the zone!" },
+                      { required: true },
                       {
                         validator: async (_, value) => {
                           const regex = /^\d+$/;
                           if (!regex.test(value)) {
-                            return Promise.reject("Please input numbers only!");
+                            return Promise.reject(`${PleaseInputNumber}!`);
                           }
                           return Promise.resolve();
                         },
                       },
                     ]}
                   >
-                    <Input placeholder="input" />
+                    <Input placeholder="" />
                   </Form.Item>
                   <Form.Item
                     className={styles["form-item"]}
-                    label="Sub Zone"
+                    label={SubZoneNo}
                     name={"subzone"}
                     rules={[
-                      { required: true, message: "Please input the sub zone!" },
+                      { required: true },
                       {
                         validator: async (_, value) => {
                           const regex = /^\d+$/;
                           if (!regex.test(value)) {
-                            return Promise.reject("Please input numbers only!");
+                            return Promise.reject(`${PleaseInputNumber}!`);
                           }
                           return Promise.resolve();
                         },
                       },
                     ]}
                   >
-                    <Input placeholder="input" />
+                    <Input placeholder="" />
                   </Form.Item>
                 </>
               )}
@@ -461,28 +478,24 @@ export default (props: IProps) => {
                 <>
                   <Form.Item
                     className={styles["form-item"]}
-                    label="Zone"
+                    label={ZoneNo}
                     name={"zone"}
-                    rules={[
-                      { required: true, message: "Please input the zone!" },
-                    ]}
+                    rules={[{ required: true }]}
                   >
-                    <Input placeholder="input" />
+                    <Input placeholder="" />
                   </Form.Item>
                 </>
               )}
               <Form.Item
                 className={styles["form-item"]}
-                label="Location"
+                label={Location}
                 name={"location"}
-                rules={[
-                  { required: true, message: "Please input the location!" },
-                ]}
+                rules={[{ required: true }]}
               >
                 <Input.TextArea
                   autoSize={{ maxRows: 4 }}
                   disabled
-                  placeholder="auto select"
+                  placeholder={AutoSelect}
                 />
               </Form.Item>
               <Form.Item
@@ -490,7 +503,7 @@ export default (props: IProps) => {
                 wrapperCol={{ offset: 16 }}
               >
                 <Button type="primary" htmlType="submit" loading={loading}>
-                  Submit
+                  {Submit}
                 </Button>
               </Form.Item>
             </Form>
@@ -506,46 +519,44 @@ export default (props: IProps) => {
             >
               <Form.Item
                 className={styles["form-item"]}
-                label="Name"
+                label={Name}
                 name={"name"}
-                rules={[{ required: true, message: "Please input your name!" }]}
+                rules={[{ required: true }]}
               >
-                <Input placeholder="input" />
+                <Input placeholder="" />
               </Form.Item>
               <Form.Item
                 className={styles["form-item"]}
-                label="Host Name"
+                label={Host + Name}
                 name={"host"}
-                rules={[
-                  { required: true, message: "Please input the host name!" },
-                ]}
+                rules={[{ required: true }]}
               >
-                <Input placeholder="input" />
+                <Input placeholder="" />
               </Form.Item>
               <Form.Item
                 className={styles["form-item"]}
-                label="Port"
+                label={Port}
                 name={"port"}
                 rules={[
-                  { required: true, message: "Please input the port!" },
+                  { required: true },
                   {
                     validator: async (_, value) => {
                       const regex = /^\d+$/;
                       if (!regex.test(value)) {
-                        return Promise.reject("Please input numbers only!");
+                        return Promise.reject(`${PleaseInputNumber}!`);
                       }
                       return Promise.resolve();
                     },
                   },
                 ]}
               >
-                <Input placeholder="input" />
+                <Input placeholder="" />
               </Form.Item>
               <Form.Item
                 className={styles["form-item"]}
-                label="Type"
+                label={Type}
                 name={"type"}
-                rules={[{ required: true, message: "Please select the type!" }]}
+                rules={[{ required: true }]}
               >
                 <Select
                   disabled={operator === "edit"}
@@ -560,7 +571,7 @@ export default (props: IProps) => {
                 wrapperCol={{ offset: 16 }}
               >
                 <Button type="primary" htmlType="submit" loading={loading}>
-                  Submit
+                  {Submit}
                 </Button>
               </Form.Item>
             </Form>

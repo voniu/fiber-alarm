@@ -14,6 +14,8 @@ const MapCenter = (props: IProps) => {
   const { open, onClose } = props;
   const [draw, setDraw] = useState<any>();
   const [layer, setLayer] = useState<any>();
+  const { Success, MapSetting, Zoom, Center, AutoSelect, Submit } =
+    useModel("useLocaleText");
 
   const [loading, setLoading] = useState(false);
   const zoomOption = (n: number) => {
@@ -49,7 +51,7 @@ const MapCenter = (props: IProps) => {
       if (!success) {
         message.error(msg);
       } else {
-        message.success("success");
+        message.success(Success);
       }
     }
     setLoading(false);
@@ -80,7 +82,7 @@ const MapCenter = (props: IProps) => {
         width={1100}
         onCancel={afterClose}
       >
-        <p style={{ fontWeight: "bold" }}>{"Map Setting"}</p>
+        <p style={{ fontWeight: "bold" }}>{MapSetting}</p>
 
         <div className={styles["container"]}>
           <div style={{ width: 400 }}>
@@ -93,7 +95,7 @@ const MapCenter = (props: IProps) => {
               onFinish={onFinish}
             >
               <Form.Item
-                label="Zoom"
+                label={Zoom}
                 name={"zoom"}
                 rules={[
                   { required: true, message: "Please select zoom level!" },
@@ -103,7 +105,7 @@ const MapCenter = (props: IProps) => {
               </Form.Item>
 
               <Form.Item
-                label="Center"
+                label={Center}
                 name={"location"}
                 rules={[
                   { required: true, message: "Please input the location!" },
@@ -112,12 +114,12 @@ const MapCenter = (props: IProps) => {
                 <Input.TextArea
                   autoSize={{ maxRows: 4 }}
                   disabled
-                  placeholder="auto select"
+                  placeholder={AutoSelect}
                 />
               </Form.Item>
               <Form.Item wrapperCol={{ offset: 16 }}>
                 <Button type="primary" htmlType="submit" loading={loading}>
-                  Submit
+                  {Submit}
                 </Button>
               </Form.Item>
             </Form>

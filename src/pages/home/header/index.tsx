@@ -13,24 +13,26 @@ export default () => {
   return (
     <div className={styles["header"]}>
       <div className={styles["header-title"]}>
-        <span><FormattedMessage id="Intelligent Security Alarm Platform" /></span>
+        <span>
+          <FormattedMessage id="Integrated Security Operation Platform" />
+        </span>
       </div>
       <div className={styles["select"]}>
         <span className={styles["select-span"]} style={{ color: "#d3d3d3" }}>
-          Manager:
+          <FormattedMessage id="Officer" />:
         </span>
         <span className={styles["select-span"]} style={{ color: "#ffffff" }}>
           {monitor?.name}
         </span>
         <span className={styles["select-span"]} style={{ color: "#d3d3d3" }}>
-          Guard:
+          <FormattedMessage id="Guarder" />:
         </span>
         <span className={styles["select-span"]} style={{ color: "#ffffff" }}>
           {guard?.name}
         </span>
         <SelectLang />
         <Button style={{ marginLeft: 20 }} onClick={ExitDuty}>
-          EXIT DUTY
+          <FormattedMessage id="EXIT DUTY" />
         </Button>
       </div>
       <AuthModal

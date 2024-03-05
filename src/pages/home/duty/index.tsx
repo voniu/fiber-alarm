@@ -3,7 +3,7 @@ import WithAuth from "@/wrappers/authDuty";
 import { Table, Popconfirm, ConfigProvider, message } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useEffect, useState } from "react";
-import { useModel, history } from "umi";
+import { useModel, history, FormattedMessage } from "umi";
 import styles from "./index.less";
 interface DutyState {
   isAnyoneOnDuty: boolean; // 是否有主管处于值班状态，true 才有下面
@@ -32,6 +32,9 @@ const Duty = () => {
   const [loading, setLoading] = useState(true);
   const { setGuards, resumeGuards, logout } = useModel("useUserInfo");
   const [outLoading, setOutLoading] = useState(false);
+
+  const { Name, Yes, No, SureToConfirm } = useModel("useLocaleText");
+
   const handleConfirm = async (guardId: number) => {
     const { success, msg } = await setGuards(guardId);
     if (!success) {
@@ -80,7 +83,7 @@ const Duty = () => {
   }, []);
   const columns: ColumnsType<DataType> = [
     {
-      title: "Name",
+      title: Name,
       dataIndex: "name",
       render: (text) => <a>{text}</a>,
     },
@@ -89,14 +92,14 @@ const Duty = () => {
       render: (_, record) => {
         return (
           <Popconfirm
-            title="Sure to Confirm?"
+            title={`${SureToConfirm}?`}
             onConfirm={() => handleConfirm(record.id)}
-            okText="Yes"
-            cancelText="No"
+            okText={Yes}
+            cancelText={No}
           >
             {
               <a style={{ color: "black", fontWeight: "bold" }}>
-                {"Start Duty"}
+                <FormattedMessage id={"Guarder"} />
               </a>
             }
           </Popconfirm>
@@ -116,14 +119,21 @@ const Duty = () => {
             color: "#fff",
           }}
         >
-          Duty Manage
+          <FormattedMessage id={"Guard Duty arrangement"} />
         </p>
         <div
           className={styles["logout-btn"]}
           onClick={handleLogout}
           style={{ pointerEvents: `${outLoading ? "none" : "auto"}` }}
         >
-          {outLoading ? "Logout.." : "Logout"}
+          {outLoading ? (
+            <>
+              <FormattedMessage id={"Logout"} />
+              ..
+            </>
+          ) : (
+            <FormattedMessage id={"Logout"} />
+          )}
         </div>
         {!dutyState?.isAnyoneOnDuty && (
           <ConfigProvider
@@ -159,30 +169,54 @@ const Duty = () => {
         {dutyState?.isAnyoneOnDuty && dutyState.isSelfOnDuty && (
           <div className={styles["hint-content"]}>
             <p>
-              The security guard you set is currently on duty, click to resume
-              duty.
+              <FormattedMessage
+                id={
+                  "The security guard you set is currently on duty click to resume duty."
+                }
+              />
             </p>
             <div style={{ color: "#699ef8", marginBottom: 10 }}>
-              <div>Current Guard: {dutyState.guard.name}</div>
+              <div>
+                <FormattedMessage id={"Current Guarder"} />:
+                {dutyState.guard.name}
+              </div>
             </div>
             <div
               className={styles["resume-btn"]}
               onClick={handleResume}
               style={{ pointerEvents: `${outLoading ? "none" : "auto"}` }}
             >
-              {outLoading ? <span>Resume..</span> : <span>Resume</span>}
+              {outLoading ? (
+                <span>
+                  <FormattedMessage id={"Resume"} />
+                  ..
+                </span>
+              ) : (
+                <span>
+                  <FormattedMessage id={"Resume"} />
+                </span>
+              )}
             </div>
           </div>
         )}
         {dutyState?.isAnyoneOnDuty && !dutyState.isSelfOnDuty && (
           <div className={styles["hint-content"]}>
             <p>
-              There is currently another supervisor on duty, please contact that
-              supervisor.
+              <FormattedMessage
+                id={
+                  "There is currently another supervisor on duty, please contact that supervisor."
+                }
+              />
             </p>
             <div style={{ color: "#699ef8" }}>
-              <div>Current Manage: {dutyState.manager.name}</div>
-              <div>Current Guard: {dutyState.guard.name}</div>
+              <div>
+                <FormattedMessage id={"Current Officer"} />:
+                {dutyState.manager.name}
+              </div>
+              <div>
+                <FormattedMessage id={"Current Guarder"} />:
+                {dutyState.guard.name}
+              </div>
             </div>
           </div>
         )}

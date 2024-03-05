@@ -7,6 +7,8 @@ const Login = () => {
   const { login, isLogin } = useModel("useAdminInfo");
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
+  const { Account, Password, SuperAdministrationSystem, Login } =
+    useModel("useLocaleText");
 
   const run = async (val: any) => {
     console.log(val);
@@ -29,12 +31,12 @@ const Login = () => {
       <div className={styles.form}>
         <Form size="large" form={form} name="login" onFinish={run}>
           <Divider>
-            <span className={styles.title}>{"Duty Admin System"}</span>
+            <span className={styles.title}>{SuperAdministrationSystem}</span>
           </Divider>
 
           <Form.Item
             name="username"
-            label="username"
+            label={Account}
             labelCol={{ style: { width: 80 } }}
           >
             <Input />
@@ -42,7 +44,7 @@ const Login = () => {
 
           <Form.Item
             name="password"
-            label="password"
+            label={Password}
             labelCol={{ style: { width: 80 } }}
           >
             <Input.Password />
@@ -50,7 +52,7 @@ const Login = () => {
 
           <Form.Item>
             <Button block type="primary" loading={loading} htmlType="submit">
-              Login
+              {Login}
             </Button>
           </Form.Item>
         </Form>

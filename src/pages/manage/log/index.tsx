@@ -5,12 +5,15 @@ import styles from "./index.less";
 import { List, Typography, message } from "antd";
 import { LogInfo } from "@/type";
 import dayjs from "@/utills/day";
+import { useModel } from "umi";
 const LogPage = () => {
   const [data, setData] = useState<LogInfo[]>([]);
   const [page, setPage] = useState(1);
   const [pageSize] = useState(10);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(false);
+
+  const { LogInformation } = useModel("useLocaleText");
   const fetchLog = async (page: number, pageSize: number) => {
     setLoading(true);
     setPage(page);
@@ -31,7 +34,7 @@ const LogPage = () => {
   return (
     <div className={styles["container"]}>
       <p style={{ fontSize: 20, fontWeight: "bold", height: 20 }}>
-        Log Information
+        {LogInformation}
       </p>
       <List
         loading={loading}

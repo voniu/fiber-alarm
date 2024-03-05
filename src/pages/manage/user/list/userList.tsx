@@ -25,6 +25,22 @@ interface IProps {
 }
 export default (props: IProps) => {
   const { data, flush, loading, isArchived } = props;
+  const {
+    Delete,
+    Success,
+    UndoSuspend,
+    Suspend,
+    Name,
+    CreateTime,
+    NickName,
+    Identity,
+    ResetPassword: ResetPasswordText,
+    Yes,
+    No,
+    AreYouSureToSuspend,
+    AreYouSureToUndoSuspend,
+    AreYouSureToDelete,
+  } = useModel("useLocaleText");
   const identity = ["super admin", "admin", "manager"];
   const { admin } = useModel("useAdminInfo");
   const [reset, setRest] = useState<{ open: boolean; id: number }>({
@@ -36,7 +52,7 @@ export default (props: IProps) => {
     if (!success) {
       message.error(msg);
     } else {
-      message.success("success");
+      message.success(Success);
     }
     flush();
   };
@@ -48,7 +64,7 @@ export default (props: IProps) => {
     if (!success) {
       message.error(msg);
     } else {
-      message.success("success");
+      message.success(Success);
     }
     flush();
   };
@@ -57,7 +73,7 @@ export default (props: IProps) => {
     if (!success) {
       message.error(msg);
     } else {
-      message.success("success");
+      message.success(Success);
     }
   };
   const setArchive = async (id: number, archived: boolean) => {
@@ -65,7 +81,7 @@ export default (props: IProps) => {
     if (!success) {
       message.error(msg);
     } else {
-      message.success("success");
+      message.success(Success);
     }
     flush();
   };
@@ -76,12 +92,12 @@ export default (props: IProps) => {
       render: (text) => <a>{text}</a>,
     },
     {
-      title: "Name",
+      title: Name,
       dataIndex: "name",
       render: (text, record) => <a>{record.name}</a>,
     },
     {
-      title: "NickName",
+      title: NickName,
       dataIndex: "nickname",
       width: 200,
       render: (text, record) =>
@@ -101,12 +117,12 @@ export default (props: IProps) => {
         ),
     },
     {
-      title: "Identity",
+      title: Identity,
       dataIndex: "type",
       render: (_, record) => <div>{identity[record.type]}</div>,
     },
     {
-      title: "CreateTime",
+      title: CreateTime,
       dataIndex: "createTime",
       render: (_, record) => (
         <div>{dayjs(record.createTime).format("YYYY/MM/DD")}</div>
@@ -123,13 +139,13 @@ export default (props: IProps) => {
               (admin?.type === 0 ||
                 (admin?.type === 1 && record.type === 2)) && (
                 <Popconfirm
-                  title="Undo archive the user"
-                  description="Are you sure to Undo archive the user?"
-                  okText="Yes"
-                  cancelText="No"
+                  title={UndoSuspend}
+                  description={`${AreYouSureToUndoSuspend}?`}
+                  okText={Yes}
+                  cancelText={No}
                   onConfirm={() => setArchive(record.id, false)}
                 >
-                  <Button size="small">Undo archive</Button>
+                  <Button size="small">{UndoSuspend}</Button>
                 </Popconfirm>
               )}
             {!isArchived &&
@@ -137,14 +153,14 @@ export default (props: IProps) => {
               (admin?.type === 0 ||
                 (admin?.type === 1 && record.type === 2)) && (
                 <Popconfirm
-                  title="archive the user"
-                  description="Are you sure to archive the user?"
-                  okText="Yes"
-                  cancelText="No"
+                  title={Suspend}
+                  description={`${AreYouSureToSuspend}`}
+                  okText={Yes}
+                  cancelText={No}
                   onConfirm={() => setArchive(record.id, true)}
                 >
                   <Button type="primary" size="small">
-                    Archive
+                    {Suspend}
                   </Button>
                 </Popconfirm>
               )}
@@ -154,7 +170,7 @@ export default (props: IProps) => {
                 size="small"
                 onClick={() => setRest({ open: true, id: record.id })}
               >
-                Reset Password
+                {ResetPasswordText}
               </Button>
             )}
             {isArchived &&
@@ -162,14 +178,14 @@ export default (props: IProps) => {
               record.id !== admin?.id &&
               admin?.type === 0 && (
                 <Popconfirm
-                  title="delete the user"
-                  description="Are you sure to delete the user?"
-                  okText="Yes"
-                  cancelText="No"
+                  title={Delete}
+                  description={`${AreYouSureToDelete}?`}
+                  okText={Yes}
+                  cancelText={No}
                   onConfirm={() => deleteUser(record.id)}
                 >
                   <Button danger size="small">
-                    Delete
+                    {Delete}
                   </Button>
                 </Popconfirm>
               )}
