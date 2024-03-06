@@ -13,7 +13,7 @@ export default (props: IProps) => {
   const { isModalOpen, onCancel, reset, flush, id } = props;
   const [form] = Form.useForm();
 
-  const { ResetPassword, Success, Password, Submit } =
+  const { ResetPassword, Success, Password, Submit, PasswordRules } =
     useModel("useLocaleText");
   const onClose = () => {
     onCancel();
@@ -70,7 +70,19 @@ export default (props: IProps) => {
                 className={styles["form-item"]}
                 label={Password}
                 name={"newpassword"}
-                rules={[{ required: true }]}
+                rules={[
+                  { required: true },
+                  {
+                    validator: (_, value) => {
+                      const regex =
+                        /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,10}$/;
+                      if (!value || regex.test(value)) {
+                        return Promise.resolve();
+                      }
+                      return Promise.reject(PasswordRules);
+                    },
+                  },
+                ]}
               >
                 <Input.Password placeholder="" />
               </Form.Item>

@@ -158,5 +158,6 @@
     "Are you sure to suspend ": "",
     "Please Input": "",
     "input processInfo": "",
-    "Please input numbers only": ""
+    "Please input numbers only": "",
+    "6-10 digit password. Must including Letters, numbers, special symbols": ""
 }

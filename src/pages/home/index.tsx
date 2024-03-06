@@ -42,20 +42,27 @@ function HomePage() {
       </div>
       <div className="index_tabs">
         <div className="inner" style={{ height: "100%" }}>
-          <div className="left_cage">
+          <div className="left_cage" style={{ width: "20%" }}>
             <div
               className={`dataAllBorder01 cage_cl overflow-style`}
-              style={{ height: "48%" }}
+              style={{ height: "100%" }}
             >
-              <div style={{ display: "flex", justifyContent: "center" }}>
+              <div
+                style={{
+                  height: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  gap: 5,
+                }}
+              >
                 {currentCameras && (
                   <RtspVideo prefix="home1" id={currentCameras["0-0"]} />
                 )}
                 {currentCameras && (
                   <RtspVideo prefix="home2" id={currentCameras["0-1"]} />
                 )}
-              </div>
-              <div style={{ display: "flex", justifyContent: "center" }}>
                 {currentCameras && (
                   <RtspVideo prefix="home3" id={currentCameras["1-0"]} />
                 )}
@@ -64,66 +71,9 @@ function HomePage() {
                 )}
               </div>
             </div>
-            <div
-              className="dataAllBorder01 cage_cl"
-              style={{ marginTop: "0.6%", height: "51.5%" }}
-            >
-              <div
-                className="dataAllBorder01"
-                id="map_title_innerbox1"
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  position: "relative",
-                  overflow: "hidden",
-                }}
-              >
-                <div className="map_title_box">
-                  <div
-                    className="map_title"
-                    style={{ backgroundImage: `url(${secondTitlePng})` }}
-                  >
-                    {listType === "fiber" ? (
-                      <FormattedMessage id="Zone list - Fiber" />
-                    ) : (
-                      <FormattedMessage id="Zone list - Camera" />
-                    )}
-                  </div>
-                  <div
-                    style={{
-                      position: "absolute",
-                      top: 3,
-                      right: 10,
-                    }}
-                  >
-                    <Radio.Group
-                      value={listType}
-                      onChange={handleChange}
-                      size="small"
-                    >
-                      <Radio.Button value="fiber">
-                        <FormattedMessage id="fiber" />
-                      </Radio.Button>
-                      <Radio.Button value="camera">
-                        <FormattedMessage id="camera" />
-                      </Radio.Button>
-                    </Radio.Group>
-                  </div>
-                </div>
-                {listType === "fiber" ? (
-                  <div style={{ flex: "1" }}>
-                    <FiberList />
-                  </div>
-                ) : (
-                  <div style={{ flex: "1" }}>
-                    <CameraList />
-                  </div>
-                )}
-              </div>
-            </div>
           </div>
 
-          <div className="center_cage">
+          <div className="center_cage" style={{ width: "45%" }}>
             <div
               className="dataAllBorder01 cage_cl"
               style={{ height: "100%", position: "relative" }}
@@ -150,6 +100,62 @@ function HomePage() {
                 <div style={{ width: "100%", height: "100%" }}>
                   <Map />
                 </div>
+              </div>
+            </div>
+          </div>
+          <div className="right_cage" style={{ width: "33.6%" }}>
+            <div className="dataAllBorder01 cage_cl" style={{ height: "100%" }}>
+              <div
+                className="dataAllBorder01"
+                id="map_title_innerbox1"
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  position: "relative",
+                  overflow: "hidden",
+                }}
+              >
+                <div className="map_title_box">
+                  <div
+                    className="map_title"
+                    style={{ backgroundImage: `url(${secondTitlePng})` }}
+                  >
+                    {listType === "fiber" ? (
+                      <FormattedMessage id="Zone list - Fiber" />
+                    ) : (
+                      <FormattedMessage id="Zone list - Camera" />
+                    )}
+                  </div>
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: 0,
+                      right: 0,
+                    }}
+                  >
+                    <Radio.Group
+                      value={listType}
+                      onChange={handleChange}
+                      size="small"
+                    >
+                      <Radio.Button value="fiber">
+                        <FormattedMessage id="fiber" />
+                      </Radio.Button>
+                      <Radio.Button value="camera">
+                        <FormattedMessage id="camera" />
+                      </Radio.Button>
+                    </Radio.Group>
+                  </div>
+                </div>
+                {listType === "fiber" ? (
+                  <div style={{ flex: "1" }}>
+                    <FiberList />
+                  </div>
+                ) : (
+                  <div style={{ flex: "1" }}>
+                    <CameraList />
+                  </div>
+                )}
               </div>
             </div>
           </div>

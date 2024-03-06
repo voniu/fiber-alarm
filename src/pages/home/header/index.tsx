@@ -2,7 +2,8 @@ import { useState } from "react";
 import { AuthModal } from "../authModal";
 import styles from "./index.less";
 import { Button } from "antd";
-import { useModel, SelectLang, FormattedMessage } from "umi";
+import Logo from "@/assets/logo_new.png";
+import { useModel, FormattedMessage } from "umi";
 
 export default () => {
   const { guard, monitor } = useModel("useUserInfo");
@@ -12,6 +13,9 @@ export default () => {
   };
   return (
     <div className={styles["header"]}>
+      <div className={styles["logo-img"]}>
+        <img src={Logo} />
+      </div>
       <div className={styles["header-title"]}>
         <span>
           <FormattedMessage id="Integrated Security Operation Platform" />
@@ -30,7 +34,6 @@ export default () => {
         <span className={styles["select-span"]} style={{ color: "#ffffff" }}>
           {guard?.name}
         </span>
-        <SelectLang />
         <Button style={{ marginLeft: 20 }} onClick={ExitDuty}>
           <FormattedMessage id="EXIT DUTY" />
         </Button>

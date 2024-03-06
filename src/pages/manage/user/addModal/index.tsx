@@ -78,7 +78,7 @@ export default (props: IProps) => {
         footer={null}
         keyboard={false}
         open={isModalOpen}
-        width={400}
+        width={430}
         onCancel={onClose}
         forceRender
       >
@@ -99,9 +99,6 @@ export default (props: IProps) => {
             }}
           >
             <Form
-              style={{
-                width: 250,
-              }}
               form={form}
               onFinish={onFinish}
               labelAlign="right"

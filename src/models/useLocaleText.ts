@@ -172,6 +172,12 @@ export default function LocaleText() {
   const TwoInputsAreInConsistent = intl.formatMessage({
     id: "Two inputs are inconsistent",
   });
+  const PasswordRules = intl.formatMessage({
+    id: "6-10 digit password. Must including Letters, numbers, special symbols",
+  });
+  const SelectTooltip = intl.formatMessage({
+    id: "Select one guarder below and start duty",
+  });
 
   return {
     Login,
@@ -307,5 +313,7 @@ export default function LocaleText() {
     CurrentPassword,
     NewPassword,
     ConfirmPassword,
+    PasswordRules,
+    SelectTooltip,
   };
 }

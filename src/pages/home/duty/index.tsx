@@ -1,10 +1,11 @@
 import { getDuty, getGuards } from "@/services/monitor";
 import WithAuth from "@/wrappers/authDuty";
-import { Table, Popconfirm, ConfigProvider, message } from "antd";
+import { Table, Popconfirm, ConfigProvider, message, Tooltip } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useEffect, useState } from "react";
 import { useModel, history, FormattedMessage } from "umi";
 import styles from "./index.less";
+import { QuestionCircleOutlined } from "@ant-design/icons";
 interface DutyState {
   isAnyoneOnDuty: boolean; // 是否有主管处于值班状态，true 才有下面
   isSelfOnDuty: boolean; // 当前登录的主管是否处于值班状态
@@ -33,7 +34,8 @@ const Duty = () => {
   const { setGuards, resumeGuards, logout } = useModel("useUserInfo");
   const [outLoading, setOutLoading] = useState(false);
 
-  const { Name, Yes, No, SureToConfirm } = useModel("useLocaleText");
+  const { Name, Yes, No, SureToConfirm, SelectTooltip } =
+    useModel("useLocaleText");
 
   const handleConfirm = async (guardId: number) => {
     const { success, msg } = await setGuards(guardId);
@@ -119,6 +121,9 @@ const Duty = () => {
             color: "#fff",
           }}
         >
+          <Tooltip title={SelectTooltip} color={"#108ee9"} key={"#108ee9"}>
+            <QuestionCircleOutlined />
+          </Tooltip>
           <FormattedMessage id={"Guard Duty arrangement"} />
         </p>
         <div

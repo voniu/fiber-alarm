@@ -4,6 +4,7 @@
   "scripts": {
     "dev": "umi dev",
     "build": "umi build",
+    "build:AZ": "cross-env MOCK=true LOCALE=AZ umi build",
     "postinstall": "umi setup",
     "setup": "umi setup",
     "start": "cross-env MOCK=false umi dev",

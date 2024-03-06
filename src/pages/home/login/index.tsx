@@ -5,6 +5,7 @@ import earth from "@/assets/dutyLogin/earth.png";
 import userpng from "@/assets/dutyLogin/user.png";
 import passwordpng from "@/assets/dutyLogin/password.png";
 import WithAuth from "@/wrappers/authDuty";
+import Logo from "@/assets/logo_new.png";
 import { message } from "antd";
 const Login = () => {
   const { login } = useModel("useUserInfo");
@@ -28,6 +29,9 @@ const Login = () => {
 
   return (
     <div className={styles["container"]}>
+      <div className={styles["logo-img"]}>
+        <img src={Logo} />
+      </div>
       <div className={styles["earth"]}>
         <img src={earth} alt="" />
       </div>

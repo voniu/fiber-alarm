@@ -19,6 +19,7 @@ export default (props: IProps) => {
     ConfirmPassword,
     TwoInputsAreInConsistent,
     Success,
+    PasswordRules,
   } = useModel("useLocaleText");
 
   const onFinish = async (values: any) => {
@@ -57,7 +58,19 @@ export default (props: IProps) => {
         <Form.Item
           label={CurrentPassword}
           name="currentPassword"
-          rules={[{ required: true }]}
+          rules={[
+            { required: true },
+            {
+              validator: (_, value) => {
+                const regex =
+                  /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,10}$/;
+                if (!value || regex.test(value)) {
+                  return Promise.resolve();
+                }
+                return Promise.reject(PasswordRules);
+              },
+            },
+          ]}
         >
           <Input.Password />
         </Form.Item>
@@ -65,7 +78,19 @@ export default (props: IProps) => {
         <Form.Item
           label={NewPassword}
           name="newPassword"
-          rules={[{ required: true }]}
+          rules={[
+            { required: true },
+            {
+              validator: (_, value) => {
+                const regex =
+                  /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,10}$/;
+                if (!value || regex.test(value)) {
+                  return Promise.resolve();
+                }
+                return Promise.reject(PasswordRules);
+              },
+            },
+          ]}
         >
           <Input.Password />
         </Form.Item>

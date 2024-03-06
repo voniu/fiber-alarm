@@ -1,5 +1,6 @@
 import { defineConfig } from "umi";
 const MOCK = process.env.MOCK === "true" ? undefined : false;
+const LOCALE = process.env.LOCALE === "AZ" ? "az-AZ" : "en-US";
 
 export default defineConfig({
   initialState: {},
@@ -110,8 +111,8 @@ export default defineConfig({
   },
   locale: {
     // 默认使用 src/locales/az-AZ.ts 作为多语言文件
-    default: 'az-AZ',
-    baseSeparator: '-',
+    default: LOCALE,
+    baseSeparator: "-",
   },
   mock: MOCK,
   npmClient: "pnpm",
