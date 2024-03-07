@@ -28,8 +28,8 @@ export default function LocaleText() {
   const Cameras = intl.formatMessage({ id: "Cameras" });
 
   const Name = intl.formatMessage({ id: "Name" });
-  const ZoneNo = intl.formatMessage({ id: "Zone No." });
-  const CameraNo = intl.formatMessage({ id: "Camera No." });
+  const ZoneNo = intl.formatMessage({ id: "Zone No" });
+  const CameraNo = intl.formatMessage({ id: "Camera No" });
 
   const Intrusion = intl.formatMessage({ id: "intrusion" });
   const Tamper = intl.formatMessage({ id: "tamper" });
@@ -178,6 +178,36 @@ export default function LocaleText() {
   const SelectTooltip = intl.formatMessage({
     id: "Select one guarder below and start duty",
   });
+  const CameraType = intl.formatMessage({
+    id: "Camera Type",
+  });
+  const LocationDesc = intl.formatMessage({
+    id: "Location Desc",
+  });
+  const LayingText = intl.formatMessage({
+    id: "Laying",
+  });
+  const LengthText = intl.formatMessage({
+    id: "Length",
+  });
+  const AlarmReason = intl.formatMessage({
+    id: "Alarm Reason",
+  });
+  const HumanIntrusion = intl.formatMessage({
+    id: "Human Intrusion",
+  });
+  const SignalDisconnect = intl.formatMessage({
+    id: "Signal Disconnect",
+  });
+  const AnimalIntrusion = intl.formatMessage({
+    id: "Animal Intrusion",
+  });
+  const BadWeather = intl.formatMessage({
+    id: "Bad Weather",
+  });
+  const Required = intl.formatMessage({
+    id: "required",
+  });
 
   return {
     Login,
@@ -315,5 +345,15 @@ export default function LocaleText() {
     ConfirmPassword,
     PasswordRules,
     SelectTooltip,
+    CameraType,
+    LocationDesc,
+    LayingText,
+    LengthText,
+    AlarmReason,
+    HumanIntrusion,
+    SignalDisconnect,
+    AnimalIntrusion,
+    BadWeather,
+    Required,
   };
 }

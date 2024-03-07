@@ -15,10 +15,12 @@
     "@ant-design/icons": "^5.2.6",
     "@ant-design/pro-layout": "^7.17.19",
     "@jiaminghi/data-view-react": "^1.2.5",
+    "@types/number-to-words": "^1.2.3",
     "antd": "^5.11.2",
     "dayjs": "^1.11.10",
     "echarts": "^5.4.3",
     "events": "^3.3.0",
+    "number-to-words": "^1.2.4",
     "ol": "^8.1.0",
     "react-zmage": "0.8.5-beta.37",
     "umi": "^4.0.87"

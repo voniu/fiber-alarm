@@ -44,11 +44,11 @@ export default function Alarms() {
   const { isLogin: userLogin, isOnDuty } = useModel("useUserInfo");
   const { isLogin: adminLogin, admin } = useModel("useAdminInfo");
   const [alarmList, setAlarmList] = useState<AlarmDetail[]>([
-    // { id: 1 },
-    // { id: 2 },
-    // { id: 3 },
-    // { id: 4 },
-    // { id: 5 },
+    { id: 1 },
+    { id: 2 },
+    { id: 3 },
+    { id: 4 },
+    { id: 5 },
   ]);
   const [manageAlarm, setManageAlarm] = useState<AlarmDetail[]>([
     // { id: 1 },

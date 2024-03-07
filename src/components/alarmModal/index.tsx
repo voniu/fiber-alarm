@@ -7,81 +7,100 @@ import {
   Col,
   Popover,
   message,
+  Select,
+  Tooltip,
 } from "antd";
-import { useModel, FormattedMessage, useIntl } from "umi";
-import { useEffect, useRef, useState } from "react";
+import { QuestionCircleOutlined } from "@ant-design/icons";
+import { useModel, FormattedMessage } from "umi";
+import { useCallback, useEffect, useRef, useState } from "react";
 import styles from "./index.less";
 import { getAlarmDetail } from "@/services/monitor";
 import { Alarm, AlarmDetail } from "@/models/useAlarms";
 import dayjs from "@/utills/day";
 import trumpetOn from "@/assets/trumpet/trumpet_on_b.png";
-import trumpetOff from "@/assets/trumpet/trumpet_off_b.png";
+// import trumpetOff from "@/assets/trumpet/trumpet_off_b.png";
 import SoundAlert from "../alarmAudio";
 import Zmage from "react-zmage";
 import "react-zmage/lib/zmage.css";
 import { TextAreaRef } from "antd/lib/input/TextArea";
 import TextArea from "./textArea";
-const DescriptionText = ({
-  label,
-  content,
-  Other,
-}: {
-  label: string;
-  content?: string;
-  Other?: () => JSX.Element;
-}) => {
-  return (
-    <div>
-      <Row
-        className={styles["info-row"]}
-        style={{ width: "100%", flexDirection: "row" }}
-      >
-        <Col span={6}>
-          <div className={styles["info-label"]}>{label}:</div>
-        </Col>
-        <Col span={12}>
-          {Other ? (
-            <Other />
-          ) : (
-            <div className={styles["info-content"]}>{content}</div>
-          )}
-        </Col>
-      </Row>
-    </div>
-  );
-};
+import React from "react";
+import converter from "number-to-words";
+const DescriptionText = React.memo(
+  ({
+    label,
+    content,
+    Other,
+  }: {
+    label: string;
+    content?: string;
+    Other?: () => JSX.Element;
+  }) => {
+    return (
+      <div>
+        <Row
+          className={styles["info-row"]}
+          style={{ width: "100%", flexDirection: "row" }}
+        >
+          <Col span={6}>
+            <div className={styles["info-label"]}>{label}:</div>
+          </Col>
+          <Col span={12}>
+            {Other ? (
+              <Other />
+            ) : (
+              <div className={styles["info-content"]}>{content}</div>
+            )}
+          </Col>
+        </Row>
+      </div>
+    );
+  }
+);
 const TabContent = (props: { id: number }) => {
   const { setTarget } = useModel("useMap");
   const { alarmList, handleGuard } = useModel("useAlarms");
   const { monitor } = useModel("useUserInfo");
   const { centerTo } = useModel("useItems");
   const [alarmDetail, setDetail] = useState<AlarmDetail>();
-
-  const intl = useIntl();
-  const AlarmTime = intl.formatMessage({ id: "Alarm Time" });
-  const ZoneNO = intl.formatMessage({ id: "Zone No." });
-  const AlarmType = intl.formatMessage({ id: "Alarm Type" });
-  const CameraNO = intl.formatMessage({ id: "Camera No." });
-  const Officer = intl.formatMessage({ id: "Officer" });
-
-  const Intrusion = intl.formatMessage({ id: "intrusion" });
-  const Tamper = intl.formatMessage({ id: "tamper" });
-  const WireDisconnect = intl.formatMessage({ id: "wire Disconnect" });
-  const Disconnect = intl.formatMessage({ id: "Disconnect" });
-  const PleaseInput = intl.formatMessage({ id: "Please Input" });
-  const Success = intl.formatMessage({ id: "success" });
+  const {
+    AlarmReason,
+    AlarmTime,
+    ZoneNo,
+    AlarmType,
+    CameraNo,
+    Officer,
+    Intrusion,
+    Tamper,
+    WireDisconnect,
+    Disconnect,
+    Success,
+    HumanIntrusion,
+    SignalDisconnect,
+    AnimalIntrusion,
+    BadWeather,
+    Required,
+    PleaseSelect,
+  } = useModel("useLocaleText");
 
   const { id } = props;
   const typeMap = [Intrusion, Tamper, WireDisconnect, Disconnect];
   const processInfo = useRef<TextAreaRef>();
+  const [alarmReason, setAlarmReason] = useState<string>();
+
+  const onChange = (value: any) => {
+    setAlarmReason(value);
+  };
 
   const onSubmit = async () => {
-    if (!processInfo.current) return;
-    const log = processInfo.current.resizableTextArea?.textArea.value;
-    if (!log) {
-      message.info(PleaseInput);
+    let log;
+    if (alarmReason === undefined) {
+      message.info(PleaseSelect);
       return;
     }
+    if (processInfo.current)
+      log = processInfo.current.resizableTextArea?.textArea.value;
+    if (!log) log = "";
     handleGuard(id, log);
     message.success(Success);
   };
@@ -97,7 +116,6 @@ const TabContent = (props: { id: number }) => {
     } else {
       setTarget("map-container");
     }
-
     return function () {
       const dom = document.getElementById("alarm-map-container");
       setTarget("map-container");
@@ -119,7 +137,7 @@ const TabContent = (props: { id: number }) => {
               "MMMM D, YYYY h:mm A"
             )}
           />
-          <DescriptionText label={ZoneNO} content={alarmDetail?.fiber.name} />
+          <DescriptionText label={ZoneNo} content={alarmDetail?.fiber.name} />
           <DescriptionText
             label={AlarmType}
             content={
@@ -129,24 +147,53 @@ const TabContent = (props: { id: number }) => {
             }
           />
           <DescriptionText
-            label={CameraNO}
-            Other={() => (
-              <div className={styles["camera-scroll"]}>
-                {alarmDetail?.snapshots.map((item) => {
-                  return (
-                    <div key={item.id}>
-                      <div>{item.camera.name}</div>
-                      <div className={styles["Zmage"]}>
-                        <Zmage src={item.picUrl} />
+            label={CameraNo}
+            Other={useCallback(
+              () => (
+                <div className={styles["camera-scroll"]}>
+                  {alarmDetail?.snapshots.map((item) => {
+                    return (
+                      <div key={item.id}>
+                        <div>{item.camera.name}</div>
+                        <div className={styles["Zmage"]}>
+                          <Zmage src={item.picUrl} />
+                        </div>
                       </div>
-                    </div>
-                  );
-                })}
-              </div>
+                    );
+                  })}
+                </div>
+              ),
+              [alarmDetail]
             )}
           />
         </div>
         <DescriptionText label={Officer} content={monitor?.name} />
+        <DescriptionText
+          label={AlarmReason}
+          Other={() => {
+            return (
+              <>
+                <Select
+                  style={{ width: 150 }}
+                  size="small"
+                  options={[
+                    { label: HumanIntrusion, value: 0 },
+                    { label: SignalDisconnect, value: 1 },
+                    { label: AnimalIntrusion, value: 2 },
+                    { label: BadWeather, value: 3 },
+                  ]}
+                  value={alarmReason}
+                  onChange={onChange}
+                />
+                <Tooltip title={Required} key={"required"}>
+                  <span style={{ marginLeft: 10 }}>
+                    <QuestionCircleOutlined />
+                  </span>
+                </Tooltip>
+              </>
+            );
+          }}
+        />
         <div className={styles["tab-sub"]}>
           <TextArea ref={processInfo} />
           <Button style={{ marginTop: 20 }} onClick={onSubmit}>
@@ -167,11 +214,13 @@ export default function () {
   const { alarmList } = useModel("useAlarms");
   const open = alarmList?.length !== 0;
   const [isTrumpetOn, setTrumpetOn] = useState(false);
+  const [volume, setVolume] = useState(0.9);
   useEffect(() => {
     if (open) {
       setTrumpetOn(true);
     } else {
       setTrumpetOn(false);
+      setVolume(0.9);
     }
   }, [open]);
   return (
@@ -187,7 +236,7 @@ export default function () {
         open={open}
         width={1100}
       >
-        <SoundAlert alert={isTrumpetOn} />
+        <SoundAlert alert={isTrumpetOn} volume={volume} />
         <ConfigProvider
           theme={{
             token: {
@@ -202,33 +251,27 @@ export default function () {
             items={alarmList.map((item: Alarm, i: number) => {
               const id = String(i + 1);
               return {
-                label: `alarm ${id}`,
+                label: `${converter.toWordsOrdinal(id)}`,
                 key: id,
                 children: <TabContent id={item.id} />,
               };
             })}
             tabBarExtraContent={{
-              left: isTrumpetOn ? (
+              left: (
                 <Popover
                   placement="right"
                   content={
                     <Button
                       onClick={() => {
-                        setTrumpetOn(false);
+                        setVolume(0.1);
                       }}
                     >
-                      <FormattedMessage id={"click to close"} />
+                      <FormattedMessage id={"click to lower"} />
                     </Button>
                   }
                 >
                   <div className={styles["trumpet"]}>
                     <img src={trumpetOn} />
-                  </div>
-                </Popover>
-              ) : (
-                <Popover placement="right">
-                  <div className={styles["trumpet"]}>
-                    <img src={trumpetOff} />
                   </div>
                 </Popover>
               ),

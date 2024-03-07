@@ -10,23 +10,28 @@ export default function () {
   const { selectFeature, getFeaturesByTypeAndId } = useModel("useMap");
   const { showPopup } = useModel("useModel");
 
-  const { Name } = useModel("useLocaleText");
+  const { Name, Status, LocationDesc, CameraType } = useModel("useLocaleText");
   if (!cameraList.length) return <div>No Data</div>;
   const columns: TableColumnsType<Camera> = [
-    {
-      title: "#",
-      dataIndex: "id",
-      render: (_, __, index) => <span>{index + 1}</span>,
-    },
-    {
-      title: "ID",
-      dataIndex: "id",
-      render: (text) => <span>{text}</span>,
-    },
     {
       title: Name,
       dataIndex: "name",
       render: (text, record) => <span>{record.name}</span>,
+    },
+    {
+      title: Status,
+      dataIndex: "status",
+      render: (text, record) => <span>{record.status}</span>,
+    },
+    {
+      title: LocationDesc,
+      dataIndex: "locationDesc",
+      render: (text, record) => <span>{record.locationDesc}</span>,
+    },
+    {
+      title: CameraType,
+      dataIndex: "cameraType ",
+      render: (text, record) => <span>{record.cameraType}</span>,
     },
   ];
   //   const config = {

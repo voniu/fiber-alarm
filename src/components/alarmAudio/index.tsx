@@ -3,10 +3,14 @@ import alarmAudio from "@/assets/audio/7711.wav";
 import { message } from "antd";
 interface IProps {
   alert: boolean;
+  volume: number;
 }
 const SoundAlert = (props: IProps) => {
-  const { alert } = props;
+  const { alert, volume } = props;
   const [audio] = useState(new Audio(alarmAudio));
+  useEffect(() => {
+    audio.volume = volume;
+  }, [volume]);
   const playAlertSound = () => {
     // 播放声音警报
     audio.play().catch(() => {
