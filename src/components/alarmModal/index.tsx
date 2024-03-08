@@ -86,7 +86,7 @@ const TabContent = (props: { id: number }) => {
   const { id } = props;
   const typeMap = [Intrusion, Tamper, WireDisconnect, Disconnect];
   const processInfo = useRef<TextAreaRef>();
-  const [alarmReason, setAlarmReason] = useState<string>();
+  const [alarmReason, setAlarmReason] = useState<number>();
 
   const onChange = (value: any) => {
     setAlarmReason(value);
@@ -101,7 +101,7 @@ const TabContent = (props: { id: number }) => {
     if (processInfo.current)
       log = processInfo.current.resizableTextArea?.textArea.value;
     if (!log) log = "";
-    handleGuard(id, log);
+    handleGuard(id, alarmReason, log);
     message.success(Success);
   };
   useEffect(() => {

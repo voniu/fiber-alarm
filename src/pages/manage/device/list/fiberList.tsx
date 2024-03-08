@@ -3,6 +3,7 @@ import type { TableColumnsType } from "antd";
 import { delControl, setControlArchive } from "@/services/admin";
 import { FiberControl } from "@/type";
 import { useModel } from "umi";
+import Online from "@/components/online";
 import { deviceType } from "@/constant";
 interface IProps {
   isArchived: boolean;
@@ -30,6 +31,7 @@ export default function (props: IProps) {
     AreYouSureToDelete,
     Yes,
     No,
+    Status,
   } = useModel("useLocaleText");
   const setArchive = async (id: number, archived: boolean) => {
     const { success, msg } = await setControlArchive(id, archived);
@@ -41,11 +43,6 @@ export default function (props: IProps) {
     flush();
   };
   const columns: TableColumnsType<FiberControl> = [
-    {
-      title: "ID",
-      dataIndex: "id",
-      render: (text) => <a>{text}</a>,
-    },
     {
       title: Name,
       dataIndex: "name",
@@ -65,6 +62,13 @@ export default function (props: IProps) {
       title: Type,
       dataIndex: "type",
       render: (text, record) => <a>{deviceType[record.type]}</a>,
+    },
+    {
+      title: Status,
+      dataIndex: "online",
+      render: (text, record) => (
+        <span>{<Online online={record.online} color="blcak" />}</span>
+      ),
     },
     {
       title: Operator,

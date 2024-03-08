@@ -154,3 +154,11 @@ p {
 .overflow-style::-webkit-scrollbar-thumb:hover {
   background: rgb(81, 80, 80);
 }
+
+.ant-form-item-label > label {
+  display: inline !important;
+}
+.ant-form-item-label {
+  text-overflow: ellipsis !important;
+  padding-top: 5px !important;
+}

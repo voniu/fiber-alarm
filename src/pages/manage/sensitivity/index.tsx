@@ -3,7 +3,7 @@ import styles from "./index.less";
 import { Button, Col, Empty, List, Popconfirm, Row, message } from "antd";
 import CreateTask from "./createTask";
 import { useEffect, useState } from "react";
-import { delTask, getTask } from "@/services/admin";
+import { delTask, getTask, triggerTask } from "@/services/admin";
 import { FormattedMessage, useModel } from "umi";
 const rendertTskItem = (props: {
   // fibers: Fiber[];
@@ -72,6 +72,7 @@ const FiberSensitivity = () => {
   const onCancel = () => setIsOpen(false);
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [triggerLoading, setTriLoading] = useState(false);
   const [listLoading, setListLoading] = useState(false);
   const {
     Success,
@@ -83,6 +84,7 @@ const FiberSensitivity = () => {
     AreYouSureToDelete,
     Yes,
     No,
+    Trigger,
   } = useModel("useLocaleText");
   const fetchTask = async () => {
     setListLoading(true);
@@ -101,6 +103,16 @@ const FiberSensitivity = () => {
     }
     setLoading(false);
     fetchTask();
+  };
+  const handleTrigger = async (id: number) => {
+    setTriLoading(true);
+    const { success, msg } = await triggerTask(id);
+    if (!success) {
+      message.error(msg);
+    } else {
+      message.success(Success);
+    }
+    setTriLoading(false);
   };
   const handleCheck = (id: number) => {
     setCheck({ type: "Check", taskId: id });
@@ -156,6 +168,14 @@ const FiberSensitivity = () => {
                 ) : (
                   <List.Item
                     actions={[
+                      <Button
+                        loading={triggerLoading}
+                        key="apply-task"
+                        type="primary"
+                        onClick={() => handleTrigger(item.id)}
+                      >
+                        {Trigger}
+                      </Button>,
                       <Button
                         key="check-task"
                         type="primary"

@@ -9,6 +9,8 @@ import CameraManage from "./list/cameraManage";
 import AddRelation from "./relation/index";
 import { getCamera, getFiber, getFiberControl } from "@/services/admin";
 import FiberList from "./list/fiberList";
+import { SyncOutlined } from "@ant-design/icons";
+
 interface DeviceModal {
   operator: string;
   type: string;
@@ -157,6 +159,11 @@ const DeviceManage = () => {
                 </Button>
               </Form.Item>
             </Form>
+            <div style={{ cursor: "pointer" }} onClick={fetchList}>
+              <span>
+                <SyncOutlined spin={loading} />
+              </span>
+            </div>
           </div>
           <Button
             type="primary"

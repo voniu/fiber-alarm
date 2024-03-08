@@ -8,6 +8,7 @@ import {
   UserOutlined,
   ContainerOutlined,
   TagsOutlined,
+  CloudDownloadOutlined,
 } from "@ant-design/icons";
 
 export default {
@@ -20,4 +21,5 @@ export default {
   "/manage/fiberLevel": <TagsOutlined />,
   "/manage/user": <UserOutlined />,
   "/manage/log": <ContainerOutlined />,
+  "/manage/document": <CloudDownloadOutlined />,
 };

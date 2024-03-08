@@ -169,5 +169,10 @@
     "Signal Disconnect": "",
     "Animal Intrusion": "",
     "Bad Weather": "",
-    "required": ""
+    "required": "",
+    "Trigger": "",
+    "File Download": "",
+    "Arm": "",
+    "Disarm": "",
+    "Advanced Settings": ""
 }

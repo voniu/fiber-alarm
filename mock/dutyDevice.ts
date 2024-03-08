@@ -6,6 +6,7 @@ export default {
       {
         id: 234321,
         name: "fiber test1",
+        status: 1,
         location:
           "[[[40.60429492374685, 49.64732866578551], [40.60328820848655, 49.67083191777059]], [[40.60328820848655, 49.67083191777059], [40.590507295656835, 49.66875005204566]]]",
       },
@@ -38,6 +39,46 @@ export default {
       {
         id: 4,
         name: "fiber test14",
+        location: "",
+      },
+      {
+        id: 5,
+        name: "fiber test14",
+        location: "",
+      },
+      {
+        id: 6,
+        name: "fiber test14",
+        location: "",
+      },
+      {
+        id: 7,
+        name: "fiber test14",
+        location: "",
+      },
+      {
+        id: 8,
+        name: "fiber test14",
+        location: "",
+      },
+      {
+        id: 9,
+        name: "fiber test14",
+        location: "",
+      },
+      {
+        id: 10,
+        name: "fiber test14",
+        location: "",
+      },
+      {
+        id: 11,
+        name: "fiber test14",
+        location: "",
+      },
+      {
+        id: 12,
+        name: "fiber testENDEND",
         location: "",
       },
     ],
@@ -116,6 +157,8 @@ export default {
         id: 2132,
         name: "camera1",
         location: "[40.60429492374685, 49.64732866578551]",
+        type: 0,
+        form: 0,
       },
       {
         id: 98762,

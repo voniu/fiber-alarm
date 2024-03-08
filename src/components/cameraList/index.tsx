@@ -4,13 +4,28 @@ import styles from "./index.less";
 import { useModel } from "umi";
 import { ConfigProvider, Table, TableColumnsType } from "antd";
 import { Camera } from "@/models/useItems";
+import Online from "@/components/online";
+import { cameraFactory, cameraFormType } from "@/constant";
+import { useEffect } from "react";
 
 export default function () {
-  const { cameraList, centerTo } = useModel("useItems");
+  const { cameraList, centerTo, fetchGuardItem } = useModel("useItems");
   const { selectFeature, getFeaturesByTypeAndId } = useModel("useMap");
   const { showPopup } = useModel("useModel");
 
-  const { Name, Status, LocationDesc, CameraType } = useModel("useLocaleText");
+  const { Name, Status, LocationDesc, CameraType, Type } =
+    useModel("useLocaleText");
+  const flush = async () => {
+    await fetchGuardItem();
+  };
+  useEffect(() => {
+    const timer = setInterval(() => {
+      flush();
+    }, 10000);
+    return () => {
+      clearInterval(timer);
+    };
+  }, []);
   if (!cameraList.length) return <div>No Data</div>;
   const columns: TableColumnsType<Camera> = [
     {
@@ -20,8 +35,10 @@ export default function () {
     },
     {
       title: Status,
-      dataIndex: "status",
-      render: (text, record) => <span>{record.status}</span>,
+      dataIndex: "online",
+      render: (text, record) => (
+        <span>{<Online online={record.online} color="white" />}</span>
+      ),
     },
     {
       title: LocationDesc,
@@ -29,9 +46,14 @@ export default function () {
       render: (text, record) => <span>{record.locationDesc}</span>,
     },
     {
+      title: Type,
+      dataIndex: "type",
+      render: (text, record) => <span>{cameraFactory[record.type]}</span>,
+    },
+    {
       title: CameraType,
-      dataIndex: "cameraType ",
-      render: (text, record) => <span>{record.cameraType}</span>,
+      dataIndex: "form",
+      render: (text, record) => <span>{cameraFormType[record.form]}</span>,
     },
   ];
   //   const config = {
@@ -76,7 +98,7 @@ export default function () {
         <Table
           size="small"
           pagination={false}
-          scroll={{ x: "max-content", y: 220 }}
+          scroll={{ y: 520 }}
           rowClassName={(_, index) =>
             index % 2 ? styles["row1"] : styles["row2"]
           }

@@ -11,5 +11,6 @@ export default function (initialState: { type: number }) {
     sensitivity: [0, 1].includes(type),
     log: [0, 1].includes(type),
     user: [0, 1].includes(type),
+    document: [0, 1].includes(type),
   };
 }

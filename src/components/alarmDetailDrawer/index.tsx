@@ -73,10 +73,21 @@ export default (props: IProps) => {
     Status,
     CameraNo,
     Submit,
+    Time,
     PleaseInput,
+    AlarmReason,
+    HumanIntrusion,
+    SignalDisconnect,
+    AnimalIntrusion,
+    BadWeather,
   } = useModel("useLocaleText");
   const typeMap = [Intrusion, Tamper, WireDisconnect, Disconnect];
-
+  const alarmReasonMap = [
+    HumanIntrusion,
+    SignalDisconnect,
+    AnimalIntrusion,
+    BadWeather,
+  ];
   const [mapModal, setMapModal] = useState({
     id: -1,
     type: "",
@@ -157,7 +168,23 @@ export default (props: IProps) => {
         />
         <DescriptionText
           label={GuardTime}
-          content={dayjs(detail?.createTime).format("MMMM D, YYYY h:mm A")}
+          content={
+            detail?.guard?.time
+              ? dayjs(detail?.guard?.time).format("MMMM D, YYYY h:mm A")
+              : ""
+          }
+        />
+        <DescriptionText
+          label={`${Officer} ${Time}`}
+          content={
+            detail?.manager?.time
+              ? dayjs(detail?.manager.time).format("MMMM D, YYYY h:mm A")
+              : ""
+          }
+        />
+        <DescriptionText
+          label={AlarmReason}
+          content={detail?.guard ? alarmReasonMap[detail?.guard.reason] : ""}
         />
         <DescriptionText
           label={Status}

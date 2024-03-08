@@ -87,7 +87,7 @@
     "Fiber Optic Host": "Fiber Optic Host",
     "Suspend Device": "Suspend Device",
     "Zone Name": "Zone Name",
-    "Sub-Zone No.": "Sub-Zone No.",
+    "Sub-Zone No": "Sub-Zone No",
     "Suspend": "Suspend",
     "undo Suspend": "undo Suspend",
     "Add Device": "Add Device",
@@ -169,5 +169,10 @@
     "Signal Disconnect": "Signal Disconnect",
     "Animal Intrusion": "Animal Intrusion",
     "Bad Weather": "Bad Weather",
-    "required": "required"
+    "required": "required",
+    "Trigger": "Trigger",
+    "Tech Support": "Tech Support",
+    "Arm": "Arm",
+    "Disarm": "Disarm",
+    "Advanced Settings": "Advanced Settings"
 }

@@ -22,11 +22,14 @@ export interface AlarmDetail extends Alarm {
     id: number;
     name: string;
     log: string;
+    time?: number;
+    reason: number;
   };
   manager?: {
     id: number;
     name: string;
     log: string;
+    time?: number;
   };
   snapshots: Array<{
     id: number;
@@ -44,11 +47,11 @@ export default function Alarms() {
   const { isLogin: userLogin, isOnDuty } = useModel("useUserInfo");
   const { isLogin: adminLogin, admin } = useModel("useAdminInfo");
   const [alarmList, setAlarmList] = useState<AlarmDetail[]>([
-    { id: 1 },
-    { id: 2 },
-    { id: 3 },
-    { id: 4 },
-    { id: 5 },
+    // { id: 1 },
+    // { id: 2 },
+    // { id: 3 },
+    // { id: 4 },
+    // { id: 5 },
   ]);
   const [manageAlarm, setManageAlarm] = useState<AlarmDetail[]>([
     // { id: 1 },
@@ -61,12 +64,13 @@ export default function Alarms() {
   const [messageLoading, setMessageLoading] = useState(true);
   const shouldReconnect = useRef(true);
 
-  const handleGuard = (id: number, log: string) => {
+  const handleGuard = (id: number, reason: number, log: string) => {
     setMessageLoading(true);
     guardSocekt?.send({
       type: "RESOLVE",
       content: {
         alarmId: id,
+        reason,
         log,
       },
     });

@@ -80,6 +80,9 @@ export const addFiber = (fiber: {
   deviceId: number;
   location: string;
   identifier: number[];
+  locationDesc: string;
+  layingMethod: string;
+  length: string;
 }) => {
   return request(`${prefix}/fiber`, { method: "POST", data: fiber });
 };
@@ -95,6 +98,12 @@ export const setFiberArchive = (id: number, archived: boolean) => {
   });
 };
 
+export const armFiber = (id: number) => {
+  return request(`${prefix}/fiber/${id}/arm`, { method: "POST" });
+};
+export const disarmFiber = (id: number) => {
+  return request(`${prefix}/fiber/${id}/disarm`, { method: "POST" });
+};
 // 删除光纤
 export const delFiber = (id: number) => {
   return request(`${prefix}/fiber/${id}`, { method: "DELETE" });
@@ -304,6 +313,11 @@ export const addTask = (
       affectFiberIds: fibers,
       configMap,
     },
+  });
+};
+export const triggerTask = (id: number) => {
+  return request(`${prefix}/task/{${id}}/trigger`, {
+    method: "POST",
   });
 };
 export const delTask = (id: number) => {

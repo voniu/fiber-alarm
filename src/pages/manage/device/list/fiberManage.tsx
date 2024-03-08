@@ -2,10 +2,16 @@ import { Button, Popconfirm, Table, message } from "antd";
 import type { TableColumnsType } from "antd";
 import type { Fiber } from "@/models/useItems";
 import TriggerCameraList from "./triggerCameraList";
-import { delFiber, setFiberArchive } from "@/services/admin";
+import {
+  armFiber,
+  delFiber,
+  disarmFiber,
+  setFiberArchive,
+} from "@/services/admin";
 import MapModal from "@/components/mapModal";
 import { useState } from "react";
 import { useModel } from "umi";
+import Online from "@/components/online";
 
 interface IProps {
   isArchived: boolean;
@@ -40,6 +46,12 @@ export default function (props: IProps) {
     AreYouSureToSuspend,
     AreYouSureToUndoSuspend,
     AreYouSureToDelete,
+    Status,
+    LocationDesc,
+    LayingText,
+    LengthText,
+    Arm,
+    Disarm,
   } = useModel("useLocaleText");
   const [mapModal, setMapModal] = useState({
     id: -1,
@@ -54,6 +66,22 @@ export default function (props: IProps) {
       message.success(Success);
     }
     flush();
+  };
+  const handleArm = async (id: number) => {
+    const { success, msg } = await armFiber(id);
+    if (!success) {
+      message.error(msg);
+    } else {
+      message.success(Success);
+    }
+  };
+  const handleDisarm = async (id: number) => {
+    const { success, msg } = await disarmFiber(id);
+    if (!success) {
+      message.error(msg);
+    } else {
+      message.success(Success);
+    }
   };
   const deleteFiber = async (id: number) => {
     const { success, msg } = await delFiber(id);
@@ -73,14 +101,31 @@ export default function (props: IProps) {
   };
   const columns: TableColumnsType<Fiber> = [
     {
-      title: "ID",
-      dataIndex: "id",
-      render: (text) => <a>{text}</a>,
-    },
-    {
       title: Name,
       dataIndex: "name",
       render: (text, record) => <a>{record.name}</a>,
+    },
+    {
+      title: Status,
+      dataIndex: "online",
+      render: (text, record) => (
+        <span>{<Online online={record.online} color="black" />}</span>
+      ),
+    },
+    {
+      title: LocationDesc,
+      dataIndex: "locationDesc",
+      render: (text, record) => <span>{record.locationDesc}</span>,
+    },
+    {
+      title: LayingText,
+      dataIndex: "layingMethod",
+      render: (text, record) => <span>{record.layingMethod}</span>,
+    },
+    {
+      title: LengthText,
+      dataIndex: "length",
+      render: (text, record) => <span>{record.length}</span>,
     },
     {
       title: Location,
@@ -121,6 +166,24 @@ export default function (props: IProps) {
               }}
             >
               {Relation}
+            </Button>
+            <Button
+              type="primary"
+              size="small"
+              onClick={() => {
+                handleArm(record.id);
+              }}
+            >
+              {Arm}
+            </Button>
+            <Button
+              type="primary"
+              size="small"
+              onClick={() => {
+                handleDisarm(record.id);
+              }}
+            >
+              {Disarm}
             </Button>
             {isArchived && (
               <Popconfirm

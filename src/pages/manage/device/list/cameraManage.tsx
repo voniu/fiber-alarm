@@ -6,6 +6,8 @@ import MapModal from "@/components/mapModal";
 import { useState } from "react";
 import { useModel } from "umi";
 import VideoModal from "@/components/map/videoModal";
+import { cameraFactory, cameraFormType } from "@/constant";
+import Online from "@/components/online";
 interface IProps {
   isArchived: boolean;
   flush: () => void;
@@ -38,6 +40,10 @@ export default function (props: IProps) {
     AreYouSureToSuspend,
     AreYouSureToUndoSuspend,
     AreYouSureToDelete,
+    Status,
+    CameraType,
+    LocationDesc,
+    Type,
   } = useModel("useLocaleText");
 
   const setArchive = async (id: number, archived: boolean) => {
@@ -67,14 +73,31 @@ export default function (props: IProps) {
   };
   const columns: TableColumnsType<Camera> = [
     {
-      title: "ID",
-      dataIndex: "id",
-      render: (text) => <a>{text}</a>,
-    },
-    {
       title: Name,
       dataIndex: "name",
       render: (text, record) => <a>{record.name}</a>,
+    },
+    {
+      title: Status,
+      dataIndex: "online",
+      render: (text, record) => (
+        <span>{<Online online={record.online} color="black" />}</span>
+      ),
+    },
+    {
+      title: LocationDesc,
+      dataIndex: "locationDesc",
+      render: (text, record) => <span>{record.locationDesc}</span>,
+    },
+    {
+      title: Type,
+      dataIndex: "type",
+      render: (text, record) => <span>{cameraFactory[record.type]}</span>,
+    },
+    {
+      title: CameraType,
+      dataIndex: "form",
+      render: (text, record) => <span>{cameraFormType[record.form]}</span>,
     },
     {
       title: Location,

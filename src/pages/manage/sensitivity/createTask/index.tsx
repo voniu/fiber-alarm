@@ -50,6 +50,7 @@ export default (props: IProps) => {
     GroupEntity,
     Submit,
     Optional,
+    Arm,
   } = useModel("useLocaleText");
   const [selectdFiber, setSelectFiber] = useState<
     {
@@ -94,19 +95,22 @@ export default (props: IProps) => {
       vibeAmplitude,
       vibeWidth,
       vibeGap,
+      Aarmed,
+      Barmed,
     } = value;
     const { success, msg } = await addTask(
       name,
       { hour: time.hour(), minute: time.minute() },
       fibers,
       {
-        "0": { vibeCount, vibeAmplitude, vibeWidth, vibeGap },
+        "0": { vibeCount, vibeAmplitude, vibeWidth, vibeGap, armed: Aarmed },
         "1": {
           alarmSensitivity,
           systemSensitivity,
           groupWidth,
           groupGap,
           groupEntity,
+          armed: Barmed,
         },
       }
     );
@@ -131,12 +135,19 @@ export default (props: IProps) => {
     let configB = {};
     setConfigType({ "0": !!configMap["0"], "1": !!configMap["1"] });
     if (configMap["0"]) {
-      const { vibeCount, vibeAmplitude, vibeWidth, vibeGap } = configMap["0"];
+      const {
+        vibeCount,
+        vibeAmplitude,
+        vibeWidth,
+        vibeGap,
+        armed: Aarmed,
+      } = configMap["0"];
       configA = {
         vibeCount,
         vibeAmplitude,
         vibeWidth,
         vibeGap,
+        Aarmed,
       };
     }
     if (configMap["1"]) {
@@ -146,6 +157,7 @@ export default (props: IProps) => {
         groupWidth,
         groupGap,
         groupEntity,
+        armed: Barmed,
       } = configMap["1"];
       configB = {
         alarmSensitivity,
@@ -153,6 +165,7 @@ export default (props: IProps) => {
         groupWidth,
         groupGap,
         groupEntity,
+        Barmed,
       };
     }
     console.log(configA, configB);
@@ -288,6 +301,23 @@ export default (props: IProps) => {
                       forceRender
                     >
                       <Form.Item
+                        label={Arm}
+                        name={"Aarmed"}
+                        tooltip={{
+                          title: Optional,
+                          icon: <InfoCircleOutlined />,
+                        }}
+                        className={styles["config-item"]}
+                      >
+                        <Select
+                          style={{ width: 100, height: 25 }}
+                          options={[
+                            { label: "true", value: true },
+                            { label: "false", value: false },
+                          ]}
+                        />
+                      </Form.Item>
+                      <Form.Item
                         label={VibeCount}
                         name={"vibeCount"}
                         tooltip={{
@@ -346,7 +376,28 @@ export default (props: IProps) => {
                     </Tabs.TabPane>
                   )}
                   {configType["1"] && (
-                    <Tabs.TabPane forceRender tab="config-b" key={"2"}>
+                    <Tabs.TabPane
+                      forceRender
+                      tab={`${Config}-b(00:00-24:00)`}
+                      key={"2"}
+                    >
+                      <Form.Item
+                        label={Arm}
+                        name={"Barmed"}
+                        tooltip={{
+                          title: Optional,
+                          icon: <InfoCircleOutlined />,
+                        }}
+                        className={styles["config-item"]}
+                      >
+                        <Select
+                          style={{ width: 100, height: 25 }}
+                          options={[
+                            { label: "true", value: true },
+                            { label: "false", value: false },
+                          ]}
+                        />
+                      </Form.Item>
                       <Form.Item
                         className={styles["config-item"]}
                         tooltip={{

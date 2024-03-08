@@ -22,6 +22,7 @@ export default function LocaleText() {
   const FiberSensitivity = intl.formatMessage({ id: "Fiber Sensitivity" });
   const LogInformation = intl.formatMessage({ id: "Log Information" });
   const UserManage = intl.formatMessage({ id: "User Manage" });
+  const TechSupport = intl.formatMessage({ id: "Tech Support" });
 
   const Fiber = intl.formatMessage({ id: "fiber" });
   const Camera = intl.formatMessage({ id: "camera" });
@@ -67,7 +68,7 @@ export default function LocaleText() {
   const FiberOpticHost = intl.formatMessage({ id: "Fiber Optic Host" });
   const SuspendDevice = intl.formatMessage({ id: "Suspend Device" });
   const ZoneName = intl.formatMessage({ id: "Zone Name" });
-  const SubZoneNo = intl.formatMessage({ id: "Sub-Zone No." });
+  const SubZoneNo = intl.formatMessage({ id: "Sub-Zone No" });
   const Suspend = intl.formatMessage({ id: "Suspend" });
   const UndoSuspend = intl.formatMessage({ id: "undo Suspend" });
   const AddDevice = intl.formatMessage({ id: "Add Device" });
@@ -207,6 +208,18 @@ export default function LocaleText() {
   });
   const Required = intl.formatMessage({
     id: "required",
+  });
+  const Trigger = intl.formatMessage({
+    id: "Trigger",
+  });
+  const Arm = intl.formatMessage({
+    id: "Arm",
+  });
+  const Disarm = intl.formatMessage({
+    id: "Disarm",
+  });
+  const AdvancedSettings = intl.formatMessage({
+    id: "Advanced Settings",
   });
 
   return {
@@ -355,5 +368,10 @@ export default function LocaleText() {
     AnimalIntrusion,
     BadWeather,
     Required,
+    Trigger,
+    TechSupport,
+    Arm,
+    Disarm,
+    AdvancedSettings,
   };
 }

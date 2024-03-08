@@ -3,24 +3,43 @@ import type { TableColumnsType } from "antd";
 import { useModel } from "umi";
 import type { Fiber } from "@/models/useItems";
 import { useEffect } from "react";
+import Online from "@/components/online";
 
 export default function () {
   const { fiberList, centerTo } = useModel("useItems");
   const { selectFeature, getFeaturesByTypeAndId, highLightTrigger } =
     useModel("useMap");
   const { showPopup } = useModel("useModel");
-  const { Name } = useModel("useLocaleText");
+  const { Name, LocationDesc, LayingText, LengthText, Status } =
+    useModel("useLocaleText");
 
   const columns: TableColumnsType<Fiber> = [
     {
-      title: "ID",
-      dataIndex: "id",
-      render: (text) => <a>{text}</a>,
-    },
-    {
       title: Name,
       dataIndex: "name",
-      render: (text, record) => <a>{record.name}</a>,
+      render: (text, record) => <span>{record.name}</span>,
+    },
+    {
+      title: Status,
+      dataIndex: "online",
+      render: (text, record) => (
+        <span>{<Online online={record.online} color="black" />}</span>
+      ),
+    },
+    {
+      title: LocationDesc,
+      dataIndex: "locationDesc",
+      render: (text, record) => <span>{record.locationDesc}</span>,
+    },
+    {
+      title: LayingText,
+      dataIndex: "layingMethod",
+      render: (text, record) => <span>{record.layingMethod}</span>,
+    },
+    {
+      title: LengthText,
+      dataIndex: "length",
+      render: (text, record) => <span>{record.length}</span>,
     },
   ];
   useEffect(() => {

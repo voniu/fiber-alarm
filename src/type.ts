@@ -12,6 +12,9 @@ export interface FiberDetail {
   triggerCameras: Camera[];
   archived: boolean;
   identifier: number[];
+  locationDesc: string;
+  layingMethod: string;
+  length: string;
 }
 export interface CameraDetail {
   name: string;
@@ -54,4 +57,5 @@ export interface FiberControl {
   port: number;
   archived: boolean;
   fiberNum?: number;
+  online: boolean;
 }

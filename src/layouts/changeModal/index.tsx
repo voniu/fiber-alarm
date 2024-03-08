@@ -67,7 +67,7 @@ export default (props: IProps) => {
                 if (!value || regex.test(value)) {
                   return Promise.resolve();
                 }
-                return Promise.reject(PasswordRules);
+                return Promise.reject(PasswordRules + "(@$!%*?&)");
               },
             },
           ]}
@@ -87,7 +87,7 @@ export default (props: IProps) => {
                 if (!value || regex.test(value)) {
                   return Promise.resolve();
                 }
-                return Promise.reject(PasswordRules);
+                return Promise.reject(PasswordRules + "(@$!%*?&)");
               },
             },
           ]}

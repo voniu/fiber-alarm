@@ -29,9 +29,10 @@ export interface Camera {
   name: string;
   archived: boolean;
   location: Coordinate;
-  status: number;
+  online: boolean;
   locationDesc: string;
-  cameraType: number;
+  form: number;
+  type: number;
 }
 
 export interface Fiber {
@@ -44,10 +45,10 @@ export interface Fiber {
     name: string;
     type: number;
   };
-  status: number;
+  online: boolean;
   locationDesc: string;
-  laying: number;
-  length: number;
+  layingMethod: string;
+  length: string;
 }
 
 export default function ItemsModel() {
@@ -142,5 +143,7 @@ export default function ItemsModel() {
     addFiber,
     centerTo,
     flush,
+    fetchAdminItem,
+    fetchGuardItem,
   };
 }

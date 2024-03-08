@@ -22,12 +22,14 @@ export default {
           configMap: {
             "0": {
               // A
+              armed: true,
               vibeCount: 12, // 振动次数，1 - 100
               vibeAmplitude: 11, // 振动幅度，1 - 100
               vibeWidth: 22, // 振动宽度，1 - 100
               vibeGap: 33, // 振动间隙，1 - 100
             },
             "1": {
+              armed: true,
               // B
               alarmSensitivity: 1, // 报警灵敏度， 1 - 10
               systemSensitivity: 2, // 系统灵敏度，1 - 10

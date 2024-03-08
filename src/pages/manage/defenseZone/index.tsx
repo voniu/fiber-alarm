@@ -7,13 +7,20 @@ import CameraList from "./list/cameraList";
 import { useModel } from "umi";
 import Popup from "@/components/map/popup";
 import MapCenter from "./map";
+import { SyncOutlined } from "@ant-design/icons";
 
 const DefenseZone = () => {
   const { setTarget } = useModel("useMap");
   const [listType, setListType] = useState("fiber");
+  const [spin, setSpin] = useState(false);
+  const { fetchAdminItem } = useModel("useItems");
 
   const { MapSetting, Fiber, Camera } = useModel("useLocaleText");
-
+  const flush = async () => {
+    setSpin(true);
+    await fetchAdminItem();
+    setSpin(false);
+  };
   const handleChange = (e: any) => {
     setListType(e.target.value);
   };
@@ -41,7 +48,20 @@ const DefenseZone = () => {
       <MapCenter open={open} onClose={() => setOpen(false)} />
       <div style={{ display: "flex" }}>
         <div className={styles["left"]}>
-          <div style={{}}>
+          <div
+            style={{
+              cursor: "pointer",
+              position: "absolute",
+              right: 30,
+              top: 20,
+            }}
+            onClick={flush}
+          >
+            <span>
+              <SyncOutlined spin={spin} />
+            </span>
+          </div>
+          <div>
             <Radio.Group value={listType} onChange={handleChange} size="middle">
               <Radio.Button value="fiber">{Fiber}</Radio.Button>
               <Radio.Button value="camera">{Camera}</Radio.Button>

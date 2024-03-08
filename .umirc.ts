@@ -1,6 +1,7 @@
 import { defineConfig } from "umi";
 const MOCK = process.env.MOCK === "true" ? undefined : false;
 const LOCALE = process.env.LOCALE === "AZ" ? "az-AZ" : "en-US";
+console.log(LOCALE);
 
 export default defineConfig({
   initialState: {},
@@ -87,6 +88,12 @@ export default defineConfig({
           access: "user",
           path: "user",
           component: "@/pages/manage/user",
+        },
+        {
+          name: "Tech Support",
+          access: "document",
+          path: "document",
+          component: "@/pages/manage/document",
         },
       ],
     },
