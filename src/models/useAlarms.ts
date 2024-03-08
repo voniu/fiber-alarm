@@ -1,96 +1,161 @@
-import { useRequest } from 'umi';
-import { useEffect, useState } from "react"
-import services from '@/services';
-import ee from '@/libs/events';
-import { message } from 'antd';
+import { wsUrl } from "@/constant";
+import { isHome } from "@/utills";
+import { WebSocketClient } from "@/utills/websocket";
+import { message } from "antd";
+import { useEffect, useRef, useState } from "react";
+import { useModel } from "umi";
 
 export interface Alarm {
-    id: number;
-    time: number;    //unix时间戳
-    fiber: {
-        id: number;
-        name: string;
-    },
-    description: string;
-    previewUrl: string;
+  id: number;
 }
 
 export interface AlarmDetail extends Alarm {
-    snapshots: Array<{
-        id: number,
-        camera: {
-            id: number,
-            name: string,
-        },
-        picUrl: string,
-    }>,
+  createTime: number; //unix时间戳
+  fiber: {
+    id: number;
+    name: string;
+  };
+  type: number;
+  previewUrl: string;
+  status: number;
+  guard?: {
+    id: number;
+    name: string;
+    log: string;
+    time?: number;
+    reason: number;
+  };
+  manager?: {
+    id: number;
+    name: string;
+    log: string;
+    time?: number;
+  };
+  snapshots: Array<{
+    id: number;
+    camera: {
+      id: number;
+      name: string;
+    };
+    picUrl: string;
+  }>;
 }
 
-const alarms = new Map<number, AlarmDetail>()
+const alarms = new Map<number, AlarmDetail>();
 
 export default function Alarms() {
-    const [page, setPage] = useState(1);
-    const [pageSize, setPageSize] = useState(20);
-    const [fiberId, setFiberId] = useState(0);
-    const [alarmList, setAlarmList] = useState<Alarm[]>([])
-    const [total, setTotal] = useState(0)
-    const [currentAlarm, setCurrentAlarm] = useState<AlarmDetail>()
-    const [currentAlarmId, setCurrentAlarmId] = useState(0);
+  const { isLogin: userLogin, isOnDuty } = useModel("useUserInfo");
+  const { isLogin: adminLogin, admin } = useModel("useAdminInfo");
+  const [alarmList, setAlarmList] = useState<AlarmDetail[]>([
+    // { id: 1 },
+    // { id: 2 },
+    // { id: 3 },
+    // { id: 4 },
+    // { id: 5 },
+  ]);
+  const [manageAlarm, setManageAlarm] = useState<AlarmDetail[]>([
+    // { id: 1 },
+    // { id: 2 },
+  ]);
 
-    const { run } = useRequest(() => {
-        return services.getAlarmList({ page, pageSize, fiberId });
-    }, {
-        refreshDeps: [page, pageSize, fiberId],
-        onSuccess: data => {
-            setAlarmList(data)
-            if (data.length > 1) {
-                setCurrentAlarmId(data[0].id)
-            }
-        },
-        formatResult: res => {
-            setTotal(res.total)
-            return res.data
-        }
+  const [guardSocekt, setGuardSocket] = useState<WebSocketClient>();
+  const [manageSocekt, setManageSocket] = useState<WebSocketClient>();
+
+  const [messageLoading, setMessageLoading] = useState(true);
+  const shouldReconnect = useRef(true);
+
+  const handleGuard = (id: number, reason: number, log: string) => {
+    setMessageLoading(true);
+    guardSocekt?.send({
+      type: "RESOLVE",
+      content: {
+        alarmId: id,
+        reason,
+        log,
+      },
     });
-
-    useRequest(() => {
-        return services.getAlarmDetail(currentAlarmId)
-    }, {
-        onSuccess: (data) => {
-            console.log(data)
-            setCurrentAlarm(data)
-            alarms.set(currentAlarmId, data)
-        },
-        refreshDeps: [currentAlarmId],
-        ready: currentAlarmId !== 0
-    })
-
-    useEffect(() => {
-        ee.on('ALARM', function (data) {
-            console.log(data)
-            message.warning(`New alarm: [${data.description}] from fiber [${data.fiber.name}], please check it.`)
-            if (page === 1 && !fiberId) {
-                run()
-            } else {
-                setPage(1);
-                setPageSize(20);
-                setFiberId(0);
-            }
-        })
-    }, [])
-
-    return {
-        alarms,
-        alarmList,
-        page,
-        setPage,
-        pageSize,
-        setPageSize,
-        fiberId,
-        setFiberId,
-        total,
-        currentAlarmId,
-        setCurrentAlarmId,
-        currentAlarm
+  };
+  const handleManage = async (id: number, log: string) => {
+    setMessageLoading(true);
+    manageSocekt?.send({
+      type: "RESOLVE",
+      content: {
+        alarmId: id,
+        log,
+      },
+    });
+  };
+  const getMangerAlarm = () => {
+    const socket2 = new WebSocketClient(
+      `${wsUrl}/api/common/pendingAlarm?type=manager`,
+      (e: MessageEvent) => {
+        if (typeof e.data === "string") {
+          let data = JSON.parse(e.data);
+          if (data.type === "UPDATE") {
+            setMessageLoading(false);
+            setManageAlarm(data.content);
+          } else if (data.type === "ERROR") {
+            message.error(`error: ${data.content.msg}`);
+          }
+        }
+      },
+      shouldReconnect.current
+    );
+    setManageSocket(socket2);
+  };
+  const getGuardAlarm = () => {
+    const socket1 = new WebSocketClient(
+      `${wsUrl}/api/common/pendingAlarm?type=guard`,
+      (e: MessageEvent) => {
+        if (typeof e.data === "string") {
+          let data = JSON.parse(e.data);
+          if (data.type === "UPDATE") {
+            setMessageLoading(false);
+            setAlarmList(data.content);
+          } else if (data.type === "ERROR") {
+            message.error(`error: ${data.content.msg}`);
+          }
+        }
+      },
+      shouldReconnect.current
+    );
+    setGuardSocket(socket1);
+  };
+  useEffect(() => {
+    if (manageSocekt) manageSocekt.close();
+    if (guardSocekt) guardSocekt.close();
+    if (adminLogin && !isHome() && admin?.type === 2) {
+      getMangerAlarm();
     }
+    if (userLogin && isHome() && isOnDuty) {
+      getGuardAlarm();
+    }
+
+    return () => {
+      console.log("EXIT");
+
+      shouldReconnect.current = false;
+      manageSocekt?.close();
+      guardSocekt?.close();
+    };
+  }, [userLogin, adminLogin, isOnDuty, admin]);
+
+  return {
+    alarms,
+    alarmList,
+    manageAlarm,
+    handleManage,
+    handleGuard,
+    messageLoading,
+    // page,
+    // setPage,
+    // pageSize,
+    // setPageSize,
+    // fiberId,
+    // setFiberId,
+    // total,
+    // currentAlarmId,
+    // setCurrentAlarmId,
+    // currentAlarm
+  };
 }

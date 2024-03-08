@@ -1,0 +1,64 @@
+import { Button, Form, Input, Divider, message } from "antd";
+import styles from "./index.less";
+import { useEffect, useState } from "react";
+import { history, useModel } from "umi";
+import WithAuth from "@/wrappers/authAdmin";
+const Login = () => {
+  const { login, isLogin } = useModel("useAdminInfo");
+  const [form] = Form.useForm();
+  const [loading, setLoading] = useState(false);
+  const { Account, Password, SuperAdministrationSystem, Login } =
+    useModel("useLocaleText");
+
+  const run = async (val: any) => {
+    console.log(val);
+    const { username, password } = val;
+    setLoading(true);
+    const { success, msg } = await login(username, password);
+    if (!success) {
+      message.error(msg);
+      setLoading(false);
+      return;
+    }
+    setLoading(false);
+    history.push("/manage/alarm");
+  };
+  useEffect(() => {
+    console.log(isLogin);
+  }, []);
+  return (
+    <div className={`${styles["login-container"]} ${styles["bg0"]}`}>
+      <div className={styles.form}>
+        <Form size="large" form={form} name="login" onFinish={run}>
+          <Divider>
+            <span className={styles.title}>{SuperAdministrationSystem}</span>
+          </Divider>
+
+          <Form.Item
+            name="username"
+            label={Account}
+            labelCol={{ style: { width: 80 } }}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            name="password"
+            label={Password}
+            labelCol={{ style: { width: 80 } }}
+          >
+            <Input.Password />
+          </Form.Item>
+
+          <Form.Item>
+            <Button block type="primary" loading={loading} htmlType="submit">
+              {Login}
+            </Button>
+          </Form.Item>
+        </Form>
+      </div>
+    </div>
+  );
+};
+
+export default WithAuth(Login);

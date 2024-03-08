@@ -1,0 +1,151 @@
+import { Button, Popconfirm, Table, message } from "antd";
+import type { TableColumnsType } from "antd";
+import { delControl, setControlArchive } from "@/services/admin";
+import { FiberControl } from "@/type";
+import { useModel } from "umi";
+import Online from "@/components/online";
+import { deviceType } from "@/constant";
+interface IProps {
+  isArchived: boolean;
+  flush: () => void;
+  data: FiberControl[];
+  edit: (device: number, type: string, extra?: any) => void;
+  loading: boolean;
+}
+export default function (props: IProps) {
+  const { edit, data, flush, loading, isArchived } = props;
+  const { admin } = useModel("useAdminInfo");
+  const {
+    Success,
+    Name,
+    Edit,
+    Suspend,
+    UndoSuspend,
+    Delete,
+    Host,
+    Port,
+    Type,
+    Operator,
+    AreYouSureToSuspend,
+    AreYouSureToUndoSuspend,
+    AreYouSureToDelete,
+    Yes,
+    No,
+    Status,
+  } = useModel("useLocaleText");
+  const setArchive = async (id: number, archived: boolean) => {
+    const { success, msg } = await setControlArchive(id, archived);
+    if (!success) {
+      message.error(msg);
+    } else {
+      message.success(Success);
+    }
+    flush();
+  };
+  const columns: TableColumnsType<FiberControl> = [
+    {
+      title: Name,
+      dataIndex: "name",
+      render: (text, record) => <a>{record.name}</a>,
+    },
+    {
+      title: Host,
+      dataIndex: "host",
+      render: (text, record) => <a>{record.host}</a>,
+    },
+    {
+      title: Port,
+      dataIndex: "port",
+      render: (text, record) => <a>{record.port}</a>,
+    },
+    {
+      title: Type,
+      dataIndex: "type",
+      render: (text, record) => <a>{deviceType[record.type]}</a>,
+    },
+    {
+      title: Status,
+      dataIndex: "online",
+      render: (text, record) => (
+        <span>{<Online online={record.online} color="blcak" />}</span>
+      ),
+    },
+    {
+      title: Operator,
+      render: (_, record) => {
+        return (
+          <div style={{ display: "flex", gap: 10 }}>
+            <Button
+              type="primary"
+              size="small"
+              onClick={() => {
+                edit(record.id, "fiber-control", record);
+              }}
+            >
+              {Edit}
+            </Button>
+            {isArchived && (
+              <Popconfirm
+                title={UndoSuspend}
+                description={`${AreYouSureToUndoSuspend}?`}
+                okText={Yes}
+                cancelText={No}
+                onConfirm={() => setArchive(record.id, false)}
+              >
+                <Button size="small">{UndoSuspend}</Button>
+              </Popconfirm>
+            )}
+            {!isArchived && (
+              <Popconfirm
+                title={Suspend}
+                description={`${AreYouSureToSuspend}`}
+                okText={Yes}
+                cancelText={No}
+                onConfirm={() => setArchive(record.id, true)}
+              >
+                <Button type="primary" size="small">
+                  {Suspend}
+                </Button>
+              </Popconfirm>
+            )}
+            {isArchived && admin?.type === 0 && (
+              <Popconfirm
+                title={Delete}
+                description={`${AreYouSureToDelete}?`}
+                okText={Yes}
+                cancelText={No}
+                onConfirm={async () => {
+                  const { success, msg } = await delControl(record.id);
+                  if (!success) {
+                    message.error(msg);
+                  } else {
+                    message.success(Success);
+                  }
+                  flush();
+                }}
+              >
+                <Button danger size="small">
+                  {Delete}
+                </Button>
+              </Popconfirm>
+            )}
+          </div>
+        );
+      },
+    },
+  ];
+
+  return (
+    <>
+      <Table
+        scroll={{ x: true }}
+        loading={loading}
+        rowKey={"id"}
+        pagination={{ pageSize: 7, showSizeChanger: false }}
+        columns={columns}
+        dataSource={data}
+        bordered
+      />
+    </>
+  );
+}

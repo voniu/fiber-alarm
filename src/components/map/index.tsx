@@ -10,6 +10,7 @@ function MapWrapper() {
     setTarget('map-container');
 
     return function () {
+      setTarget("")
       const dom = document.getElementById('map-container');
       if (dom) {
         dom.innerHTML = '';
