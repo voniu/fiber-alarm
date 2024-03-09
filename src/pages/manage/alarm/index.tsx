@@ -39,7 +39,6 @@ const HistoryAlarm = () => {
   const [total, setTotal] = useState(0);
   const [form] = Form.useForm();
   const [optionLoading, setOptionLoading] = useState(false);
-  console.log(useModel("useLocaleText"));
 
   const {
     Pending,
@@ -113,9 +112,9 @@ const HistoryAlarm = () => {
   const typeMap = [Intrusion, Tamper, WireDisconnect, Disconnect];
   const onClose = () => setOpen(false);
 
-  const [fiberOptions, setFiberOp] = useState();
-  const [guardOptions, setGuardOp] = useState([]);
-  const [managerOptions, setManagerOp] = useState([]);
+  const [fiberOptions, setFiberOp] = useState<any[]>([]);
+  const [guardOptions, setGuardOp] = useState<any[]>([]);
+  const [managerOptions, setManagerOp] = useState<any[]>([]);
   const columns: ColumnsType<AlarmDetail> = [
     {
       title: "ID",
@@ -191,7 +190,12 @@ const HistoryAlarm = () => {
     const { data: allFiber } = await getFiber("", false);
     const { data: allGuard } = await getGuard(false);
     const { data: allManager } = await getUser(2, "", false);
-    if (!allFiber || !allGuard || !allManager) return;
+    if (
+      !Array.isArray(allFiber) ||
+      !Array.isArray(allGuard) ||
+      !Array.isArray(allManager)
+    )
+      return;
     const f = allFiber.map((item: any) => {
       return {
         value: item.id,

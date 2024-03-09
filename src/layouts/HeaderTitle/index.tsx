@@ -8,7 +8,7 @@ export default function HeaderTitle() {
         <img src={Logo} />
       </div>
       <span className={styles["header-title"]}>
-        <FormattedMessage id={"Super administration System"} />
+        <FormattedMessage id={"Super Administration System"} />
       </span>
     </div>
   );

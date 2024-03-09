@@ -54,13 +54,13 @@ export default defineConfig({
           component: "@/pages/manage/currentAlarm",
         },
         {
-          name: "Defense Zone",
+          name: "Map Setting",
           path: "defenseZone",
           access: "defenseZone",
           component: "@/pages/manage/defenseZone",
         },
         {
-          name: "Device Manage",
+          name: "Device Operation",
           path: "device",
           access: "device",
           component: "@/pages/manage/device",
@@ -117,9 +117,10 @@ export default defineConfig({
     dataField: "data",
   },
   locale: {
-    // 默认使用 src/locales/az-AZ.ts 作为多语言文件
     default: LOCALE,
     baseSeparator: "-",
+    baseNavigator: false,
+    useLocalStorage: false,
   },
   mock: MOCK,
   npmClient: "pnpm",

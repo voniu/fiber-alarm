@@ -260,11 +260,7 @@ export default (props: IProps) => {
                   name={"time"}
                   rules={[{ required: true }]}
                 >
-                  <TimePicker
-                    locale={locale}
-                    minuteStep={30}
-                    format={"HH:mm"}
-                  />
+                  <TimePicker locale={locale} minuteStep={1} format={"HH:mm"} />
                 </Form.Item>
               </div>
               <div className={styles["form-top-item-r"]}>

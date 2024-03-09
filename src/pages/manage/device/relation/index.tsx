@@ -80,7 +80,7 @@ export default function (props: IProps) {
         <div className={styles["title"]}>{AddAssociatedCamera}</div>
         <div className={styles["content"]}>
           <Row justify={"center"} style={{ margin: "10px 0" }}>
-            <Col span={4}>
+            <Col span={6}>
               <span className={styles["label"]}>{ZoneName}:</span>
             </Col>
             <Col span={6}>

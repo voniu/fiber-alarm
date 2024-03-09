@@ -1,7 +1,6 @@
 import { message } from "antd";
 import type { RequestConfig } from "umi";
 import { baseUrl } from "./constant";
-
 const errorHandler = (error: any) => {
   const { response, data } = error;
   if (response && response.status) {
@@ -25,8 +24,10 @@ export const request: RequestConfig = {
   requestInterceptors: [],
   responseInterceptors: [
     (res: any) => {
-      // TODO: 这里加上检测登录态过期的逻辑
-      // const { success, msg, data } = res;
+      if (res.data.data?.loginNeeded) {
+        window.location.reload();
+        return;
+      }
       return res;
     },
   ],

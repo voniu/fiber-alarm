@@ -316,7 +316,7 @@ export const addTask = (
   });
 };
 export const triggerTask = (id: number) => {
-  return request(`${prefix}/task/{${id}}/trigger`, {
+  return request(`${prefix}/task/${id}/trigger`, {
     method: "POST",
   });
 };

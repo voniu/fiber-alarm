@@ -100,7 +100,7 @@ const Layout = () => {
               </div>
             </Badge>
           </Popover>,
-          <SelectLang key={"lang"} />,
+          // <SelectLang key={"lang"} />,
         ];
       }}
       avatarProps={{

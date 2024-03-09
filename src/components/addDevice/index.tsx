@@ -127,7 +127,15 @@ export default (props: IProps) => {
   };
   const getFiberForm = async () => {
     const { data } = await getFiberDetail(deviceId!);
-    const { name, device, location, identifier } = data;
+    const {
+      name,
+      device,
+      location,
+      identifier,
+      locationDesc,
+      length,
+      layingMethod,
+    } = data;
     setInitLocation(location);
     if (!identifier) {
       form.setFieldsValue({
@@ -135,6 +143,9 @@ export default (props: IProps) => {
         zone: "",
         subzone: "",
         location: JSON.stringify(location),
+        locationDesc,
+        length,
+        layingMethod,
       });
       return;
     }
@@ -148,6 +159,9 @@ export default (props: IProps) => {
         zone: identifier[0],
         subzone: identifier[1],
         location: JSON.stringify(location),
+        locationDesc,
+        length,
+        layingMethod,
       });
     } else {
       form.setFieldsValue({
@@ -155,6 +169,9 @@ export default (props: IProps) => {
         fiberControl: device.id,
         zone: identifier[0],
         location: JSON.stringify(location),
+        locationDesc,
+        length,
+        layingMethod,
       });
     }
   };
@@ -165,11 +182,14 @@ export default (props: IProps) => {
       host,
       username,
       password,
-      snapshotPath,
+      snapshotChannel,
       snapshotPort,
       streamPort,
-      streamPath,
+      streamChannel,
       location,
+      form: CameraType,
+      locationDesc,
+      type,
     } = data;
     setInitLocation(location);
     form.setFieldsValue({
@@ -177,11 +197,14 @@ export default (props: IProps) => {
       host,
       username,
       password,
-      snapshotPath,
+      snapshotChannel,
       snapshotPort,
       streamPort,
-      streamPath,
+      streamChannel,
       location: JSON.stringify(location),
+      form: CameraType,
+      locationDesc,
+      type,
     });
   };
   const getControlForm = async () => {

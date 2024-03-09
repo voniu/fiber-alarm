@@ -155,7 +155,7 @@
     "No": "No",
     "Are you sure to delete": "Are you sure to delete",
     "Are you sure to Undo suspend": "Are you sure to Undo suspend",
-    "Are you sure to suspend ": "Are you sure to suspend",
+    "Are you sure to suspend": "Are you sure to suspend",
     "Please Input": "Please Input",
     "input processInfo": "input processInfo",
     "Please input numbers only": "Please input numbers only",
@@ -174,5 +174,7 @@
     "Tech Support": "Tech Support",
     "Arm": "Arm",
     "Disarm": "Disarm",
-    "Advanced Settings": "Advanced Settings"
+    "Advanced Settings": "Advanced Settings",
+    "delete the alarm": "delete the alarm",
+    "Monitor Setting": "Monitor Setting"
 }

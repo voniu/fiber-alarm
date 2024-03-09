@@ -87,6 +87,7 @@ const TabContent = (props: { id: number }) => {
   const typeMap = [Intrusion, Tamper, WireDisconnect, Disconnect];
   const processInfo = useRef<TextAreaRef>();
   const [alarmReason, setAlarmReason] = useState<number>();
+  const [alarmLog, setAlarmLog] = useState<string>("");
 
   const onChange = (value: any) => {
     setAlarmReason(value);
@@ -103,6 +104,8 @@ const TabContent = (props: { id: number }) => {
     if (!log) log = "";
     handleGuard(id, alarmReason, log);
     message.success(Success);
+    setAlarmReason(undefined);
+    setAlarmLog("");
   };
   useEffect(() => {
     if (alarmList.length > 0) {
@@ -195,7 +198,11 @@ const TabContent = (props: { id: number }) => {
           }}
         />
         <div className={styles["tab-sub"]}>
-          <TextArea ref={processInfo} />
+          <TextArea
+            ref={processInfo}
+            value={alarmLog}
+            setValue={(val) => setAlarmLog(val)}
+          />
           <Button style={{ marginTop: 20 }} onClick={onSubmit}>
             <FormattedMessage id={"submit & close"} />
           </Button>
