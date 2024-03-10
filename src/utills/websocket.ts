@@ -65,6 +65,7 @@ export class WebSocketClient {
     if (typeof event.data === "string") {
       let data = JSON.parse(event.data);
       if (data.type === "PING") {
+      } else if (data.type === "ERROR") {
       }
     }
   }

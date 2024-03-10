@@ -9,7 +9,6 @@ import {
   useAccess,
   useIntl,
   FormattedMessage,
-  SelectLang,
 } from "umi";
 import MenuHeader from "./HeaderTitle";
 import { Badge, Dropdown, Popover } from "antd";
@@ -76,7 +75,10 @@ const Layout = () => {
       }}
       siderWidth={220}
       actionsRender={() => {
-        if (admin?.type !== 2) return [<SelectLang key={"lang"} />];
+        if (admin?.type !== 2)
+          return [
+            //<SelectLang key={"lang"} />
+          ];
         return [
           <Popover
             key={"d"}

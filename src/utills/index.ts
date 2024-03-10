@@ -49,3 +49,7 @@ export const matrixData = (obj: any): MonitorSetting[] => {
 export const isHome = () => {
   return location.pathname.includes("home") || location.pathname === "/";
 };
+
+export const firstToUpperCase = (value: string) => {
+  return value.charAt(0).toUpperCase() + value.slice(1);
+};

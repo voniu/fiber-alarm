@@ -5,7 +5,8 @@ import { useModel } from "umi";
 import { Button, Collapse, CollapseProps, List } from "antd";
 import { DownloadOutlined } from "@ant-design/icons";
 const DocumentPage = () => {
-  const { TechSupport } = useModel("useLocaleText");
+  const { TechSupport, ToolDownload, DocumentDownload } =
+    useModel("useLocaleText");
   const data1 = [
     {
       text: "test device soft",
@@ -45,7 +46,7 @@ const DocumentPage = () => {
   const items: CollapseProps["items"] = [
     {
       key: "1",
-      label: "Download 1",
+      label: ToolDownload,
       children: (
         <>
           <List
@@ -77,7 +78,7 @@ const DocumentPage = () => {
     },
     {
       key: "2",
-      label: "Download 2",
+      label: DocumentDownload,
       children: (
         <>
           <List

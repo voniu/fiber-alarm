@@ -69,7 +69,6 @@ export default (props: IProps) => {
     Location,
     CheckMap,
     AlarmTime,
-    GuardTime,
     Status,
     CameraNo,
     Submit,
@@ -80,6 +79,7 @@ export default (props: IProps) => {
     SignalDisconnect,
     AnimalIntrusion,
     BadWeather,
+    Log,
   } = useModel("useLocaleText");
   const typeMap = [Intrusion, Tamper, WireDisconnect, Disconnect];
   const alarmReasonMap = [
@@ -166,26 +166,7 @@ export default (props: IProps) => {
           label={AlarmTime}
           content={dayjs(detail?.createTime).format("MMMM D, YYYY h:mm A")}
         />
-        <DescriptionText
-          label={GuardTime}
-          content={
-            detail?.guard?.time
-              ? dayjs(detail?.guard?.time).format("MMMM D, YYYY h:mm A")
-              : ""
-          }
-        />
-        <DescriptionText
-          label={`${Officer} ${Time}`}
-          content={
-            detail?.manager?.time
-              ? dayjs(detail?.manager.time).format("MMMM D, YYYY h:mm A")
-              : ""
-          }
-        />
-        <DescriptionText
-          label={AlarmReason}
-          content={detail?.guard ? alarmReasonMap[detail?.guard.reason] : ""}
-        />
+
         <DescriptionText
           label={Status}
           Other={() =>
@@ -212,9 +193,26 @@ export default (props: IProps) => {
             </div>
           )}
         />
-        <DescriptionText label={Guarder} content={detail?.guard?.log} />
         <DescriptionText
-          label={Officer}
+          label={AlarmReason}
+          content={detail?.guard ? alarmReasonMap[detail?.guard.reason] : ""}
+        />
+        <DescriptionText label={Guarder} content={detail?.guard?.name} />
+        <DescriptionText
+          label={`${Guarder} ${Log}`}
+          content={detail?.guard?.log}
+        />
+        <DescriptionText
+          label={`${Guarder} ${Log}${Time}`}
+          content={
+            detail?.guard?.time
+              ? dayjs(detail?.guard?.time).format("MMMM D, YYYY h:mm A")
+              : ""
+          }
+        />
+        <DescriptionText label={Officer} content={detail?.manager?.name} />
+        <DescriptionText
+          label={`${Officer} ${Log}`}
           Other={() => (
             <TextArea
               status={detail?.status || -1}
@@ -223,6 +221,14 @@ export default (props: IProps) => {
               ref={processInfo}
             />
           )}
+        />
+        <DescriptionText
+          label={`${Officer} ${Log}${Time}`}
+          content={
+            detail?.manager?.time
+              ? dayjs(detail?.manager.time).format("MMMM D, YYYY h:mm A")
+              : ""
+          }
         />
         {!isHistory && (
           <div className={styles["button-container"]}>

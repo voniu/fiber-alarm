@@ -66,7 +66,7 @@ export default function LocaleText() {
   const reset = intl.formatMessage({ id: "reset" });
 
   const FiberOpticHost = intl.formatMessage({ id: "Fiber Optic Host" });
-  const SuspendDevice = intl.formatMessage({ id: "Suspend Device" });
+  const SuspendDevice = intl.formatMessage({ id: "Suspended Device" });
   const ZoneName = intl.formatMessage({ id: "Zone Name" });
   const SubZoneNo = intl.formatMessage({ id: "Sub-Zone No" });
   const Suspend = intl.formatMessage({ id: "Suspend" });
@@ -221,6 +221,18 @@ export default function LocaleText() {
   const AdvancedSettings = intl.formatMessage({
     id: "Advanced Settings",
   });
+  const Log = intl.formatMessage({
+    id: "Log",
+  });
+  const Process = intl.formatMessage({
+    id: "Process",
+  });
+  const ToolDownload = intl.formatMessage({
+    id: "Tool Download",
+  });
+  const DocumentDownload = intl.formatMessage({
+    id: "Document Download",
+  });
 
   return {
     Login,
@@ -373,5 +385,9 @@ export default function LocaleText() {
     Arm,
     Disarm,
     AdvancedSettings,
+    Log,
+    Process,
+    ToolDownload,
+    DocumentDownload,
   };
 }

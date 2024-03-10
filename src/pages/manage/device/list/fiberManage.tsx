@@ -168,6 +168,7 @@ export default function (props: IProps) {
               {Relation}
             </Button>
             <Button
+              disabled={!record.online}
               type="primary"
               size="small"
               onClick={() => {
@@ -177,6 +178,7 @@ export default function (props: IProps) {
               {Arm}
             </Button>
             <Button
+              disabled={!record.online}
               type="primary"
               size="small"
               onClick={() => {

@@ -5,6 +5,7 @@ import CreateTask from "./createTask";
 import { useEffect, useState } from "react";
 import { delTask, getTask, triggerTask } from "@/services/admin";
 import { FormattedMessage, useModel } from "umi";
+import { firstToUpperCase } from "@/utills";
 const rendertTskItem = (props: {
   // fibers: Fiber[];
   time: { hour: number; minute: number };
@@ -181,7 +182,7 @@ const FiberSensitivity = () => {
                         type="primary"
                         onClick={() => handleCheck(item.id)}
                       >
-                        {Check}
+                        {firstToUpperCase(Check)}
                       </Button>,
                       <Popconfirm
                         key="delete-task"

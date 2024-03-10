@@ -10,6 +10,7 @@ import AddRelation from "./relation/index";
 import { getCamera, getFiber, getFiberControl } from "@/services/admin";
 import FiberList from "./list/fiberList";
 import { SyncOutlined } from "@ant-design/icons";
+import { firstToUpperCase } from "@/utills";
 
 interface DeviceModal {
   operator: string;
@@ -134,7 +135,9 @@ const DeviceManage = () => {
                 {FiberOpticHost}
               </Radio.Button>
               <Radio.Button value="fiber">{Zone}</Radio.Button>
-              <Radio.Button value="camera">{Camera}</Radio.Button>
+              <Radio.Button value="camera">
+                {firstToUpperCase(Camera)}
+              </Radio.Button>
             </Radio.Group>
           </div>
         </div>

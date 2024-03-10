@@ -33,6 +33,7 @@ export default (props: IProps) => {
     Identity,
     Password,
     Admin,
+    PasswordRules,
   } = useModel("useLocaleText");
   const onClose = () => {
     onCancel();
@@ -99,6 +100,7 @@ export default (props: IProps) => {
             }}
           >
             <Form
+              style={{ width: "80%" }}
               form={form}
               onFinish={onFinish}
               labelAlign="right"
@@ -138,7 +140,19 @@ export default (props: IProps) => {
                     className={styles["form-item"]}
                     label={Password}
                     name={"password"}
-                    rules={[{ required: true }]}
+                    rules={[
+                      { required: true },
+                      {
+                        validator: (_, value) => {
+                          const regex =
+                            /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,10}$/;
+                          if (!value || regex.test(value)) {
+                            return Promise.resolve();
+                          }
+                          return Promise.reject(PasswordRules + "(@$!%*?&)");
+                        },
+                      },
+                    ]}
                   >
                     <Input.Password placeholder="" />
                   </Form.Item>

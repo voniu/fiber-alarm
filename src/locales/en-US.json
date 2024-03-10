@@ -85,7 +85,7 @@
     "only allow draw a fiber": "only allow draw a fiber",
     "Device Operation": "Device Operation",
     "Fiber Optic Host": "Fiber Optic Host",
-    "Suspend Device": "Suspend Device",
+    "Suspended Device": "Suspended Device",
     "Zone Name": "Zone Name",
     "Sub-Zone No": "Sub-Zone No",
     "Suspend": "Suspend",
@@ -141,7 +141,7 @@
     "Log Information": "Log Information",
     "User Manage": "User Manage",
     "Suspended user": "Suspended user",
-    "User": "user",
+    "User": "User",
     "admin": "admin",
     "Add": "Add",
     "Add Officer": "Add Officer",
@@ -176,5 +176,9 @@
     "Disarm": "Disarm",
     "Advanced Settings": "Advanced Settings",
     "delete the alarm": "delete the alarm",
-    "Monitor Setting": "Monitor Setting"
+    "Monitor Setting": "Monitor Setting",
+    "Log": "Log",
+    "Process": "process",
+    "Tool Download": "Tool Download",
+    "Document Download": "Document Download"
 }

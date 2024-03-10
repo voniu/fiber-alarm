@@ -22,10 +22,6 @@ const Monitor = () => {
     Success,
     MonitoringMatrix,
     SetUpMonitoringMatrix,
-    LeftTop,
-    RightTop,
-    LeftBottom,
-    RightBottom,
     Submit,
     PleaseSelect,
   } = useModel("useLocaleText");
@@ -84,16 +80,22 @@ const Monitor = () => {
         {MonitoringMatrix}
       </p>
       <div className={styles["main"]}>
-        <div style={{ flexShrink: 0, width: 600 }}>
-          <div style={{ display: "flex", marginTop: 2, marginLeft: 4 }}>
+        <div style={{ flexShrink: 0, width: 400 }}>
+          <div
+            style={{
+              height: "100%",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              gap: 2,
+            }}
+          >
             {currentCameras && (
               <RtspVideo prefix="manage1" id={currentCameras["0-0"]} />
             )}
             {currentCameras && (
               <RtspVideo prefix="manage2" id={currentCameras["0-1"]} />
             )}
-          </div>
-          <div style={{ display: "flex", marginTop: 2, marginLeft: 4 }}>
             {currentCameras && (
               <RtspVideo prefix="manage3" id={currentCameras["1-0"]} />
             )}
@@ -106,6 +108,7 @@ const Monitor = () => {
           <p className={styles["title"]}>{SetUpMonitoringMatrix}</p>
           <div className={styles["form-container"]}>
             <Form
+              style={{ width: 300 }}
               form={form}
               labelAlign={"left"}
               labelCol={{ span: 8 }}
@@ -113,7 +116,7 @@ const Monitor = () => {
               layout="horizontal"
               onFinish={onFinsh}
             >
-              <Form.Item label={LeftTop} name={"0-0"}>
+              <Form.Item label={"First"} name={"0-0"}>
                 <Select
                   size={"middle"}
                   placeholder={PleaseSelect}
@@ -121,7 +124,7 @@ const Monitor = () => {
                   options={cameraOptions}
                 />
               </Form.Item>
-              <Form.Item label={RightTop} name={"0-1"}>
+              <Form.Item label={"Second"} name={"0-1"}>
                 <Select
                   size={"middle"}
                   placeholder={PleaseSelect}
@@ -129,7 +132,7 @@ const Monitor = () => {
                   options={cameraOptions}
                 />
               </Form.Item>
-              <Form.Item label={LeftBottom} name={"1-0"}>
+              <Form.Item label={"Third"} name={"1-0"}>
                 <Select
                   size={"middle"}
                   placeholder={PleaseSelect}
@@ -137,7 +140,7 @@ const Monitor = () => {
                   options={cameraOptions}
                 />
               </Form.Item>
-              <Form.Item label={RightBottom} name={"1-1"}>
+              <Form.Item label={"Fourth"} name={"1-1"}>
                 <Select
                   size={"middle"}
                   placeholder={PleaseSelect}

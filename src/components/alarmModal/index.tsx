@@ -25,7 +25,7 @@ import "react-zmage/lib/zmage.css";
 import { TextAreaRef } from "antd/lib/input/TextArea";
 import TextArea from "./textArea";
 import React from "react";
-import converter from "number-to-words";
+// import converter from "number-to-words";
 const DescriptionText = React.memo(
   ({
     label,
@@ -258,7 +258,7 @@ export default function () {
             items={alarmList.map((item: Alarm, i: number) => {
               const id = String(i + 1);
               return {
-                label: `${converter.toWordsOrdinal(id)}`,
+                label: `${id}`,
                 key: id,
                 children: <TabContent id={item.id} />,
               };

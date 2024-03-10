@@ -85,7 +85,7 @@
     "only allow draw a fiber": "",
     "Device Operation": "",
     "Fiber Optic Host": "",
-    "Suspend Device": "",
+    "Suspended Device": "",
     "Zone Name": "",
     "Sub-Zone No": "",
     "Suspend": "",
@@ -176,5 +176,9 @@
     "Disarm": "",
     "Advanced Settings": "",
     "delete the alarm": "",
-    "Monitor Setting": ""
+    "Monitor Setting": "",
+    "Log": "",
+    "Process": "",
+    "Tool Download": "",
+    "Document Download": ""
 }

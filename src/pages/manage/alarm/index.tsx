@@ -72,6 +72,11 @@ const HistoryAlarm = () => {
     Yes,
     No,
     PleaseSelect,
+    AlarmReason,
+    HumanIntrusion,
+    SignalDisconnect,
+    AnimalIntrusion,
+    BadWeather,
   } = useModel("useLocaleText");
 
   const fetchList = (page: number, pageSize: number) => {
@@ -83,6 +88,7 @@ const HistoryAlarm = () => {
       guardId: values.guardId !== "all" ? values.guardId : undefined,
       managerId: values.managerId !== "all" ? values.managerId : undefined,
       type: values.type !== "all" ? values.type : undefined,
+      reason: values.reason !== "all" ? values.reason : undefined,
       status: values.status !== -1 ? values.status : undefined,
       timeType: values.time
         ? values.timeType !== "all"
@@ -253,6 +259,8 @@ const HistoryAlarm = () => {
             type: "all",
             guardId: "all",
             managerId: "all",
+            reason: "all",
+            timeType: "CREATE",
           }}
         >
           <Row gutter={24} style={{ height: 45, flexWrap: "nowrap" }}>
@@ -313,7 +321,7 @@ const HistoryAlarm = () => {
                   // mode="multiple"
                   size={"middle"}
                   placeholder={PleaseSelect}
-                  style={{ width: "230px" }}
+                  style={{ width: "160px" }}
                   maxTagCount={1}
                   options={[
                     { value: "all", label: All },
@@ -333,7 +341,7 @@ const HistoryAlarm = () => {
                   placeholder={PleaseSelect}
                   showSearch
                   optionFilterProp="label"
-                  style={{ width: "230px" }}
+                  style={{ width: "160px" }}
                   maxTagCount={1}
                   options={[{ value: "all", label: All }, ...managerOptions]}
                   loading={optionLoading}
@@ -348,10 +356,28 @@ const HistoryAlarm = () => {
                   showSearch
                   optionFilterProp="label"
                   placeholder={PleaseSelect}
-                  style={{ width: "230px" }}
+                  style={{ width: "160px" }}
                   maxTagCount={1}
                   options={[{ value: "all", label: All }, ...guardOptions]}
                   loading={optionLoading}
+                />
+              </Form.Item>
+            </Col>
+            <Col style={{ flexShrink: 0 }}>
+              <Form.Item name={`reason`} label={AlarmReason}>
+                <Select
+                  // mode="multiple"
+                  size={"middle"}
+                  placeholder={PleaseSelect}
+                  style={{ width: "160px" }}
+                  maxTagCount={1}
+                  options={[
+                    { value: "all", label: All },
+                    { value: 0, label: HumanIntrusion },
+                    { value: 1, label: SignalDisconnect },
+                    { value: 2, label: AnimalIntrusion },
+                    { value: 3, label: BadWeather },
+                  ]}
                 />
               </Form.Item>
             </Col>

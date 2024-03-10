@@ -1,7 +1,7 @@
 import { useModel, FormattedMessage } from "umi";
 import { changeSelfPass } from "@/services/admin";
 import { Form, Input, Button, message, Modal } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 interface IProps {
   open: boolean;
   onCancel: () => void;
@@ -37,7 +37,11 @@ export default (props: IProps) => {
   const onFinishFailed = (errorInfo: any) => {
     message.error(errorInfo);
   };
-
+  useEffect(() => {
+    if (open) {
+      form.resetFields();
+    }
+  }, [open]);
   return (
     <Modal
       style={{ top: 120 }}
@@ -60,16 +64,16 @@ export default (props: IProps) => {
           name="currentPassword"
           rules={[
             { required: true },
-            {
-              validator: (_, value) => {
-                const regex =
-                  /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,10}$/;
-                if (!value || regex.test(value)) {
-                  return Promise.resolve();
-                }
-                return Promise.reject(PasswordRules + "(@$!%*?&)");
-              },
-            },
+            // {
+            //   validator: (_, value) => {
+            //     const regex =
+            //       /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,10}$/;
+            //     if (!value || regex.test(value)) {
+            //       return Promise.resolve();
+            //     }
+            //     return Promise.reject(PasswordRules + "(@$!%*?&)");
+            //   },
+            // },
           ]}
         >
           <Input.Password />
