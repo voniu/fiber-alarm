@@ -5,7 +5,7 @@ import { useModel } from "umi";
 import { ConfigProvider, Table, TableColumnsType } from "antd";
 import { Fiber } from "@/models/useItems";
 import Online from "@/components/online";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function () {
   const { fiberList, centerTo, fetchGuardItem } = useModel("useItems");
@@ -14,10 +14,28 @@ export default function () {
   const { showPopup } = useModel("useModel");
   const { Name, LocationDesc, LayingText, LengthText, Status } =
     useModel("useLocaleText");
+  const [scrollY, setScrollY] = useState(0);
 
   const flush = async () => {
     await fetchGuardItem();
   };
+
+  useEffect(() => {
+    // 获取外层容器的高度
+    const updateScrollHeight = () => {
+      const containerHeight =
+        document.getElementById("home_right_list")?.clientHeight || 900;
+      console.log(document.getElementById("home_right_list")?.clientHeight);
+
+      // 设置纵向滚动的高度为外层容器的高度
+      setScrollY(containerHeight - 60);
+    };
+    updateScrollHeight();
+    window.addEventListener("resize", updateScrollHeight);
+    return () => {
+      window.removeEventListener("resize", updateScrollHeight);
+    };
+  }, []);
   useEffect(() => {
     const timer = setInterval(() => {
       flush();
@@ -100,7 +118,7 @@ export default function () {
         <Table
           size="small"
           pagination={false}
-          scroll={{ y: 520 }}
+          scroll={{ y: scrollY }}
           rowClassName={(_, index) =>
             index % 2 ? styles["row1"] : styles["row2"]
           }

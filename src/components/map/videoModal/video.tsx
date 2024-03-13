@@ -53,7 +53,7 @@ export default (props: IProps) => {
     };
   }, [id]);
   return (
-    <div>
+    <>
       <div
         style={
           style || {
@@ -72,6 +72,6 @@ export default (props: IProps) => {
           poster={defaultImg}
         ></video>
       </div>
-    </div>
+    </>
   );
 };

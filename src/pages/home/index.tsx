@@ -3,7 +3,7 @@ import secondTitlePng from "@/assets//second_title.png";
 import Map from "@/components/map";
 import FiberList from "@/components/fiberList";
 import "./bigData.css";
-import "./index.less";
+import styles from "./index.less";
 import AlarmModal from "@/components/alarmModal";
 import WithAuth from "@/wrappers/authDuty";
 import Header from "./header";
@@ -42,38 +42,54 @@ function HomePage() {
       </div>
       <div className="index_tabs">
         <div className="inner" style={{ height: "100%" }}>
-          <div className="left_cage" style={{ width: "20%" }}>
+          <div className="left_cage" style={{ width: "25%" }}>
             <div
               className={`dataAllBorder01 cage_cl overflow-style`}
               style={{ height: "100%" }}
             >
               <div
                 style={{
-                  height: "100%",
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "center",
                   alignItems: "center",
                   gap: 5,
+                  marginTop: 5,
                 }}
               >
                 {currentCameras && (
-                  <RtspVideo prefix="home1" id={currentCameras["0-0"]} />
+                  <RtspVideo
+                    style={{ width: "95%" }}
+                    prefix="home1"
+                    id={currentCameras["0-0"]}
+                  />
                 )}
                 {currentCameras && (
-                  <RtspVideo prefix="home2" id={currentCameras["0-1"]} />
+                  <RtspVideo
+                    style={{ width: "95%" }}
+                    prefix="home2"
+                    id={currentCameras["0-1"]}
+                  />
                 )}
                 {currentCameras && (
-                  <RtspVideo prefix="home3" id={currentCameras["1-0"]} />
+                  <RtspVideo
+                    style={{ width: "95%" }}
+                    prefix="home3"
+                    id={currentCameras["1-0"]}
+                  />
                 )}
                 {currentCameras && (
-                  <RtspVideo prefix="home4" id={currentCameras["1-1"]} />
+                  <RtspVideo
+                    style={{ width: "95%" }}
+                    prefix="home4"
+                    id={currentCameras["1-1"]}
+                  />
                 )}
               </div>
             </div>
           </div>
 
-          <div className="center_cage" style={{ width: "45%" }}>
+          <div className="center_cage" style={{ width: "48%" }}>
             <div
               className="dataAllBorder01 cage_cl"
               style={{ height: "100%", position: "relative" }}
@@ -103,7 +119,7 @@ function HomePage() {
               </div>
             </div>
           </div>
-          <div className="right_cage" style={{ width: "33.6%" }}>
+          <div className="right_cage" style={{ width: "25.6%" }}>
             <div className="dataAllBorder01 cage_cl" style={{ height: "100%" }}>
               <div
                 className="dataAllBorder01"
@@ -147,15 +163,17 @@ function HomePage() {
                     </Radio.Group>
                   </div>
                 </div>
-                {listType === "fiber" ? (
-                  <div style={{ flex: "1" }}>
-                    <FiberList />
-                  </div>
-                ) : (
-                  <div style={{ flex: "1" }}>
-                    <CameraList />
-                  </div>
-                )}
+                <div id="home_right_list" className={styles["home_right_list"]}>
+                  {listType === "fiber" ? (
+                    <div style={{ flex: "1" }}>
+                      <FiberList />
+                    </div>
+                  ) : (
+                    <div style={{ flex: "1" }}>
+                      <CameraList />
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>
