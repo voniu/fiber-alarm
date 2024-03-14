@@ -61,7 +61,7 @@ export default function Alarms() {
   const [guardSocekt, setGuardSocket] = useState<WebSocketClient>();
   const [manageSocekt, setManageSocket] = useState<WebSocketClient>();
 
-  const [messageLoading, setMessageLoading] = useState(true);
+  const [messageLoading, setMessageLoading] = useState(false);
   const shouldReconnect = useRef(true);
 
   const handleGuard = (id: number, reason: number, log: string) => {

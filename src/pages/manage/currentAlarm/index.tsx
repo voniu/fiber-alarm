@@ -40,7 +40,7 @@ const Alarm = () => {
     {
       title: Zone,
       dataIndex: "fiber",
-      render: (text, record) => <a>{record.fiber.name}</a>,
+      render: (text, record) => <a>{record.fiber?.name}</a>,
     },
     {
       title: AlarmType,
