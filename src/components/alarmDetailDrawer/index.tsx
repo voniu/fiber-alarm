@@ -57,7 +57,7 @@ export default (props: IProps) => {
   const {
     Intrusion,
     Tamper,
-    WireDisconnect,
+    BrokenFiber,
     Disconnect,
     Zone,
     Guarder,
@@ -83,7 +83,7 @@ export default (props: IProps) => {
     BadWeather,
     Log,
   } = useModel("useLocaleText");
-  const typeMap = [Intrusion, Tamper, WireDisconnect, Disconnect];
+  const typeMap = [Intrusion, Tamper, BrokenFiber, Disconnect];
   const alarmReasonMap = [
     HumanIntrusion,
     SignalDisconnect,

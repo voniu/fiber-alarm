@@ -46,7 +46,7 @@ const HistoryAlarm = () => {
     Solved,
     Intrusion,
     Tamper,
-    WireDisconnect,
+    BrokenFiber,
     Disconnect,
     Happen,
     Zone,
@@ -115,7 +115,7 @@ const HistoryAlarm = () => {
   };
   const statusMap = [Pending, Processing, Solved];
   const colorMap = ["default", "processing", "success"];
-  const typeMap = [Intrusion, Tamper, WireDisconnect, Disconnect];
+  const typeMap = [Intrusion, Tamper, BrokenFiber, Disconnect];
   const onClose = () => setOpen(false);
 
   const [fiberOptions, setFiberOp] = useState<any[]>([]);
@@ -327,7 +327,7 @@ const HistoryAlarm = () => {
                     { value: "all", label: All },
                     { value: 0, label: Intrusion },
                     { value: 1, label: Tamper },
-                    { value: 2, label: WireDisconnect },
+                    { value: 2, label: BrokenFiber },
                     { value: 3, label: Disconnect },
                   ]}
                 />

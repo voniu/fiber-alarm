@@ -72,7 +72,7 @@ const TabContent = (props: { id: number }) => {
     Officer,
     Intrusion,
     Tamper,
-    WireDisconnect,
+    BrokenFiber,
     Disconnect,
     Success,
     HumanIntrusion,
@@ -84,7 +84,7 @@ const TabContent = (props: { id: number }) => {
   } = useModel("useLocaleText");
 
   const { id } = props;
-  const typeMap = [Intrusion, Tamper, WireDisconnect, Disconnect];
+  const typeMap = [Intrusion, Tamper, BrokenFiber, Disconnect];
   const processInfo = useRef<TextAreaRef>();
   const [alarmReason, setAlarmReason] = useState<number>();
   const [alarmLog, setAlarmLog] = useState<string>("");

@@ -18,7 +18,7 @@ const Alarm = () => {
   const {
     Intrusion,
     Tamper,
-    WireDisconnect,
+    BrokenFiber,
     Disconnect,
     Zone,
     Guarder,
@@ -28,7 +28,7 @@ const Alarm = () => {
     DealWith,
     CurrentAlarm,
   } = useModel("useLocaleText");
-  const typeMap = [Intrusion, Tamper, WireDisconnect, Disconnect];
+  const typeMap = [Intrusion, Tamper, BrokenFiber, Disconnect];
   const { manageAlarm, messageLoading } = useModel("useAlarms");
 
   const columns: ColumnsType<AlarmDetail> = [

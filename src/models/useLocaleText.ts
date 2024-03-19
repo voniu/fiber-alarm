@@ -34,8 +34,9 @@ export default function LocaleText() {
 
   const Intrusion = intl.formatMessage({ id: "intrusion" });
   const Tamper = intl.formatMessage({ id: "tamper" });
+  const BrokenFiber = intl.formatMessage({ id: "broken fiber" });
   const WireDisconnect = intl.formatMessage({ id: "wire Disconnect" });
-  const Disconnect = intl.formatMessage({ id: "Disconnect" });
+  const Disconnect = intl.formatMessage({ id: "network Disconnect" });
 
   const AlarmFiltering = intl.formatMessage({ id: "Alarm Filtering" });
   const AlarmDetail = intl.formatMessage({ id: "Alarm Detail" });
@@ -389,5 +390,6 @@ export default function LocaleText() {
     Process,
     ToolDownload,
     DocumentDownload,
+    BrokenFiber,
   };
 }
