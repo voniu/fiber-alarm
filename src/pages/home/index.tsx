@@ -15,6 +15,13 @@ import { getMatrix } from "@/services/common";
 import { MonitorSetting } from "@/type";
 import { FormattedMessage } from "umi";
 
+const VideoCss: Partial<React.CSSProperties> = {
+  width: "calc(100% - 8px)",
+  height: "calc(25% - 5px)",
+  margin: "4px 4px 0 4px",
+  float: "left"
+}
+
 function HomePage() {
   const [listType, setListType] = useState("fiber");
   const [currentCameras, setCurrentCameras] = useState<{
@@ -49,41 +56,35 @@ function HomePage() {
             >
               <div
                 style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  gap: 5,
-                  marginTop: 5,
+                  height: "100%"
                 }}
               >
                 {currentCameras && (
-                  <RtspVideo
-                    style={{ width: "95%" }}
-                    prefix="home1"
-                    id={currentCameras["0-0"]}
-                  />
-                )}
-                {currentCameras && (
-                  <RtspVideo
-                    style={{ width: "95%" }}
-                    prefix="home2"
-                    id={currentCameras["0-1"]}
-                  />
-                )}
-                {currentCameras && (
-                  <RtspVideo
-                    style={{ width: "95%" }}
-                    prefix="home3"
-                    id={currentCameras["1-0"]}
-                  />
-                )}
-                {currentCameras && (
-                  <RtspVideo
-                    style={{ width: "95%" }}
-                    prefix="home4"
-                    id={currentCameras["1-1"]}
-                  />
+                  <>
+                    <RtspVideo
+                      prefix="home1"
+                      id={currentCameras["0-0"]}
+                      style={VideoCss}
+                    />
+                    <RtspVideo
+                      prefix="home2"
+                      id={currentCameras["0-1"]}
+                      style={VideoCss}
+
+                    />
+                    <RtspVideo
+                      prefix="home3"
+                      id={currentCameras["1-0"]}
+                      style={VideoCss}
+
+                    />
+                    <RtspVideo
+                      prefix="home4"
+                      id={currentCameras["1-1"]}
+                      style={VideoCss}
+
+                    />
+                  </>
                 )}
               </div>
             </div>
